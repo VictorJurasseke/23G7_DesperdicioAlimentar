@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 import CardPerfil from '../components/TelaPerfil/CardPerfil';
 import Header from '../components/TelaHome/Header';
@@ -13,14 +13,25 @@ const TelaPerfil = () => {
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
 
-    const { Dados_usuario } = usePerfilDados(token, navigate); // Pega os dados de usuario do cliente para criar a tela
+    console.log("Carregada")
+    const { Dados_usuario, verificarUsuario } = usePerfilDados(token, navigate); // Pega os dados de usuario do cliente para criar a tela
+    
+    
+    const {TableJogosEspecifico, BuscarJogosEspecifico} = useImportarDadosJogosEspecifico(token, navigate, 5)
+    
+    useEffect(() => {
+        verificarUsuario();
+        BuscarJogosEspecifico()
+    }, []);
 
-    // Carrega todos os jogos disponiveis 
-    const { TableJogosEspecifico } = useImportarDadosJogosEspecifico(token, navigate);
 
-    console.log("JOGOS DADOS", TableJogosEspecifico);
-    console.log("Dados do usuario", Dados_usuario);
-    console.log("Tela carregada");
+
+
+
+
+    // console.log("JOGOS DADOS", TableJogosEspecifico);
+    // console.log("Dados do usuario", Dados_usuario);
+    // console.log("Tela carregada");
 
     return (
         <>
@@ -32,10 +43,10 @@ const TelaPerfil = () => {
                             <CardPerfil
                                 nome={Dados_usuario.user_nome}
                                 periodo={Dados_usuario.user_periodo}
-                                escola={Dados_usuario.es_nome}
                                 img={Dados_usuario.user_img_caminho}
                                 token={token}
                                 navigate={navigate}
+                                nivel_acesso={Dados_usuario.user_tipo_acesso}
                             />
 
                             <div className="text-dark position-relative">

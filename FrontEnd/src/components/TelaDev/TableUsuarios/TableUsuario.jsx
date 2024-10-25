@@ -23,8 +23,6 @@ const TableUsuario = ({token,navigate}) => {
                         <thead className="thead-dark">
                             <tr>
                                 <th>ID Usuário</th>
-                                <th>Escola</th>
-                                <th>Turma</th>
                                 <th>Nome</th>
                                 <th>Email</th>
                                 <th>Nível Acesso</th>
@@ -37,8 +35,6 @@ const TableUsuario = ({token,navigate}) => {
                                 <UsuarioTR
                                     key={item.ID_usuarios}
                                     ID_usuarios={item.ID_usuarios}
-                                    es_nome={item.es_nome}
-                                    tur_nome={item.tur_nome}
                                     user_nome={item.user_nome}
                                     user_email={item.user_email}
                                     user_tipo_acesso={item.user_tipo_acesso}

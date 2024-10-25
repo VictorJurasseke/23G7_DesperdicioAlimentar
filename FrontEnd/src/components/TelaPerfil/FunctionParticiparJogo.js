@@ -26,7 +26,9 @@ const SwalModal = Swal.mixin({
 
 
 // Função para exibir o modal de confirmação
+// Fazer um select que lista todas as turmas registrada no sistema
 export const ModalParticiparJogos = (ID_jogos, jo_nome, es_nome, token, navigate) => {
+    let ID_turmas = 1;
     SwalModal.fire({
         title: "Participar?",
         text: `Quer participar do ${jo_nome} da escola ${es_nome}?`,
@@ -38,13 +40,13 @@ export const ModalParticiparJogos = (ID_jogos, jo_nome, es_nome, token, navigate
     }).then((result) => {
         if (result.isConfirmed) {
             // Chama a função ParticiparJogo e passa o ID_jogos, jo_nome, es_nome e o navigate
-            ParticiparJogo(ID_jogos, jo_nome, es_nome, token, navigate);
+            ParticiparJogo(ID_jogos, jo_nome, es_nome,  ID_turmas, token, navigate);
         }
     });
 };
 
 // Função para registrar a participação do usuário no jogo
-const ParticiparJogo = async (ID_jogos, jo_nome, es_nome, token, navigate) => {
+const ParticiparJogo = async (ID_jogos, jo_nome, es_nome,  ID_turmas, token, navigate) => {
     
     try {
         // Faz a requisição para a API de participar do jogo

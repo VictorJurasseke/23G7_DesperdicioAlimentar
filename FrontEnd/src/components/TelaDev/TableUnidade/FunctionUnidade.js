@@ -14,7 +14,7 @@ const swalWithBootstrapButtons = Swal.mixin({
 });
 
 // Função de abrir a tela de edição de itens
-export const ModalEditUnidade = (id, atualizar, token, navigate) => {
+export const ModalEditUnidade = (id, BuscarUnidades, token, navigate) => {
     console.log(id);
     swalWithBootstrapButtons.fire({
         title: "Edit User",
@@ -24,7 +24,7 @@ export const ModalEditUnidade = (id, atualizar, token, navigate) => {
 };
 
 // Função de abrir modal para deletar arquivos
-export const ModalDeleteUnidade = (id, atualizar, token, navigate) => {
+export const ModalDeleteUnidade = (id, BuscarUnidades, token, navigate) => {
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
         text: "Você não podera reverter isto!",
@@ -35,7 +35,7 @@ export const ModalDeleteUnidade = (id, atualizar, token, navigate) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deletarUnidade(id, atualizar, token, navigate);
+            deletarUnidade(id, BuscarUnidades, token, navigate);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
                 title: "Cancelado",
@@ -50,7 +50,7 @@ export const ModalDeleteUnidade = (id, atualizar, token, navigate) => {
 export const useImportarDadosUnidade = (token, navigate) => {
     const [Tableunidade, setTableunidade] = useState([]);
 
-    async function atualizar() {
+    async function BuscarUnidades() {
         try {
             let resposta = await axios.get(urlUnidade, {
                 headers: {
@@ -63,18 +63,16 @@ export const useImportarDadosUnidade = (token, navigate) => {
         }
     }
 
-    useEffect(() => {
-        atualizar();
-    }, []);
+
 
     return {
         Tableunidade,
-        atualizar // Retorne a função de atualizar
+        BuscarUnidades // Retorne a função de BuscarUnidades
     };
 };
 
 // Deletar Unidade específica
-export const deletarUnidade = async (id, atualizar, token, navigate) => {
+export const deletarUnidade = async (id, BuscarUnidades, token, navigate) => {
     try {
         let resposta = await axios.delete(`${urlUnidade}/${id}`, {
             headers: {
@@ -88,16 +86,89 @@ export const deletarUnidade = async (id, atualizar, token, navigate) => {
                 icon: "error"
             });
         } else {
-            atualizar(); // Atualiza a lista após a exclusão
+            BuscarUnidades(); // Atualiza a lista após a exclusão
             swalWithBootstrapButtons.fire({
                 title: "Deleted!",
                 text: "Your file has been deleted.",
                 icon: "success"
             });
-            
+
         }
     } catch (error) {
         SwalErroToken(navigate)
         console.error('Erro ao deletar uma escola:', error);
     }
 };
+
+
+
+
+// é passado por params para criar a unidade
+export const ModalCriarUnidade = (token, navigate, BuscarUnidades) => {
+
+    Swal.fire({
+        title: "Criando Unidade",
+        text: "Coloque as informações abaixo!",
+        html: `
+           <form id="form-jogo">
+          <div class="mb-3 text-start">
+            <label for="jo_nome" class="form-label">Nome do Jogo</label>
+            <input type="text" id="nome_unidade" class="form-control" placeholder="Ex: SESI CE-138 ANASTACIO">
+          </div>
+        </form>
+                    `,
+        showCancelButton: true,
+        confirmButtonText: "Criar Jogo",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const nome_unidade = document.getElementById("nome_unidade").value;
+
+            console.log(nome_unidade)
+
+            CriarUnidade(navigate, token, nome_unidade, BuscarUnidades)
+
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire({
+                title: "Cancelado",
+                text: "Nenhum jogo foi criado!",
+                icon: "error"
+            });
+        }
+
+    });
+};
+
+export const CriarUnidade = async (navigate, token, nome_unidade, BuscarUnidades) => {
+    try {
+        const resposta = await axios.post(`${urlUnidade}/${nome_unidade}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(resposta);
+        if (!resposta.data.status) {
+            swalWithBootstrapButtons.fire({
+                title: "Falhou!",
+                html: "Sua unidade não foi criada com sucesso!<br> <br> Código do erro: " + resposta.data,
+                icon: "error"
+            });
+        } else {
+            BuscarUnidades(); // Atualiza a lista
+            swalWithBootstrapButtons.fire({
+                title: "Criado!",
+                text: "Sua unidade foi criada com sucesso!",
+                icon: "success"
+            });
+            console.log("Jogo criado sucesso");
+        }
+    } catch (error) {
+
+        SwalErroToken(navigate)
+        console.log(error)
+    }
+
+
+}

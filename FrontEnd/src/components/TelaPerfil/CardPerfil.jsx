@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 
 import InfoPerfil from './InfoPerfil';
 
-const CardPerfil = ({ nome, escola, img, periodo, token, navigate }) => {
+const CardPerfil = ({ nome, img, periodo, token, navigate, nivel_acesso }) => {
 
   const logout = () => {
     Swal.fire({
@@ -41,7 +41,7 @@ const CardPerfil = ({ nome, escola, img, periodo, token, navigate }) => {
           />
         </div>
         <div className="col text-center">
-          <InfoPerfil nome={nome} periodo={periodo} escola={escola} />
+          <InfoPerfil nome={nome} periodo={periodo} nivel_acesso={nivel_acesso} />
         </div>
       </div>
     </div>

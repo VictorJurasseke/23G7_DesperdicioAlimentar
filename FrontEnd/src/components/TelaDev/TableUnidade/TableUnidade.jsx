@@ -2,21 +2,25 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 import { HiPencil, HiOutlineTrash } from "react-icons/hi";
 import UnidadeTR from './UnidadeTR';
-import { useImportarDadosUnidade } from './FunctionUnidade';
-
+import { useImportarDadosUnidade, ModalCriarUnidade } from './FunctionUnidade';
 import LoadDev from '../LoadingDev';
-import { IoMdAdd } from "react-icons/io";
+import { BiAddToQueue } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
 
 
 
 
 
-const TableUnidade = ({token,navigate}) => {
+const TableUnidade = ({ token, navigate }) => {
 
-    const { Tableunidade, atualizar } = useImportarDadosUnidade(token,navigate)
+    const { Tableunidade, BuscarUnidades} = useImportarDadosUnidade(token, navigate)
 
+ 
 
+    // Chama a função de pegar os dados da unidade
+    useEffect(() => {
+        BuscarUnidades();
+    }, []);
 
     return (
         <>
@@ -37,15 +41,15 @@ const TableUnidade = ({token,navigate}) => {
                                     key={item.ID_escola}
                                     id={item.ID_escola}
                                     nome={item.es_nome}
-                                    atualizar={atualizar}
+                                    BuscarUnidades={BuscarUnidades}
                                     token={token}
                                     navigate={navigate}
                                 />
                             ))}
                         </tbody>
                     </table>
-                    <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '80px' }} >
-                        <IoMdAdd />
+                    <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
+                        <BiAddToQueue onClick={()=>{ModalCriarUnidade(token, navigate, BuscarUnidades)}}/>
                     </div>
                 </>}
         </>

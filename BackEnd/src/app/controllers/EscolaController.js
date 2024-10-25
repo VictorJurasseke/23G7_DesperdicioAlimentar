@@ -31,4 +31,15 @@ rotas.delete('/:id', verificarToken, async (req, res) => {
     }
 });
 
+rotas.post('/:nome_escola', async (req, res) => {
+     try {
+         res.json(await model.CriarEscola(req.params.nome_escola));
+     } catch (error) {
+         console.log('Erro ao criar escola', error);
+         res.status(500).json({ error: 'Erro interno do servidor' });
+     }
+     
+ 
+ });
+
 module.exports = rotas;

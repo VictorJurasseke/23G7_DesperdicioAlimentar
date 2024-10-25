@@ -20,7 +20,7 @@ const TableJogos = ({token,navigate}) => {
 
     return (
         <>
-            {TableJogos.length === 0 && <p className='text-center'>Não foi possivel achar nenhum registro</p>}
+            {TableJogos.length === 0 && <LoadDev/>}
             {TableJogos.length != 0 &&
                 <>
                     <table className="table table-striped  table-hover text-center">
@@ -51,7 +51,9 @@ const TableJogos = ({token,navigate}) => {
                             ))}
                         </tbody>
                     </table>
-                </>}
+                </>
+
+                }
                     <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '80px' }} >
                     <IoMdAdd onClick={() => ModalCriarJogo(atualizar, navigate, token, Tableunidade, setForm, Form)} />
                     </div>

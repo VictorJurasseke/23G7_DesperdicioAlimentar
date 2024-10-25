@@ -258,10 +258,9 @@ export const useImportarDadosJogos = (token, navigate) => {
 
 
 export const useImportarDadosJogosEspecifico = (token, navigate, ID_escola) => {
-    console.log("Tentando importar dados dos jogos especificos:",token, navigate, ID_escola)
     const [TableJogosEspecifico, setTableJogosEspecifico] = useState([])
-    console.log(token)
-    async function atualizar() {
+    
+    async function BuscarJogosEspecifico() {
         try {
             let resposta = await axios.get(`${urlJogos}/disp/${ID_escola}`, {  // Inclui ID_escola na URL
                 headers: {
@@ -275,13 +274,13 @@ export const useImportarDadosJogosEspecifico = (token, navigate, ID_escola) => {
         }
     }
 
-    useEffect(() => {
-        atualizar()
-    }, [])
+    // useEffect(() => {
+    //     BuscarJogosEspecifico()
+    // }, [])
 
     return {
         TableJogosEspecifico,
-        atualizar
+        BuscarJogosEspecifico
     }
 }
 

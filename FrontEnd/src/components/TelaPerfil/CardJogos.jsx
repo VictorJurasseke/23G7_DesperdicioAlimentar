@@ -5,9 +5,6 @@ import { ModalParticiparJogos } from './FunctionParticiparJogo';
 
 const CardJogos = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nome, token, navigate, jo_status }) => {
 
-  console.log("Id do jogo", ID_jogos)
-  console.log("Id do usuario", ID_usuarios)
-  console.log("Status:",jo_status)
 
   return (
     <div className="card" style={{ width: "18rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
@@ -15,7 +12,8 @@ const CardJogos = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nome
         <h5 className="card-title">{jo_nome}</h5>
         <p className="card-text">
           Data Inicio: {jo_datai} <br />
-          Data Final: {jo_dataf}
+          Data Final: {jo_dataf} <br />
+          Escola: {es_nome}
         </p>
       </div>
       <div className="card-footer p-0">

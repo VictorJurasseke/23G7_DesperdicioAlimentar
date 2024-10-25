@@ -14,6 +14,20 @@ module.exports.retornarTodosEscola = async () => {
     }
 };
 
+module.exports.CriarEscola = async (nome_escola) => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+        const [linhas] = await conexao.execute('INSERT INTO escola (es_nome) VALUES(?)', [nome_escola]);
+        return { status: true };
+    } catch (error) {
+        console.error("Erro ao criar escola!", error);
+        throw error;
+    } finally {
+        db.liberarConexao(conexao);
+    }
+};
+
 module.exports.ApagarEscola = async (id) => {
     let conexao;
     try {

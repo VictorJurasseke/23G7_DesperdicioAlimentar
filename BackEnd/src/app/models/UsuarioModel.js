@@ -11,7 +11,7 @@ module.exports.retornarTodosUsuario = async () => {
 
         //Executa o sql no bd
         const [linhas] = await conexao.execute(
-            'SELECT u.ID_usuarios, u.user_nome, u.user_email, u.user_periodo, u.user_tipo_acesso, t.tur_nome, e.es_nome from usuarios u, turmas t, escola e WHERE u.ID_escola = e.ID_escola AND u.ID_turmas = t.ID_turmas LIMIT 15')
+            'SELECT u.ID_usuarios, u.user_nome, u.user_email, u.user_periodo, u.user_tipo_acesso FROM usuarios u LIMIT 15;')
         
         
 

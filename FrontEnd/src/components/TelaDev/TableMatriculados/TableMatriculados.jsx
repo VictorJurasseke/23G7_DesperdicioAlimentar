@@ -12,7 +12,7 @@ const TableMatriculadosComponent = ({token,navigate}) => {
 
     return (
         <>
-            {TableMatriculados.length === 0 && (<div className='text-center'><p>Não foi possivel achar nenhum registro</p></div>)}
+            {TableMatriculados.length === 0 && <LoadDev/>}
             {/* Se não há registros */}
             {/* Exibindo registros */}
             {TableMatriculados.length > 0 &&

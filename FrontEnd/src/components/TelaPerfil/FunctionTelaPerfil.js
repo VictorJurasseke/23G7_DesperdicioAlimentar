@@ -31,9 +31,9 @@ export const usePerfilDados = (token, navigate) => {
     };
 
     // Chama a função `retornarPerfil` apenas uma vez, após o componente ser montado
-    useEffect(() => {
-        verificarUsuario();
-    }, []); // Array vazio garante que o efeito será executado apenas uma vez
+    // useEffect(() => {
+    //     verificarUsuario();
+    // }, []); // Array vazio garante que o efeito será executado apenas uma vez
 
-    return { Dados_usuario }; // Retorna o estado
+    return { Dados_usuario, verificarUsuario }; // Retorna o estado
 };

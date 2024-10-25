@@ -33,8 +33,8 @@ export const SwalErroToken = (navigate) => {
         if (result.dismiss === Swal.DismissReason.timer) {
             localStorage.removeItem("token"); // Remove o token
             console.log("Indo para tela login, apenas retirar comentario")
-
-            navigate('/login');
+            
+            // navigate('/login');
         }
     });
 };

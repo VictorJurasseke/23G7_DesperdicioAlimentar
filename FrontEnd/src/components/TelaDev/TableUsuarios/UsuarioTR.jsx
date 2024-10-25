@@ -8,15 +8,12 @@ import {ModalEditUsuario, ModalDeleteUsuario} from './FunctionUsuario'
 
 const UsuarioTR = ({
     ID_usuarios,
-    tur_nome,
-    es_nome,
     user_nome,
     user_email,
     user_tipo_acesso,
     user_periodo,
     token,
     navigate,
-  
     atualizar
 }) => {
     return (
@@ -25,11 +22,8 @@ const UsuarioTR = ({
         <>
             <tr>
                 <td>{ID_usuarios}</td>
-                <td>{es_nome}</td>
-                <td>{tur_nome}</td>
                 <td>{user_nome}</td>
                 <td>{user_email}</td>
-         
                 <td>{user_tipo_acesso}</td>
                 <td>{user_periodo}</td>
                 

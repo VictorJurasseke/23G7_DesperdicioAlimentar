@@ -19,10 +19,10 @@ rotas.get('/', verificarToken, async (req, res) => {
 // Puxar todos os jogos disponiveis em escola  X
 rotas.get('/disp/:ID_escola', verificarToken, async (req, res) => {
     
-    console.log("Controller",req.params.ID_escola)
     console.log("Requisição recebida em /api/jogos"); // Log
+    console.log("Controller",req.params.ID_escola)
     try {
-        const jogos = await model.retornarJogosDaEscola(ID_escola);
+        const jogos = await model.retornarJogosDaEscola(req.params.ID_escola);
         res.json(jogos);
     } catch (error) {
         console.error("Erro ao listar os jogos", error);
@@ -44,6 +44,9 @@ rotas.delete('/:id', verificarToken, async (req, res) => {
     }
 });
 
+
+
+// Participar de um jogo precisa de 
 rotas.post('/participar', verificarToken, async (req, res) => {
     // Antes era por req.params, mas foi feita mudanças no banco então muda aqui também
     let {ID_jogos} = req.body
