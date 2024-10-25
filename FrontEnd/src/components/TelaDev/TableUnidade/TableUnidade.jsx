@@ -24,8 +24,8 @@ const TableUnidade = ({ token, navigate }) => {
 
     return (
         <>
-            {Tableunidade.length === 0 && <LoadDev />}
-            {Tableunidade.length > 0 &&
+            
+           
                 <>
                     <table className="table table-striped  table-hover text-center">
                         <thead>
@@ -51,7 +51,7 @@ const TableUnidade = ({ token, navigate }) => {
                     <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
                         <BiAddToQueue onClick={()=>{ModalCriarUnidade(token, navigate, BuscarUnidades)}}/>
                     </div>
-                </>}
+                </>
         </>
     );
 };
