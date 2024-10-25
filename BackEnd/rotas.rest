@@ -1,0 +1,39 @@
+### Endpoint para Registro de Usuário
+
+@url = http://localhost:3025
+
+
+###
+POST {{url}}/api/usuario/registrar
+Content-Type: application/json
+
+{
+  "nome": "Victor",
+  "email": "victor@example.com",
+  "senha": "senha123",
+  "confirmar_senha": "senha123",
+  "turma": 1,
+  "periodo": "Matutino",
+  "unidade": 1,
+  "qrcode": "qrcode123"
+}
+
+###
+
+### Endpoint para Obter Dados
+
+GET http://localhost:3025/api/usuario
+
+### 
+
+POST {{url}}/api/usuario/login
+Content-Type: application/json
+
+{
+  "email": "victor@example.com",
+  "senha": "senha123"
+}
+
+###
+
+GET http://localhost:3025/api/jogos

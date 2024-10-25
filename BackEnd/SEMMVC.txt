@@ -1,0 +1,105 @@
+const express = require('express');
+
+const cors = require('cors');
+
+const meuip = '169.254.203.179'
+const port = 3080;
+
+const app = express();
+
+app.use(cors());
+
+app.use(express.json());
+
+
+let user = []
+
+
+
+app.get("/usuario", (req, res) => {
+    // Busca todos os usuarios
+    res.json(user)
+})
+
+
+app.post("/usuario/registrar", (req, res) => {
+
+    let senhaComprimento = 8
+
+    let {
+        nome,
+        unidade,
+        email,
+        senha,
+        senha_confirmar,
+        turma,
+        qrcode
+    } = req.body
+
+    let nome_validacao = user.find(item => item.nome === nome) // 
+    let email_validacao = user.find(item => item.email === email)
+    let qrcode_validacao = user.find(item => item.qrcode === qrcode)
+    let senha_validacao = senha.length < senhaComprimento
+    let senha_confirmada_validacao = senha_confirmar === senha
+
+
+    let errors = {}
+
+    if (nome_validacao) {
+        errors.nome = 1;
+        // Nome de usuario igual
+    }
+    if (qrcode_validacao) {
+        errors.qrcode = 2;
+        // qr repetido
+    }
+
+    if (email_validacao) {
+        errors.email = 3;
+        // Email já registrado por outro usuario 
+    }
+
+    if (senha_validacao) {
+        errors.senha = 4;
+        // Senha menor que quatro 
+    }
+
+    if (!senha_confirmada_validacao) {
+        errors.senha_confirmada = 5;
+        // Senha diferente da outra 
+    }
+
+    // Verifica se há erros e responde de acordo
+    if (Object.keys(errors).length > 0) {
+        return res.json({ errors })
+        // Manda todos os erros
+    }
+
+    // Se não houver erros, adiciona o usuário e retorna sucesso
+    user.push(req.body);
+    res.json({ status: true });
+
+})
+
+// Validar se a conta do usuario existe
+app.post("/usuario/login", (req, res) => {
+
+    const { email_logar, senha_logar } = req.body
+
+    validar = { Status: false }
+
+    let usuario = user.find(item => item.email === email_logar);
+    // Verifica se o usuário foi encontrado e se a senha corresponde
+    if (usuario && usuario.senha === senha_logar) {
+        validar.Status = true;
+    }
+    res.json(validar)
+})
+
+app.listen(port, () => {
+
+    console.log(`Servidor rodando em http://${meuip}:${port}`);
+    console.log(`Servidor rodando em http://${meuip}:${port}/usuario`);
+
+});
+
