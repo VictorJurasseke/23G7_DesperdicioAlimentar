@@ -1,0 +1,9 @@
+.glassmorphism {
+    background: rgba(255, 255, 255, 0.1); /* Fundo translúcido */
+    border-radius: 10px; /* Bordas arredondadas */
+    backdrop-filter: blur(40px); /* Efeito de desfoque */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil */
+    padding: 20px; /* Espaçamento interno */
+  }
+  

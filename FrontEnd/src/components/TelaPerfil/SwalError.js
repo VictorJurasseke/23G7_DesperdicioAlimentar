@@ -1,0 +1,40 @@
+
+export const SwalErroToken = (navigate) => {
+    let timerInterval;
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+        icon: "error",
+        title: `Sua sessão expirou ou ocorreu um erro!`,
+        html: "Enviando para tela de login em <b></b> milliseconds.",
+        timer: 2000,
+        timerProgressBar: true,
+        allowOutsideClick: false,  // Impede fechar clicando fora
+        allowEscapeKey: false,     // Impede fechar com ESC
+        allowEnterKey: false,      // Impede fechar com Enter
+        showCancelButton: false,   // Remove botão de cancelar
+        didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+                timer.textContent = `${Math.floor(Swal.getTimerLeft() / 1000)}`; // Mostra o tempo restante em segundos
+            }, 100);
+        },
+        willClose: () => {
+            clearInterval(timerInterval);
+        }
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+            localStorage.removeItem("token"); // Remove o token
+            console.log("Indo para tela login, apenas retirar comentario")
+
+            navigate('/login');
+        }
+    });
+};
