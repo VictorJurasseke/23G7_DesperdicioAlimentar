@@ -15,6 +15,17 @@ rotas.get('/', verificarToken, async (req, res) => {
     }
 });
 
+rotas.post('/:nome_turma', async (req, res) => {
+    try {
+        res.json(await model.CriarTurma(req.params.nome_turma));
+    } catch (error) {
+        console.log('Erro ao criar turma', error);
+        res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+    
+
+});
+
 rotas.delete('/:id', verificarToken, async (req, res) => {
     const {id} = req.params
     console.log(id)

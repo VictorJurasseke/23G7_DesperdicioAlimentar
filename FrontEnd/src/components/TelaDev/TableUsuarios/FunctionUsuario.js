@@ -50,9 +50,9 @@ export const ModalDeleteUsuario = (id, atualizar, token, navigate) => {
 };
 
 export const useImportarDadosUsuario = (token, navigate) => {
-    const [TableUsuario, setTableUsuario] = useState([])
+    const [TodosUsuarios, setTodosUsuarios] = useState([])
 
-    async function atualizar() {
+    async function BuscarTodosUsuarios() {
 
 
         try {
@@ -61,7 +61,7 @@ export const useImportarDadosUsuario = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            setTableUsuario(resposta.data)
+            setTodosUsuarios(resposta.data)
         } catch (error) {
             SwalErroToken(navigate)
             console.log(error)
@@ -69,13 +69,9 @@ export const useImportarDadosUsuario = (token, navigate) => {
 
     }
 
-    useEffect(() => {
-        atualizar()
-    }, [])
-
     return {
-        TableUsuario,
-        atualizar
+        TodosUsuarios,
+        BuscarTodosUsuarios
     }
 }
 
@@ -107,7 +103,7 @@ export const deletarUsuario = async (id, atualizar, token, navigate) => {
 // estou adicionando usuarios com csv
 export const ModalAdicionarUsuario = (token, navigate) => {
 
-   
+
     swalWithBootstrapButtons.fire({
         title: "Inserir usuários",
         html: `<div className="input-group mb-3">
@@ -122,7 +118,7 @@ export const ModalAdicionarUsuario = (token, navigate) => {
         if (result.isConfirmed) {
 
 
-            
+
         }
     });
     console.log("AA")

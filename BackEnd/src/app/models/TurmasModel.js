@@ -14,6 +14,21 @@ module.exports.retornarTodosTurmas = async () => {
     }
 };
 
+module.exports.CriarTurma = async (nome_turma) => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+        const [linhas] = await conexao.execute('INSERT INTO turmas (tur_nome) VALUES(?)', [nome_turma]);
+        return { status: true };
+    } catch (error) {
+        console.error("Erro ao criar turma!", error);
+        throw error;
+    } finally {
+        db.liberarConexao(conexao);
+    }
+};
+
+
 
 module.exports.ApagarTurmas = async (id) => {
     let conexao;

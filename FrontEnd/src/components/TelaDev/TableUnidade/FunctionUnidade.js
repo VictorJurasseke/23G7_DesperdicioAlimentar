@@ -48,7 +48,7 @@ export const ModalDeleteUnidade = (id, BuscarUnidades, token, navigate) => {
 
 // Listar todas as unidades
 export const useImportarDadosUnidade = (token, navigate) => {
-    const [Tableunidade, setTableunidade] = useState([]);
+    const [TodasUnidade, setTodasUnidade] = useState([]);
 
     async function BuscarUnidades() {
         try {
@@ -57,7 +57,7 @@ export const useImportarDadosUnidade = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            setTableunidade(resposta.data);
+            setTodasUnidade(resposta.data);
         } catch (error) {
             SwalErroToken(navigate)
         }
@@ -66,7 +66,7 @@ export const useImportarDadosUnidade = (token, navigate) => {
 
 
     return {
-        Tableunidade,
+        TodasUnidade,
         BuscarUnidades // Retorne a função de BuscarUnidades
     };
 };
@@ -112,7 +112,7 @@ export const ModalCriarUnidade = (token, navigate, BuscarUnidades) => {
         html: `
            <form id="form-jogo">
           <div class="mb-3 text-start">
-            <label for="jo_nome" class="form-label">Nome do Jogo</label>
+            <label for="jo_nome" class="form-label">Nome da sua unidade:</label>
             <input type="text" id="nome_unidade" class="form-control" placeholder="Ex: SESI CE-138 ANASTACIO">
           </div>
         </form>
@@ -132,7 +132,7 @@ export const ModalCriarUnidade = (token, navigate, BuscarUnidades) => {
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire({
                 title: "Cancelado",
-                text: "Nenhum jogo foi criado!",
+                text: "Nenhuma escola foi criada!",
                 icon: "error"
             });
         }

@@ -25,7 +25,7 @@ export const ModalEditMatriculados = (id) => {
 
 // Função de Abrir Modal para deletar arquivos
 
-export const ModalDeleteMatriculados = (id, atualizar, navigate,token) => {
+export const ModalDeleteMatriculados = (id, atualizar, navigate, token) => {
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
         text: "Você não podera reverter isto!",
@@ -36,7 +36,7 @@ export const ModalDeleteMatriculados = (id, atualizar, navigate,token) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deletarMatriculados(id, atualizar, navigate,token);
+            deletarMatriculados(id, atualizar, navigate, token);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
                 title: "Cancelado",
@@ -47,17 +47,17 @@ export const ModalDeleteMatriculados = (id, atualizar, navigate,token) => {
     });
 };
 
-export const useImportarDadosMatriculados = (token,navigate) => {
-    const [TableMatriculados, setTableMatriculados] = useState([])
-  
-    async function atualizar() {
+export const useImportarDadosMatriculados = (token, navigate) => {
+    const [TodosMatriculados, setTodosMatriculados] = useState([])
+
+    async function BuscarTodosMatriculados() {
         try {
             let resposta = await axios.get(urlMatriculados, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            setTableMatriculados(resposta.data)
+            setTodosMatriculados(resposta.data)
         } catch (error) {
             // SwalErroToken(navigate)
             console.log(error)
@@ -66,19 +66,90 @@ export const useImportarDadosMatriculados = (token,navigate) => {
 
     }
 
-    useEffect(() => {
-        atualizar()
-    }, [])
+
 
     return {
-        TableMatriculados,
-        atualizar
+        TodosMatriculados,
+        BuscarTodosMatriculados
     }
 }
 
+const renderizarJogos = (TodosJogos) => {
+    return TodosJogos.map(jogos => `<option value='${jogos.ID_jogos}' name="${jogos.jo_nome}" }>${jogos.jo_nome}</option>`).join('');
+};
 
-export const deletarMatriculados = async (id, atualizar,navigate,token) => {
-    
+const renderizarTurmas = (TodasTurmas) => {
+    return TodasTurmas.map(turmas => `<option value='${turmas.ID_turmas}' name="${turmas.tur_nome}" }>${turmas.tur_nome}</option>`).join('');
+};
+
+
+const renderizarUsuarios = (TodosUsuarios) => {
+    return TodosUsuarios.map(usuarios => `<option value='${usuarios.ID_usuarios}' name="${usuarios.user_nome}" }>${usuarios.user_nome}</option>`).join('');
+};
+
+
+
+// ModalCriarMatricula
+export const ModalCriarMatricula = (BuscarTodosMatriculados, navigate, token, TodosJogos, TodasTurmas, TodosUsuarios) => {
+    console.log(TodosJogos, TodasTurmas, TodosUsuarios)
+    Swal.fire({
+        title: "Criando Matriculas!",
+        text: "Coloque as informações abaixo!",
+        html: `
+           <form id="form-matricula">   
+          <div class="mb-3 text-start">
+            <p>Selecione o jogo</p>
+            <select class="form-select" aria-label="Default select example">
+             <option disabled selected>Jogos:</option>
+             ${renderizarJogos(TodosJogos)}
+            </select>
+            </div>
+          <div class="mb-3 text-start">
+           <p>Selecione a turma</p>
+             <select class="form-select" aria-label="Default select example">
+               <option disabled selected>Turmas:</option>
+               ${renderizarTurmas(TodasTurmas)}
+               
+               </select>
+               </div>
+               <div class="mb-3 text-start">
+               <p>Selecione os usuarios</p>
+               <select class="form-select" aria-label="Default select example">
+               <option disabled selected>Usuarios</option>
+               ${renderizarUsuarios(TodosUsuarios)}
+               
+              </select>
+            </div>
+           
+         
+        </form>
+                    `,
+        showCancelButton: true,
+        confirmButtonText: "Criar Jogo",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const nome_unidade = document.getElementById("nome_unidade").value;
+
+            console.log(nome_unidade)
+
+            // CriarUnidade(navigate, token, nome_unidade, BuscarUnidades)
+
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire({
+                title: "Cancelado",
+                text: "Nenhuma escola foi criada!",
+                icon: "error"
+            });
+        }
+
+    });
+};
+
+
+export const deletarMatriculados = async (id, atualizar, navigate, token) => {
+
     try {
         let resposta = await axios.delete(`${urlMatriculados}`, {
             headers: {

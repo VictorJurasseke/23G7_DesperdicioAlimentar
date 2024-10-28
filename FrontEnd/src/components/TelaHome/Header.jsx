@@ -23,7 +23,7 @@ function Header(props) {
   return (
     <Navbar className='justify-content-between position-absolute col-12 z-3'  dark expand="lg" {...props}>
       <NavbarBrand className='text-dark d-flex' href='/'>
-        <img src='../../../public/img/senai.svg' style={{ width: "150px"}} alt='logo' />
+        <img src='../../../public/img/SENAI.jpg' style={{ width: "150px"}} alt='logo' />
       </NavbarBrand>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>

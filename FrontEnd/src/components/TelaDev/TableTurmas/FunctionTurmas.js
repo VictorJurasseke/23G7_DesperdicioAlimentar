@@ -48,17 +48,88 @@ export const ModalDeleteTurmas = (id,atualizar, token, navigate) => {
     });
 };
 
+
+
+export const ModalCriarTurma = (token, navigate, BuscarTurmas) => {
+
+    Swal.fire({
+        title: "Criando Turma",
+        text: "Coloque as informações abaixo!",
+        html: `
+           <form id="form-jogo">
+          <div class="mb-3 text-start">
+            <label for="jo_nome" class="form-label">Nome da turma:</label>
+            <input type="text" id="nome_turma" class="form-control" placeholder="Ex: 3 Ano do Ensino Médio">
+          </div>
+        </form>
+                    `,
+        showCancelButton: true,
+        confirmButtonText: "Criar Jogo",
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const nome_turma = document.getElementById("nome_turma").value;
+
+            console.log(nome_turma)
+
+            CriarTurmas(navigate, token, nome_turma, BuscarTurmas)
+
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire({
+                title: "Cancelado",
+                text: "Nenhuma Turma foi criada!",
+                icon: "error"
+            });
+        }
+
+    });
+};
+
+export const CriarTurmas = async (navigate, token, nome_turma, BuscarTurmas) => {
+    try {
+        const resposta = await axios.post(`${urlTurmas}/${nome_turma}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(resposta);
+        if (!resposta.data.status) {
+            swalWithBootstrapButtons.fire({
+                title: "Falhou!",
+                html: "Sua escola não foi criada com sucesso!<br> <br> Código do erro: " + resposta.data,
+                icon: "error"
+            });
+        } else {
+            BuscarTurmas(); // Atualiza a lista
+            swalWithBootstrapButtons.fire({
+                title: "Criado!",
+                text: "Sua escola foi criada com sucesso!",
+                icon: "success"
+            });
+            console.log("Jogo criado sucesso");
+        }
+    } catch (error) {
+
+        SwalErroToken(navigate) 
+        console.log(error)
+    }
+
+
+}
+
 export const useImportarDadosTurmas = (token, navigate) => {
-    const [TableTurmas, setTableTurmas] = useState([])
-    async function atualizar() {
-        console.log("Atualizado")
+    const [TodasTurmas, setTodasTurmas] = useState([])
+    async function BuscarTurmas() {
+        console.log("buscando turmas..")
         try {
             let resposta = await axios.get(urlTurmas, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            setTableTurmas(resposta.data)
+            setTodasTurmas(resposta.data)
         } catch (error) {
             SwalErroToken(navigate)
 
@@ -66,13 +137,9 @@ export const useImportarDadosTurmas = (token, navigate) => {
 
     }
 
-    useEffect(() => {
-        atualizar()
-    }, [])
-
     return {
-        TableTurmas,
-        atualizar
+        TodasTurmas,
+        BuscarTurmas
     }
 }
 

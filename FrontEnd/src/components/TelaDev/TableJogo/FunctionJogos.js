@@ -59,13 +59,11 @@ export const ModalDeleteJogos = (id, atualizar, navigate, token) => {
 
 
 const renderizarUnidades = (TableUnidade) => {
-    console.log("Renderizando", TableUnidade);
     return TableUnidade.map(unidade => `<option value='${unidade.ID_escola}' name="${unidade.es_nome}" }>${unidade.es_nome}</option>`).join('');
 };
 
 
 export const ModalCriarJogo = (atualizar, navigate, token, Tableunidade, setForm, Form) => {
-    console.log("Modal", Tableunidade);
 
     Swal.fire({
         title: "Criando jogo",
@@ -170,7 +168,7 @@ export const ModalCriarJogo = (atualizar, navigate, token, Tableunidade, setForm
             let dataMudada = formatarDataParaBanco(jogos_data_mudanca)
             const jo_datai_formatada = formatarDataParaBanco(jo_datai);  // Converte para YYYY-MM-DD
             const jo_dataf_formatada = formatarDataParaBanco(jo_dataf);  // Converte para YYYY-MM-DD
-            console.log(dataMudada)
+          
             setForm({
                 unidade,
                 jo_nome,
@@ -228,9 +226,9 @@ export const ModalCriarJogo = (atualizar, navigate, token, Tableunidade, setForm
 
 export const useImportarDadosJogos = (token, navigate) => {
     
-    const [TableJogos, setTableJogos] = useState([])
-    console.log(token)
-    async function atualizar() {
+    const [TodosJogos, setTodosJogos] = useState([])
+
+    async function BuscarJogos() {
         try {
             let resposta = await axios.get(urlJogos, {
                 headers: {
@@ -239,24 +237,22 @@ export const useImportarDadosJogos = (token, navigate) => {
             });
             
         
-            setTableJogos(resposta.data)
+            setTodosJogos(resposta.data)
         } catch (error) {
             // SwalErroToken(navigate)
             console.log(error)
         }
     }
 
-    useEffect(() => {
-        atualizar()
-    }, [])
 
     return {
-        TableJogos,
-        atualizar
+        BuscarJogos,
+        TodosJogos
     }
 }
 
 
+// Jogos especifico de escola x, só precisa passar o id da escola
 export const useImportarDadosJogosEspecifico = (token, navigate, ID_escola) => {
     const [TableJogosEspecifico, setTableJogosEspecifico] = useState([])
     

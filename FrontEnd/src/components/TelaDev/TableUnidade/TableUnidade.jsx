@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 const TableUnidade = ({ token, navigate }) => {
 
-    const { Tableunidade, BuscarUnidades} = useImportarDadosUnidade(token, navigate)
+    const { TodasUnidade, BuscarUnidades} = useImportarDadosUnidade(token, navigate)
 
  
 
@@ -36,7 +36,7 @@ const TableUnidade = ({ token, navigate }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {Tableunidade.map((item) => (
+                            {TodasUnidade.map((item) => (
                                 <UnidadeTR
                                     key={item.ID_escola}
                                     id={item.ID_escola}
