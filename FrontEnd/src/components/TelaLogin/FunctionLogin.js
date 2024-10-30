@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export const UrlUsuario = "http://localhost:3025/api/usuario";
+// URL para rota de configuração da tela perfil
+const UrlPerfilDados = "http://localhost:3025/api/perfil";
 
 
 
@@ -63,17 +65,15 @@ import { useNavigate } from 'react-router-dom';
 
 
 export const useVerificarLogin = () => {
-    
+
 
 
     const navigate = useNavigate();
 
     // Guarda os possiveis dados do usuario caso ele esteja logado e tente ir para tela login permitindo logar dnv
     const [Dados_usuario, setDados_usuario] = useState(null);
-   
 
-    // URL para rota de configuração da tela perfil
-    const UrlPerfilDados = "http://localhost:3025/api/perfil";
+
 
     // Função para verificar o usuario e mandar as info dele
     const verificarLogin = async () => {
@@ -91,7 +91,7 @@ export const useVerificarLogin = () => {
             });
             setDados_usuario(resposta.data[0]);
         } catch (error) {
-            console.log(error)
+            console.log("Usuário desconectado")
         }
     };
 
@@ -122,7 +122,7 @@ export const useVerificarLogin = () => {
 };
 
 
-export const ModalDev = (navigate) => {
+export const ModalDev = (Erro, setErro, navigate) => {
 
 
     Swal.fire({
@@ -132,11 +132,15 @@ export const ModalDev = (navigate) => {
            <form id="form-jogo">
           <div class="mb-3 text-start">
             <label for="dev_email" class="form-label">Email:</label>
-            <input type="text" id="dev_email" class="form-control" placeholder="Ex: email@gmail.com">
+            <input type="text" id="dev_email" class="form-control" placeholder="email@gmail.com">
           </div>
           <div class="mb-3 text-start">
             <label for="dev_email" class="form-label">Senha:</label>
-            <input type="text" id="dev_senha" class="form-control" placeholder="Ex: 123">
+            <input type="text" id="dev_senha" class="form-control" placeholder="Senha:">
+          </div>
+          <div class="mb-3 text-start">
+            <label for="dev_confirmar_email" class="form-label">Confirme sua senha:</label>
+            <input type="text" id="dev_confirmar_senha" class="form-control" placeholder="Confirmar senha:">
           </div>
         </form>
                     `,
@@ -149,24 +153,61 @@ export const ModalDev = (navigate) => {
     }).then((result) => {
         if (result.isConfirmed) {
             const dev_email = document.getElementById("dev_email").value;
+            const dev_senha = document.getElementById("dev_senha").value;
+            const dev_confirmar_senha = document.getElementById("dev_confirmar_senha").value;
 
             console.log(dev_email)
-        
-            CriarADM(dev_email, dev_senha, navigate)
+
+            CriarADM(dev_email, dev_senha, dev_confirmar_senha, navigate)
         }
     })
 }
 
-export const CriarADM = async (dev_email, dev_senha, navigate) =>{
-    try {
-        let resposta = await axios.post(UrlPerfilDados +"/dev", {dev_email, dev_senha});
+export const CriarADM = async (dev_email, dev_senha, dev_confirmar_senha, navigate) => {
 
-        console.log(resposta.data[0].usuarios)
-        if (resposta.data[0].usuarios == 0) {
-            console.log("Abrir")
-            // Fazer a rota de criar adm com o dev email e dev senha, lembrar de registrar qualquer valor não importante
+
+    try {
+
+        let resposta = await axios.post(UrlPerfilDados + "/dev", { dev_email, dev_senha, dev_confirmar_senha });
+        console.log(resposta.data)
+
+        if (resposta.data.errors) {
+            ModalErroDev(resposta.data.errors)
         }
-    } catch(error){
+    } catch (error) {
         console.log(error)
 
-    }}
+    }
+}
+
+export const gerarMensagemErro = (errors) => {
+    const mensagens = [];
+    if (errors.dev_email) {
+        mensagens.push('- O email não é valido.');
+    }
+    if (errors.dev_senha) {
+        mensagens.push('- A senha precisa ser maior que 8 digitos.');
+    }
+    if (errors.dev_confirmar_senha) {
+        mensagens.push('- A confirmação da senha não coincide.');
+    }
+    return mensagens.join('<br>'); // Usando <br> para que as mensagens fiquem embaixo uma da outra
+}
+
+export const ModalErroDev = (errors) => {
+    const mensagem = gerarMensagemErro(errors);
+
+    Swal.fire({
+        title: 'Erro!',
+        html: mensagem,
+        icon: 'error',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        confirmButtonText: 'Tentar novamente',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            ModalDev();
+        }
+    });
+}
+

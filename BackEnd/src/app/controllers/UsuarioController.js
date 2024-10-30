@@ -33,7 +33,7 @@ rotas.get('/:id', verificarToken, async (req, res) => {
 
 rotas.post('/registrar', async (req, res) => {
 
-    let senhaComprimento = 8
+  
     let {
         nome,
         email,

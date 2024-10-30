@@ -82,7 +82,6 @@ module.exports.perfilNovo = async (nome, email, senha, qrcode, turma, unidade, p
 
     let conexao;
     let aluno = 1
-    let nutricionista = 2
 
 
 
