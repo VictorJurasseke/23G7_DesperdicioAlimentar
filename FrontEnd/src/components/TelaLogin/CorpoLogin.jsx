@@ -5,8 +5,13 @@ import axios from 'axios'; // Importa axios
 import { useLogin, useVerificarLogin } from '../TelaLogin/FunctionLogin';
 import { useNavigate } from 'react-router-dom';
 const CorpoLogin = () => {
-  const { Dados_usuario } = useVerificarLogin();
+  
+  
+  
+  const { Dados_usuario } = useVerificarLogin(); // Verifica se o usuario esta logado e se não há usuarios na tabela para inserção da conta dev
   const navigate = useNavigate();
+  
+  
   const {
     FormLogin,
     LogarUser,
@@ -14,7 +19,7 @@ const CorpoLogin = () => {
   } = useLogin();
 
   
-    // Verifique se os dados do usuário são verdadeiros e abra o modal
+    // Verifique se os dados do usuário são verdadeiros e volte para tela perfil
     if (Dados_usuario) {
       navigate('/user');
     }

@@ -17,7 +17,7 @@ export const useLogin = () => {
             icon: "error",
             title: "Oops...",
             text: `Ocorreu um erro inesperado: ${erro}`,
-        
+
         });
     }
 
@@ -25,15 +25,15 @@ export const useLogin = () => {
         e.preventDefault(); // Previne o comportamento padrão do formulário de recarregar a pagina
         try {
             const resposta = await axios.post(`${UrlUsuario}/login`, FormLogin);
-          
+
             if (resposta.data.token) {
                 localStorage.setItem("token", resposta.data.token);
-                console.log("Salvo no localStorage",resposta.data.token)
+                console.log("Salvo no localStorage", resposta.data.token)
                 window.location.href = '/user';
 
-            }else{
+            } else {
                 ModalErro("Usuário não existe ou credenciais incorretas!")
-            }  
+            }
         } catch (error) {
             ModalErro(error);
         }
@@ -63,10 +63,16 @@ import { useNavigate } from 'react-router-dom';
 
 
 export const useVerificarLogin = () => {
-    //abrir modal perguntado se deseja se desconectar da pagina
-    const navigate = useNavigate();
-    const [Dados_usuario, setDados_usuario] = useState(null);
+    
 
+
+    const navigate = useNavigate();
+
+    // Guarda os possiveis dados do usuario caso ele esteja logado e tente ir para tela login permitindo logar dnv
+    const [Dados_usuario, setDados_usuario] = useState(null);
+   
+
+    // URL para rota de configuração da tela perfil
     const UrlPerfilDados = "http://localhost:3025/api/perfil";
 
     // Função para verificar o usuario e mandar as info dele
@@ -74,7 +80,7 @@ export const useVerificarLogin = () => {
         let token = localStorage.getItem("token");
 
         if (!token) {
-            console.log("Nao possui token") // Redireciona para login se não existir token
+            console.log("Nao possui token")
             return;
         }
         try {
@@ -85,14 +91,82 @@ export const useVerificarLogin = () => {
             });
             setDados_usuario(resposta.data[0]);
         } catch (error) {
-                console.log(error)
+            console.log(error)
+        }
+    };
+
+    // Função para verificar o dev e mandar as info dele
+    const verificarDEV = async () => {
+        try {
+            let resposta = await axios.get(UrlPerfilDados + "/dev");
+
+            console.log(resposta.data[0].usuarios)
+            if (resposta.data[0].usuarios == 0) {
+                console.log("Abrir")
+                ModalDev(navigate)
+            }
+
+
+        } catch (error) {
+            console.log(error)
         }
     };
 
     // Chama a função `retornarPerfil` apenas uma vez, após o componente ser montado
     useEffect(() => {
         verificarLogin();
+        verificarDEV();
     }, []); // Array vazio garante que o efeito será executado apenas uma vez
 
     return { Dados_usuario }; // Retorna o estado
 };
+
+
+export const ModalDev = (navigate) => {
+
+
+    Swal.fire({
+        title: "Conta de Administrador",
+        text: "Coloque suas informações abaixo!",
+        html: `
+           <form id="form-jogo">
+          <div class="mb-3 text-start">
+            <label for="dev_email" class="form-label">Email:</label>
+            <input type="text" id="dev_email" class="form-control" placeholder="Ex: email@gmail.com">
+          </div>
+          <div class="mb-3 text-start">
+            <label for="dev_email" class="form-label">Senha:</label>
+            <input type="text" id="dev_senha" class="form-control" placeholder="Ex: 123">
+          </div>
+        </form>
+                    `,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        confirmButtonText: "Cadastrar",
+        confirmButtonColor: '#32CD32',
+
+        reverseButtons: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const dev_email = document.getElementById("dev_email").value;
+
+            console.log(dev_email)
+        
+            CriarADM(dev_email, dev_senha, navigate)
+        }
+    })
+}
+
+export const CriarADM = async (dev_email, dev_senha, navigate) =>{
+    try {
+        let resposta = await axios.post(UrlPerfilDados +"/dev", {dev_email, dev_senha});
+
+        console.log(resposta.data[0].usuarios)
+        if (resposta.data[0].usuarios == 0) {
+            console.log("Abrir")
+            // Fazer a rota de criar adm com o dev email e dev senha, lembrar de registrar qualquer valor não importante
+        }
+    } catch(error){
+        console.log(error)
+
+    }}
