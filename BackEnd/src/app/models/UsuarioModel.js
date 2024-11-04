@@ -26,6 +26,39 @@ module.exports.retornarTodosUsuario = async () => {
     }
 }
 
+
+module.exports.CadastrarUsuario = async (user_email,user_senha,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode) =>{
+    let conexao;
+
+    try {
+
+        // Faz a conexao com o banco com uma funçãos
+        conexao = await db.criarConexao();
+
+        //Executa o sql no bd
+        const [linhas] = await conexao.execute(
+            'INSERT INTO usuarios (user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode) VALUES (?, ?, ?, ?, ?, ?)',[user_email,user_senha,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode])
+        console.log("Linhas do cadastrar", linhas)
+        
+        return {status:true}
+
+    } catch (error) {
+        console.error("Erro ao cadastrar os usuarios", error)
+        if (error.code == 'ER_DUP_ENTRY') {
+            return { status: false, message:"Entrada de dados dupla" }
+        } else{
+            return {status:false, message:"Erro Interno do servidor!"}
+        }
+        throw error // Repassa o erro para a controller
+    } finally {
+        db.liberarConexao(conexao)// Libera a conexao
+    }
+
+}
+
+
+
+
 module.exports.retornarUmUsuario = async (id) => {
     let conexao;
 

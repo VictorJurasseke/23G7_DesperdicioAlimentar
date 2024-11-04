@@ -5,6 +5,41 @@ const rotas = express.Router()
 const model = require("../../app/models/UsuarioModel")
 const verificarToken = require('../middleware/autenticar')
 
+
+// Cadastrar usuário 
+// user_nome: document.getElementById('user_nome').value,
+// user_email: document.getElementById('user_email').value,
+// user_senha: document.getElementById('user_senha').value,
+// user_tipo_acesso: document.getElementById('tipo_acesso').value,
+// user_periodo: document.getElementById('periodo').value,
+// user_img_caminho: "", // Adicione o caminho da imagem se necessário
+// user_qrcode: "" // Adicione o QR code se necessário
+rotas.post('/', async (req, res) => {
+
+    console.log(req.body)
+    let { user_nome,
+        user_email,
+        user_senha,
+        user_tipo_acesso,
+        user_periodo,
+        user_img_caminho,
+        user_qrcode
+    } = req.body
+    console.log(user_nome)
+    try {
+        res.json(await model.CadastrarUsuario(user_email,user_senha,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode));
+    } catch (error) {
+        console.log('Erro ao Logar', error);
+        res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+
+
+});
+
+
+
+
+
 //Buscar todos os perfis 
 
 rotas.get('/', verificarToken, async (req, res) => {
@@ -33,7 +68,7 @@ rotas.get('/:id', verificarToken, async (req, res) => {
 
 rotas.post('/registrar', async (req, res) => {
 
-  
+
     let {
         nome,
         email,
@@ -46,8 +81,8 @@ rotas.post('/registrar', async (req, res) => {
     } = req.body
 
     user_img_caminho = "User.png"
-   
-        
+
+
 
 
     try {
@@ -64,22 +99,22 @@ rotas.post('/registrar', async (req, res) => {
 // Autentica usuário
 
 rotas.post('/login', async (req, res) => {
-   let {email, senha} = req.body
-   
+    let { email, senha } = req.body
+
     try {
         res.json(await model.retornarLogin(email, senha));
     } catch (error) {
         console.log('Erro ao Logar', error);
         res.status(500).json({ error: 'Erro interno do servidor' });
     }
-    
+
 
 });
 
 
 rotas.delete('/:id', async (req, res) => {
-    const {id} = req.params
-    
+    const { id } = req.params
+
     console.log(`Requisição delete em /api/usuario/${id}`); // Log
     try {
         const usuario = await model.ApagarUsuario(id);

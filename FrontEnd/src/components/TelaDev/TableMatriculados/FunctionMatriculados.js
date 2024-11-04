@@ -115,7 +115,9 @@ const renderizarUsuarios = (NaoMatriculados) => {
 
 // ModalCriarMatricula
 export const ModalCriarMatricula = (NaoMatriculados, navigate, token, TodosJogos, TodasTurmas) => {
-    console.log("AAAAA",NaoMatriculados)
+  
+// fazer todos os perfis selecionados virarem balãozinhos, e terminar esta função de cadastrar
+
     Swal.fire({
         title: "Criando Matriculas!",
         text: "Coloque as informações abaixo!",
@@ -123,22 +125,22 @@ export const ModalCriarMatricula = (NaoMatriculados, navigate, token, TodosJogos
            <form id="form-matricula">   
           <div class="mb-3 text-start">
             <p>Selecione o jogo</p>
-            <select class="form-select" aria-label="Default select example">
+            <select id="jogo" class="form-select" aria-label="Default select example">
              <option disabled selected>Jogos:</option>
              ${renderizarJogos(TodosJogos)}
             </select>
             </div>
           <div class="mb-3 text-start">
            <p>Selecione a turma</p>
-             <select class="form-select" aria-label="Default select example">
+             <select id="turma" class="form-select" aria-label="Default select example">
                <option disabled selected>Turmas:</option>
                ${renderizarTurmas(TodasTurmas)}
-               
+          
                </select>
                </div>
                <div class="mb-3 text-start">
                <p>Selecione os usuarios</p>
-               <select class="form-select" aria-label="Default select example">
+               <select id="usuarios" class="form-select" aria-label="Default select example">
                <option disabled selected>Usuarios que ainda não jogam:</option>
                ${renderizarUsuarios(NaoMatriculados)}
                
