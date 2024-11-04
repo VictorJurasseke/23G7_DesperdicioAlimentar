@@ -37,7 +37,7 @@ const TelaDev = () => {
   return (
     <>
     
-      <div className='d-flex flex-column min-vh-100'>
+      <div className='d-flex flex-column'>
         <TelasTroca FuncaoAlvo={FuncaoAlvo} />
         <div className='d-flex flex-column flex-fill'>
           {Radio === 'option1' && <TelaUnidade token={token} navigate={navigate} />}

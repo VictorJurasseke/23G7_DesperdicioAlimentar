@@ -20,7 +20,7 @@ switch (nivel_acesso) {
         <div className="col-md-4  ">
           <div className="card-body text-start">
             <h2>{nome}</h2>
-            <p className='text-secondary'>Periodo: {periodo} <br/>{nivel_acesso} </p>
+            <p className='text-secondary'>{nivel_acesso} </p>
           </div>
         </div>  
   );

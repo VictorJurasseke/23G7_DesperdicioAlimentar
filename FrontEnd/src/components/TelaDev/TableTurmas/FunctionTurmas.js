@@ -105,10 +105,10 @@ export const CriarTurmas = async (navigate, token, nome_turma, BuscarTurmas) => 
             BuscarTurmas(); // Atualiza a lista
             swalWithBootstrapButtons.fire({
                 title: "Criado!",
-                text: "Sua escola foi criada com sucesso!",
+                text: "Sua turma foi criada com sucesso!",
                 icon: "success"
             });
-            console.log("Jogo criado sucesso");
+         
         }
     } catch (error) {
 

@@ -26,4 +26,15 @@ rotas.delete('/', verificarToken, async (req, res) => {
     }
 });
 
+
+rotas.get('/semmatricula', verificarToken, async (req, res) => {
+    try {
+        res.json(await model.retornarNaoMatriculados())
+    } catch (error) {
+        console.log("Erro ao listar os perfis", error)
+        res.status(500).json({ error: "Erro interno do servidor" })
+    }
+})
+
+
 module.exports = rotas;

@@ -49,6 +49,8 @@ export const ModalDeleteMatriculados = (id, atualizar, navigate, token) => {
 
 export const useImportarDadosMatriculados = (token, navigate) => {
     const [TodosMatriculados, setTodosMatriculados] = useState([])
+    
+    const [NaoMatriculados, setTodosNaoMatriculados] = useState([])
 
     async function BuscarTodosMatriculados() {
         try {
@@ -66,11 +68,30 @@ export const useImportarDadosMatriculados = (token, navigate) => {
 
     }
 
+    async function BuscarNaoMatriculados() {
+        try {
+            let resposta = await axios.get(urlMatriculados+"semmatricula", {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setTodosNaoMatriculados(resposta.data)
+        } catch (error) {
+            // SwalErroToken(navigate)
+            console.log(error)
+
+        }
+
+    }
+
 
 
     return {
         TodosMatriculados,
-        BuscarTodosMatriculados
+        BuscarTodosMatriculados,
+
+        NaoMatriculados,
+        BuscarNaoMatriculados
     }
 }
 
@@ -82,15 +103,17 @@ const renderizarTurmas = (TodasTurmas) => {
     return TodasTurmas.map(turmas => `<option value='${turmas.ID_turmas}' name="${turmas.tur_nome}" }>${turmas.tur_nome}</option>`).join('');
 };
 
+// dando erro aqui, não esta lendo como função
 
-const renderizarUsuarios = (TodosUsuarios) => {
-    return TodosUsuarios.map(usuarios => `<option value='${usuarios.ID_usuarios}' name="${usuarios.user_nome}" }>${usuarios.user_nome}</option>`).join('');
+const renderizarUsuarios = (NaoMatriculados) => {
+    console.log(NaoMatriculados)
+    return NaoMatriculados.map(usuarios => `<option value='${usuarios.ID_usuarios}' name="${usuarios.user_nome}" }>${usuarios.user_nome}</option>`).join('');
 };
 
 
 
 // ModalCriarMatricula
-export const ModalCriarMatricula = (BuscarTodosMatriculados, navigate, token, TodosJogos, TodasTurmas, TodosUsuarios) => {
+export const ModalCriarMatricula = (NaoMatriculados, navigate, token, TodosJogos, TodasTurmas, TodosUsuarios) => {
     console.log(TodosJogos, TodasTurmas, TodosUsuarios)
     Swal.fire({
         title: "Criando Matriculas!",
@@ -116,7 +139,7 @@ export const ModalCriarMatricula = (BuscarTodosMatriculados, navigate, token, To
                <p>Selecione os usuarios</p>
                <select class="form-select" aria-label="Default select example">
                <option disabled selected>Usuarios</option>
-               ${renderizarUsuarios(TodosUsuarios)}
+               ${renderizarUsuarios(NaoMatriculados)}
                
               </select>
             </div>
@@ -134,8 +157,7 @@ export const ModalCriarMatricula = (BuscarTodosMatriculados, navigate, token, To
 
             console.log(nome_unidade)
 
-            // CriarUnidade(navigate, token, nome_unidade, BuscarUnidades)
-
+            
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire({
                 title: "Cancelado",
