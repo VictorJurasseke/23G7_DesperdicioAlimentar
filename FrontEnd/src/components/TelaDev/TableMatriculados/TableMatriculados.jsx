@@ -10,7 +10,7 @@ import {useImportarDadosUsuario} from '../TableUsuarios/FunctionUsuario'
 
 const TableMatriculadosComponent = ({ token, navigate }) => {
 
-    const { TodosMatriculados, BuscarTodosMatriculados } = useImportarDadosMatriculados(token, navigate); // Busca todos os matriculados
+    const { TodosMatriculados, BuscarTodosMatriculados, NaoMatriculados, BuscarNaoMatriculados } = useImportarDadosMatriculados(token, navigate); // Busca todos os matriculados
 
     const { FormMatricula, setFormMatricula } = useState({}) // Guarda todas as matriculas
     
@@ -26,7 +26,7 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
         BuscarTodosMatriculados()
         BuscarJogos()
         BuscarTurmas()
-        BuscarTodosUsuarios()
+        BuscarNaoMatriculados()
     }, [])
     
     
@@ -71,7 +71,7 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
                     </tbody>
                 </table>
                 <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
-                    <BiAddToQueue onClick={() => ModalCriarMatricula(BuscarTodosMatriculados, navigate, token, TodosJogos, TodasTurmas, TodosUsuarios) } />
+                    <BiAddToQueue onClick={() => ModalCriarMatricula(NaoMatriculados, navigate, token, TodosJogos, TodasTurmas) } />
                 </div>
             </>
 

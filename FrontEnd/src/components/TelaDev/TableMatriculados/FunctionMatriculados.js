@@ -70,11 +70,12 @@ export const useImportarDadosMatriculados = (token, navigate) => {
 
     async function BuscarNaoMatriculados() {
         try {
-            let resposta = await axios.get(urlMatriculados+"semmatricula", {
+            let resposta = await axios.get(urlMatriculados+"/semmatricula", {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            console.log("Resp",resposta)
             setTodosNaoMatriculados(resposta.data)
         } catch (error) {
             // SwalErroToken(navigate)
@@ -113,8 +114,8 @@ const renderizarUsuarios = (NaoMatriculados) => {
 
 
 // ModalCriarMatricula
-export const ModalCriarMatricula = (NaoMatriculados, navigate, token, TodosJogos, TodasTurmas, TodosUsuarios) => {
-    console.log(TodosJogos, TodasTurmas, TodosUsuarios)
+export const ModalCriarMatricula = (NaoMatriculados, navigate, token, TodosJogos, TodasTurmas) => {
+    console.log("AAAAA",NaoMatriculados)
     Swal.fire({
         title: "Criando Matriculas!",
         text: "Coloque as informações abaixo!",
@@ -138,7 +139,7 @@ export const ModalCriarMatricula = (NaoMatriculados, navigate, token, TodosJogos
                <div class="mb-3 text-start">
                <p>Selecione os usuarios</p>
                <select class="form-select" aria-label="Default select example">
-               <option disabled selected>Usuarios</option>
+               <option disabled selected>Usuarios que ainda não jogam:</option>
                ${renderizarUsuarios(NaoMatriculados)}
                
               </select>
