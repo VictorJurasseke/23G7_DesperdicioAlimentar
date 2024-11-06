@@ -17,7 +17,8 @@ const verificarToken = require('../middleware/autenticar')
 rotas.post('/', async (req, res) => {
 
     console.log(req.body)
-    let { user_nome,
+    let { 
+        user_nome,
         user_email,
         user_senha,
         user_tipo_acesso,
@@ -27,7 +28,7 @@ rotas.post('/', async (req, res) => {
     } = req.body
     console.log(user_nome)
     try {
-        res.json(await model.CadastrarUsuario(user_email,user_senha,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode));
+        res.json(await model.CadastrarUsuario(user_nome,user_email,user_senha,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode));
     } catch (error) {
         console.log('Erro ao Logar', error);
         res.status(500).json({ error: 'Erro interno do servidor' });
@@ -100,7 +101,7 @@ rotas.post('/registrar', async (req, res) => {
 
 rotas.post('/login', async (req, res) => {
     let { email, senha } = req.body
-
+ 
     try {
         res.json(await model.retornarLogin(email, senha));
     } catch (error) {

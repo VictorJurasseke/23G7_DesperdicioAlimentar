@@ -8,18 +8,27 @@ import { BiAddToQueue } from "react-icons/bi";
 
 import { useNavigate } from 'react-router-dom';
 import { useImportarDadosUnidade } from '../TableUnidade/FunctionUnidade';
+import { StatusJogo } from '../../NivelAcesso';
+
+
+
 
 const TableJogos = ({ token, navigate }) => {
 
     const { TodosJogos, BuscarJogos } = useImportarDadosJogos(token, navigate)
-    const { TodasUnidade } = useImportarDadosUnidade(token, navigate)
+    const { TodasUnidade, BuscarUnidades } = useImportarDadosUnidade(token, navigate)
 
+
+   
+
+    console.log(TodosJogos)
 
     // Formulario responsavel por guardar todas as informações de jogos
     const [Form, setForm] = useState({})
 
     useEffect(() => {
         BuscarJogos()
+        BuscarUnidades()
     }, [])
 
 
@@ -36,19 +45,23 @@ const TableJogos = ({ token, navigate }) => {
                             <th>Data Inicio</th>
                             <th>Data Fim</th>
                             <th>Escola Resignada</th>
-                            <th></th>
+                            <th>Functions</th>
+                            <th>Status</th>
+
                         </tr>
                     </thead>
                     <tbody>
 
                         {TodosJogos.map((item) => (
                             <TableJogosTR
+
                                 key={item.ID_jogos}
                                 id={item.ID_jogos}
                                 nome={item.jo_nome}
                                 dataInicio={item.jo_datai}
                                 dataFim={item.jo_dataf}
                                 escola={item.es_nome}
+                                status={StatusJogo(item.jo_status)}
                                 atualizar={BuscarJogos}
                                 token={token}
                                 navigate={navigate}
@@ -58,7 +71,7 @@ const TableJogos = ({ token, navigate }) => {
                 </table>
             </>
             <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
-                <BiAddToQueue onClick={() => ModalCriarJogo(BuscarJogos, navigate, token, Tableunidade, setForm, Form)} />
+                <BiAddToQueue onClick={() => ModalCriarJogo(BuscarJogos, navigate, token, TodasUnidade, setForm, Form)} />
             </div>
         </>
     );

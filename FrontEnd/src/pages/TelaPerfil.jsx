@@ -9,13 +9,14 @@ import { useNavigate } from 'react-router-dom';
 
 import Menu_Aluno from '../components/TelaPerfil/Menu_Aluno';
 import Menu_Administrador from '../components/TelaPerfil/Menu_Administrador';
+import Menu_Usuario from '../components/TelaPerfil/Menu_Usuario';
 
 
 
 const TelaPerfil = () => {
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
-
+    console.log("Token no tela perfil",token)
     console.log("Carregada")
     const { Dados_usuario, verificarUsuario } = usePerfilDados(token, navigate); // Pega os dados de usuario do cliente para criar a tela
     console.log(Dados_usuario)
@@ -52,8 +53,9 @@ const TelaPerfil = () => {
 
                             <div className="text-dark position-relative">
                                 {/* Se for aluno, ele mostrara os jogos disponiveis para ele participar 1 == aluno, 2 == usuario, 3 == jogador  0 == DEV  */}
+                                <Menu_Usuario Dados_usuario={Dados_usuario} token={token} navigate={navigate}/>
                                 <Menu_Aluno Dados_usuario={Dados_usuario} token={token} navigate={navigate}/>
-                                <Menu_Administrador OBJ_dados={Dados_usuario}></Menu_Administrador>
+                                <Menu_Administrador  Dados_usuario={Dados_usuario}></Menu_Administrador>
                             </div>
                         </div>
                     </div>

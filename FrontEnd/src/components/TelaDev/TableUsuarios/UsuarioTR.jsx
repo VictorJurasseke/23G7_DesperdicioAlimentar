@@ -1,10 +1,14 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 import { HiPencil, HiOutlineTrash } from "react-icons/hi";
+import { NivelAcesso } from '../../NivelAcesso';
 
 
 // Funções de Apagar e Editar
 import {ModalEditUsuario, ModalDeleteUsuario} from './FunctionUsuario'
+
+
+
 
 const UsuarioTR = ({
     ID_usuarios,
@@ -24,7 +28,7 @@ const UsuarioTR = ({
                 <td>{ID_usuarios}</td>
                 <td>{user_nome}</td>
                 <td>{user_email}</td>
-                <td>{user_tipo_acesso}</td>
+                <td>{NivelAcesso(user_tipo_acesso)}</td>
                 <td>{user_periodo}</td>
                 
                 <td className='fs-5'>

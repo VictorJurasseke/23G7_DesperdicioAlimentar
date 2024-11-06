@@ -18,8 +18,8 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
   
     const { TodasTurmas, BuscarTurmas} = useImportarDadosTurmas(token, navigate)
 
-    const {TodosUsuarios, BuscarTodosUsuarios } = useImportarDadosUsuario(token, navigate)
     
+    console.log(TodosMatriculados)
 
     // Quando a tela carregar ele busca todas as informações do banco
     useEffect(() => {
@@ -42,13 +42,13 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
 
                     <thead>
                         <tr>
-                            <th>ID Matricula</th>
+                            
                             <th>Jogo</th>
                             <th>Usuário</th>
                             <th>Pontos Usuário</th>
                             <th>Rank</th>
                             <th>Escola</th>
-                            <th></th>
+                            <th>Functions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,21 +57,23 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
                             TodosMatriculados.map((item) => (
                                 <MatriculadosTR
                                     key={item.ID_matricula}
-                                    idusermat={item.ID_matricula}
-                                    idjogos={item.jo_nome}
-                                    idusuarios={item.user_nome}
+                                    ID_usuarios={item.ID_usuarios}
+                                    ID_jogos={item.ID_jogos}
+                                    jo_nome={item.jo_nome}
+                                    user_nome={item.user_nome}
                                     pontos_usuario={item.pontos_usuario}
                                     rank_usuario={item.rank_usuario}
-                                    es_nome={item.es_nome}
-                                    atualizar={BuscarTodosMatriculados}
+                                    es_nome={item.es_nome} 
+                                    BuscarTodosMatriculados={BuscarTodosMatriculados}
                                     token={token}
                                     navigate={navigate}
+                                    BuscarNaoMatriculados={BuscarNaoMatriculados}
                                 />
                             ))}
                     </tbody>
                 </table>
                 <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
-                    <BiAddToQueue onClick={() => ModalCriarMatricula(NaoMatriculados, navigate, token, TodosJogos, TodasTurmas) } />
+                    <BiAddToQueue onClick={() => ModalCriarMatricula(NaoMatriculados,BuscarNaoMatriculados, navigate, token, TodosJogos, TodasTurmas, BuscarTodosMatriculados) } />
                 </div>
             </>
 

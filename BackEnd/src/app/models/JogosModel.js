@@ -4,7 +4,7 @@ module.exports.retornarTodosJogos = async () => {
     let conexao;
     try {
         conexao = await db.criarConexao();
-        const [linhas] = await conexao.execute('SELECT j.jo_status, j.ID_jogos, j.jo_nome, j.jo_datai, j.jo_dataf, e.es_nome FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola;');
+        const [linhas] = await conexao.execute('SELECT j.jo_status, j.ID_jogos, j.jo_nome, j.jo_datai, j.jo_dataf, e.es_nome FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola ORDER BY j.jo_datai;');
         return linhas;
     } catch (error) {
         console.error("Erro ao listar todos os jogos", error);
@@ -16,11 +16,11 @@ module.exports.retornarTodosJogos = async () => {
 
 //
 module.exports.retornarJogosDaEscola = async (ID_escola) => {
-    console.log("MODEL:",ID_escola)
+    console.log("MODEL:", ID_escola)
     let conexao;
     try {
         conexao = await db.criarConexao();
-        const [linhas] = await conexao.execute('SELECT j.jo_status, j.ID_jogos, j.jo_nome, j.jo_datai, j.jo_dataf, e.es_nome FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola AND j.ID_escola = ? AND j.jo_status = 1;', [ID_escola]);
+        const [linhas] = await conexao.execute('SELECT j.jo_status, j.ID_jogos, j.jo_nome, j.jo_datai, j.jo_dataf, e.es_nome FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola AND j.ID_escola = ? AND j.jo_status = 1 ORDER BY j.jo_datai;', [ID_escola]);
         return linhas;
     } catch (error) {
         console.error("Erro ao listar jogo especifico da escola", error);
@@ -101,9 +101,9 @@ module.exports.atualizarRankingJogo = async (ID_jogos) => {
 };
 
 
-module.exports.CriarJogo = async (unidade, jo_nome, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato) => {
+module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato) => {
     let conexao;
-    console.log("Model", unidade, jo_nome, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato)
+    console.log("Model criação jogo", unidade, jo_nome, jo_tema, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato)
     try {
         conexao = await db.criarConexao();
 
@@ -149,9 +149,10 @@ module.exports.CriarJogo = async (unidade, jo_nome, jo_datai_formatada, jo_dataf
                 jo_datai,
                 jo_dataf,
                 ID_jogos_config,
-                jo_status
-            ) VALUES (?, ?, ?, ?, ?, ?)`,
-            [unidade, jo_nome, jo_datai_formatada, jo_dataf_formatada, ID_jogos_config, jo_status]
+                jo_status,
+                jo_tema
+            ) VALUES (?, ?, ?, ?, ?, ?,?)`,
+            [unidade, jo_nome, jo_datai_formatada, jo_dataf_formatada, ID_jogos_config, jo_status, jo_tema,]
         );
         console.log("Jogo", jogoCriado)
         console.log("Config", configCriada)
@@ -161,9 +162,12 @@ module.exports.CriarJogo = async (unidade, jo_nome, jo_datai_formatada, jo_dataf
         }
         return { status: false }
     } catch (error) {
-        console.log("ERRROOOO,", error)
-        return error;
-        throw error; // Repassa para a controller
+        console.error("Erro ao criar jogo:", error.message);
+        if (error.errno == 1062) {
+            return { status: false, message: "Entrada de dados dupla" }
+        } else {
+            return { status: false, message: "Erro Interno do servidor!" }
+        }
     } finally {
         db.liberarConexao(conexao);
     }

@@ -14,10 +14,10 @@ rotas.get('/', verificarToken, async (req, res) => {
     }
 });
 
-rotas.delete('/', verificarToken, async (req, res) => {
-    console.log(`Requisição delete recebida em /api/matriculados/${req.info.ID_usuarios}`); // Log
+rotas.delete('/:id', verificarToken, async (req, res) => {
+    console.log(`Requisição delete recebida em /api/matriculados/${req.params.id}`); // Log
     try {
-        const jogos = await model.ApagarMatriculas(req.info.ID_usuarios);
+        const jogos = await model.ApagarMatriculas(req.params.id);
         res.json(jogos);
         
     } catch (error) {
@@ -29,7 +29,23 @@ rotas.delete('/', verificarToken, async (req, res) => {
 
 rotas.get('/semmatricula', verificarToken, async (req, res) => {
     try {
-        res.json(await model.retornarNaoMatriculados())
+        const semMatricula = await model.retornarNaoMatriculados()
+        res.json(semMatricula)
+        
+    } catch (error) {
+        console.log("Erro ao listar os perfis", error)
+        res.status(500).json({ error: "Erro interno do servidor" })
+    }
+})
+
+
+rotas.post('/', verificarToken, async (req, res) => {
+    console.log("REQ EM MATRICULAR USER:", req.body)
+    const {ID_jogo, ID_turmas, ID_usuarios} = req.body
+    console.log(req.body)
+    try {
+        const Matricular = await model.MatricularAlunos(ID_jogo, ID_turmas, ID_usuarios)
+        res.json(Matricular)
     } catch (error) {
         console.log("Erro ao listar os perfis", error)
         res.status(500).json({ error: "Erro interno do servidor" })

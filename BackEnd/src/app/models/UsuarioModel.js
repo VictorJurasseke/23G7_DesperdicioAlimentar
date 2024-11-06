@@ -27,7 +27,10 @@ module.exports.retornarTodosUsuario = async () => {
 }
 
 
-module.exports.CadastrarUsuario = async (user_email,user_senha,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode) =>{
+module.exports.CadastrarUsuario = async (user_nome,user_email,user_senha,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode) =>{
+    
+    let senhaHash = crypto.createHash('sha256').update(user_senha).digest('hex');
+    console.log(senhaHash)
     let conexao;
 
     try {
@@ -37,7 +40,7 @@ module.exports.CadastrarUsuario = async (user_email,user_senha,user_tipo_acesso,
 
         //Executa o sql no bd
         const [linhas] = await conexao.execute(
-            'INSERT INTO usuarios (user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode) VALUES (?, ?, ?, ?, ?, ?)',[user_email,user_senha,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode])
+            'INSERT INTO usuarios (user_nome,user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode) VALUES (?,?, ?, ?, ?, ?, ?)',[user_nome,user_email,senhaHash,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode])
         console.log("Linhas do cadastrar", linhas)
         
         return {status:true}
@@ -142,6 +145,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
 module.exports.retornarLogin = async (email, senha) => {
+
+
     let conexao;
     let senhaHash = crypto.createHash('sha256').update(senha).digest('hex');
     let token; // Declare a variável token aqui
@@ -150,7 +155,7 @@ module.exports.retornarLogin = async (email, senha) => {
 
         // Executa a consulta ao banco de dados
         const [linhas] = await conexao.execute('SELECT * FROM usuarios WHERE user_email = ? AND user_senha = ?', [email, senhaHash]);
-
+   
         // Verifica se o usuário foi encontrado
         if (linhas.length === 0) {
             return { status: false };

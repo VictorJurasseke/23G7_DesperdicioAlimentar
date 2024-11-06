@@ -23,16 +23,15 @@ export const useLogin = () => {
         });
     }
 
+    // Logar usuario
     const LogarUser = async (e) => {
         e.preventDefault(); // Previne o comportamento padrão do formulário de recarregar a pagina
         try {
             const resposta = await axios.post(`${UrlUsuario}/login`, FormLogin);
-
             if (resposta.data.token) {
                 localStorage.setItem("token", resposta.data.token);
                 console.log("Salvo no localStorage", resposta.data.token)
                 window.location.href = '/user';
-
             } else {
                 ModalErro("Usuário não existe ou credenciais incorretas!")
             }
@@ -75,7 +74,7 @@ export const useVerificarLogin = () => {
 
 
 
-    // Função para verificar o usuario e mandar as info dele
+    // Função para verificar o usuario se ele estava logado e mandar as info dele
     const verificarLogin = async () => {
         let token = localStorage.getItem("token");
 
@@ -95,7 +94,7 @@ export const useVerificarLogin = () => {
         }
     };
 
-    // Função para verificar o dev e mandar as info dele
+    // Função para verificar se há dev no banco
     const verificarDEV = async () => {
         try {
             let resposta = await axios.get(UrlPerfilDados + "/dev");

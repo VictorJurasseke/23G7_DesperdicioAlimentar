@@ -102,7 +102,7 @@ export const deletarUsuario = async (id, atualizar, token, navigate) => {
     }
 };
 // estou adicionando usuarios com SVC
-export const ModalAdicionarUsuario = (token, navigate) => {
+export const ModalAdicionarUsuario = (token, navigate, BuscarTodosUsuarios) => {
 
 
     swalWithBootstrapButtons.fire({
@@ -177,7 +177,7 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
                 user_img_caminho: "User.png", // Adicione o caminho da imagem se necessário
                 user_qrcode: "" // Adicione o QR code se necessário
             };
-
+            
             console.log("Objeto Form:", Form);
             CriarUsuario(navigate, token, Form, BuscarTodosUsuarios)
           

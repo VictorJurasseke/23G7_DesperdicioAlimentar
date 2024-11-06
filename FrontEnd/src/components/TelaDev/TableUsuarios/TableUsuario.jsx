@@ -13,8 +13,7 @@ import { BiAddToQueue } from "react-icons/bi";
 const TableUsuario = ({ token, navigate }) => {
 
     const { TodosUsuarios, BuscarTodosUsuarios } = useImportarDadosUsuario(token, navigate)
-
-
+    console.log(TodosUsuarios)
     useEffect(() => {
         BuscarTodosUsuarios()
     }, [])
@@ -53,12 +52,12 @@ const TableUsuario = ({ token, navigate }) => {
                 <div className='d-flex align-items-center'>
                     <BiAddToQueue
                         className='text-success'
-                        onClick={() => { ModalCriarUsuario(token, navigate) }}
+                        onClick={() => { ModalCriarUsuario(token, navigate, BuscarTodosUsuarios) }}
                         style={{ fontSize: '40px', marginRight: '15px', cursor: 'pointer' }}
                     />
                     <Button
                         className="btn btn-success"
-                        onClick={() => { ModalAdicionarUsuario(token, navigate, TodosUsuarios) }}
+                        onClick={() => { ModalAdicionarUsuario(token, navigate, TodosUsuarios, BuscarTodosUsuarios) }}
                     >
                         Importar SVC
                     </Button>

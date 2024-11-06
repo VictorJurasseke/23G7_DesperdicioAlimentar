@@ -4,12 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import TelaDev from '../../pages/TelaDev';
 
 
-const Menu_Administrador = (OBJ_dados) => {
-    console.log(OBJ_dados)
+const Menu_Administrador = (Dados_usuario) => {
+    console.log(Dados_usuario)
  
     return (
         <>
-            {OBJ_dados.OBJ_dados.user_tipo_acesso === 0 && (
+            {Dados_usuario.Dados_usuario.user_tipo_acesso === 0 && (
                 <>
                     <TelaDev />
                 </>

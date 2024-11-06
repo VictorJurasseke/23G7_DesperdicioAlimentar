@@ -43,11 +43,6 @@ function Header(props) {
               <span className="material-symbols-outlined fs-2">account_circle</span>
             </NavLink>
           </NavItem>
-          <NavItem className="d-flex align-items-center">
-            <NavLink className='text-dark' href="/devs">
-              <span className="material-symbols-outlined fs-2">settings</span>
-            </NavLink>
-          </NavItem>
         </Nav>
       </Collapse>
     </Navbar>

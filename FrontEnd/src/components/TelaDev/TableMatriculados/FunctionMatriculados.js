@@ -25,7 +25,7 @@ export const ModalEditMatriculados = (id) => {
 
 // Função de Abrir Modal para deletar arquivos
 
-export const ModalDeleteMatriculados = (id, atualizar, navigate, token) => {
+export const ModalDeleteMatriculados = (ID_usuarios, BuscarTodosMatriculados,BuscarNaoMatriculados, navigate, token) => {
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
         text: "Você não podera reverter isto!",
@@ -36,7 +36,8 @@ export const ModalDeleteMatriculados = (id, atualizar, navigate, token) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deletarMatriculados(id, atualizar, navigate, token);
+            deletarMatriculados(ID_usuarios, BuscarTodosMatriculados,BuscarNaoMatriculados, navigate, token);
+           
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
                 title: "Cancelado",
@@ -49,7 +50,7 @@ export const ModalDeleteMatriculados = (id, atualizar, navigate, token) => {
 
 export const useImportarDadosMatriculados = (token, navigate) => {
     const [TodosMatriculados, setTodosMatriculados] = useState([])
-    
+
     const [NaoMatriculados, setTodosNaoMatriculados] = useState([])
 
     async function BuscarTodosMatriculados() {
@@ -69,14 +70,16 @@ export const useImportarDadosMatriculados = (token, navigate) => {
     }
 
     async function BuscarNaoMatriculados() {
+
         try {
-            let resposta = await axios.get(urlMatriculados+"/semmatricula", {
+            let resposta = await axios.get(urlMatriculados + "/semmatricula", {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            console.log("Resp",resposta)
+            console.log("Resp", resposta)
             setTodosNaoMatriculados(resposta.data)
+            console.log("AAAAAAAAAAAAAA", resposta)
         } catch (error) {
             // SwalErroToken(navigate)
             console.log(error)
@@ -101,95 +104,133 @@ const renderizarJogos = (TodosJogos) => {
 };
 
 const renderizarTurmas = (TodasTurmas) => {
+
     return TodasTurmas.map(turmas => `<option value='${turmas.ID_turmas}' name="${turmas.tur_nome}" }>${turmas.tur_nome}</option>`).join('');
 };
 
 // dando erro aqui, não esta lendo como função
 
 const renderizarUsuarios = (NaoMatriculados) => {
-    console.log(NaoMatriculados)
+
     return NaoMatriculados.map(usuarios => `<option value='${usuarios.ID_usuarios}' name="${usuarios.user_nome}" }>${usuarios.user_nome}</option>`).join('');
 };
 
 
 
 // ModalCriarMatricula
-export const ModalCriarMatricula = (NaoMatriculados, navigate, token, TodosJogos, TodasTurmas) => {
-  
-// fazer todos os perfis selecionados virarem balãozinhos, e terminar esta função de cadastrar
+export const ModalCriarMatricula = (NaoMatriculados, BuscarNaoMatriculados, navigate, token, TodosJogos, TodasTurmas, BuscarTodosMatriculados) => {
 
     Swal.fire({
         title: "Criando Matriculas!",
         text: "Coloque as informações abaixo!",
         html: `
            <form id="form-matricula">   
-          <div class="mb-3 text-start">
-            <p>Selecione o jogo</p>
-            <select id="jogo" class="form-select" aria-label="Default select example">
-             <option disabled selected>Jogos:</option>
-             ${renderizarJogos(TodosJogos)}
-            </select>
-            </div>
-          <div class="mb-3 text-start">
-           <p>Selecione a turma</p>
-             <select id="turma" class="form-select" aria-label="Default select example">
-               <option disabled selected>Turmas:</option>
-               ${renderizarTurmas(TodasTurmas)}
-          
-               </select>
-               </div>
-               <div class="mb-3 text-start">
-               <p>Selecione os usuarios</p>
-               <select id="usuarios" class="form-select" aria-label="Default select example">
-               <option disabled selected>Usuarios que ainda não jogam:</option>
-               ${renderizarUsuarios(NaoMatriculados)}
-               
-              </select>
-            </div>
-           
-         
-        </form>
-                    `,
+              <div class="mb-3 text-start">
+                <p>Selecione o jogo</p>
+                <select id="ID_jogo" class="form-select" aria-label="Default select example">
+                  <option disabled value="" selected>Jogos:</option>
+                  ${renderizarJogos(TodosJogos)}
+                </select>
+              </div>
+              <div class="mb-3 text-start">
+                <p>Selecione a turma</p>
+                <select id="ID_turmas" class="form-select" aria-label="Default select example">
+                  <option disabled value="" selected>Turmas:</option>
+                  ${renderizarTurmas(TodasTurmas)}
+                </select>
+              </div>
+              <div class="mb-3 text-start">
+                <p>Selecione os usuarios</p>
+                <select id="ID_usuarios" class="form-select" aria-label="Default select example">
+                  <option disabled value="" selected>Usuarios que ainda não jogam:</option>
+                  ${renderizarUsuarios(NaoMatriculados)}
+                </select>
+              </div>
+              <p id="error-msg" class="text-danger" style="display: none;">Preencha todos os campos</p>
+           </form>
+        `,
         showCancelButton: true,
-        confirmButtonText: "Criar Jogo",
+        confirmButtonText: "Matricular",
         cancelButtonText: "Cancelar",
         reverseButtons: true,
+        preConfirm: () => {
+            const ID_jogo = document.getElementById("ID_jogo").value;
+            const ID_turmas = document.getElementById("ID_turmas").value;
+            const ID_usuarios = document.getElementById("ID_usuarios").value;
+
+            if (!ID_jogo || !ID_turmas || !ID_usuarios) {
+                document.getElementById("error-msg").style.display = "block";
+                return false; // impede o fechamento do modal
+            }
+
+            return { ID_jogo, ID_turmas, ID_usuarios }; // retorna os valores para o then
+        }
     }).then((result) => {
-        if (result.isConfirmed) {
-            const nome_unidade = document.getElementById("nome_unidade").value;
-
-            console.log(nome_unidade)
-
-            
+        if (result.isConfirmed && result.value) {
+            const Form = result.value;
+            MatricularAluno(navigate, token, Form, BuscarTodosMatriculados, BuscarNaoMatriculados);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire({
                 title: "Cancelado",
-                text: "Nenhuma escola foi criada!",
+                text: "Nenhuma matrícula foi criada!",
                 icon: "error"
             });
         }
-
     });
 };
 
 
-export const deletarMatriculados = async (id, atualizar, navigate, token) => {
-
+export const MatricularAluno = async (navigate, token, form, BuscarTodosMatriculados, BuscarNaoMatriculados) => {
     try {
-        let resposta = await axios.delete(`${urlMatriculados}`, {
+
+        const resposta = await axios.post(`${urlMatriculados}`, form, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(resposta);
+        if (!resposta.data.status) {
+            swalWithBootstrapButtons.fire({
+                title: "Falhou!",
+                html: "Seu aluno não foi matriculado com sucesso!<br> <br> Código do erro: " + resposta.data.message,
+                icon: "error"
+            });
+        } else {
+            BuscarTodosMatriculados(); // Atualiza a lista de todos que estão matriculados em um jogo após a exclusão
+            BuscarNaoMatriculados(); // Atualiza a lista de todos que ainda não estão matriculados em um jogo
+            swalWithBootstrapButtons.fire({
+                title: "Criado!",
+                text: "Seu aluno foi matriculado com sucesso!",
+                icon: "success"
+            });
+        }
+    } catch (error) {
+        // SwalErroToken(navigate)
+        console.log(error)
+    }
+}
+
+
+export const deletarMatriculados = async (ID_usuarios, BuscarTodosMatriculados,BuscarNaoMatriculados, navigate, token) => {
+// O BUSCAR NÃO MATRICULADOS ESTA DANDO ERRO, NÃO ESTA ATUALIZANDO A LISTA COMO DEVERIA
+    try {
+        let resposta = await axios.delete(`${urlMatriculados}/${ID_usuarios}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
+        console.log(resposta)
         if (!resposta.data.status) {
             console.log("Não foi excluído");
             swalWithBootstrapButtons.fire({
                 title: "Falhou!",
-                html: "Sua matricula não foi deletada!<br> <br> Código do erro: " + resposta.data.error.code,
+                html: "Sua matricula não foi deletada!<br> <br> Código do erro: " + resposta.data.message,
                 icon: "error"
             });
         } else {
-            atualizar(); // Atualiza a lista após a exclusão
+            BuscarTodosMatriculados(); // Atualiza a lista após a exclusão
+            BuscarNaoMatriculados()
             swalWithBootstrapButtons.fire({
                 title: "Deleted!",
                 text: "Sua matricula foi deletada!",
