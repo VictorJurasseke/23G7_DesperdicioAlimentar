@@ -10,6 +10,8 @@ import CaixaInput from '../TelaCadastro/CaixaInput'
 import ErroCaixa from '../TelaCadastro/Erro'
 import { useCadastro } from '../TelaCadastro/FunctionCadastrar';
 
+
+// TERMINAR A PARTE QRCODE <requisito do sistema>
 const Menu_Aluno = ({ Dados_usuario, token, navigate }) => {
 
 

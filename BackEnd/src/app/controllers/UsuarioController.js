@@ -21,7 +21,7 @@ const verificarToken = require('../middleware/autenticar')
 rotas.post('/', async (req, res) => {
 
     console.log(req.body)
-    let { 
+    let {
         user_nome,
         user_email,
         user_senha,
@@ -32,7 +32,7 @@ rotas.post('/', async (req, res) => {
     } = req.body
     console.log(user_nome)
     try {
-        res.json(await model.CadastrarUsuario(user_nome,user_email,user_senha,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode));
+        res.json(await model.CadastrarUsuario(user_nome, user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode));
     } catch (error) {
         console.log('Erro ao Logar', error);
         res.status(500).json({ error: 'Erro interno do servidor' });
@@ -100,7 +100,26 @@ rotas.get('/:id', verificarToken, async (req, res) => {
 
 
 // Validar Contado do aluno para se tornar usuário; passar O FORMULARIO E INDICAR QUAL O ID DO MEMSO
-rotas.post('/validar',verificarToken, async (req, res) => {
+const yup = require('yup');
+
+//Valida os campos nome email senha e confirmar senha
+
+const usuarioSchema =
+    yup.object().shape({
+
+        NovaSenha: yup.string().min(8, "- A senha deve ter pelo menos 8 caracteres").required("- A senha é obrigatória"),
+        QRcode: yup.string().required("- O qrcode é necessario!"),
+        ConfirmarNovaSenha: yup
+            .string()
+            .oneOf([yup.ref('NovaSenha'), null], "- As senhas não conferem")
+            .required("A confirmação de senha é obrigatória"),
+    });
+
+// Validar a conta do usuário
+rotas.post('/validar', verificarToken, async (req, res) => {
+
+
+
 
     let {
         NovaSenha,
@@ -108,12 +127,18 @@ rotas.post('/validar',verificarToken, async (req, res) => {
         QRcode
     } = req.body
 
+
     try {
-        console.log("Corpo da Validação:",req.body)
-        let linhas = await model.ValidarConta(NovaSenha,QRcode,ConfirmarNovaSenha, req.info.ID_usuarios)
+        
+        let YUP = await usuarioSchema.validate(req.body, { abortEarly: false });
+
+        console.log("ERRO",YUP.ValidationError.errors)
+        console.log("Corpo da Validação:", req.body)
+        let linhas = await model.ValidarConta(NovaSenha, QRcode, ConfirmarNovaSenha, req.info.ID_usuarios)
         res.json(linhas)
+
     } catch (error) {
-        console.log("Erro ao validar conta do usuário; ERRO:", error)
+        res.json(error)
     }
 });
 
@@ -122,7 +147,7 @@ rotas.post('/validar',verificarToken, async (req, res) => {
 
 rotas.post('/login', async (req, res) => {
     let { email, senha } = req.body
- 
+
     try {
         res.json(await model.retornarLogin(email, senha));
     } catch (error) {

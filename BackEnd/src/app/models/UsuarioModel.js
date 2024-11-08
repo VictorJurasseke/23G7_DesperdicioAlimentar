@@ -4,6 +4,8 @@ const validator = require('validator');
 module.exports.retornarTodosUsuario = async () => {
     let conexao;
 
+    
+
     try {
 
         // Faz a conexao com o banco com uma funçãos
@@ -81,38 +83,6 @@ module.exports.retornarUmUsuario = async (id) => {
 }
 
 module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_usuarios) => {
-
-
-    QRcode = "10000000"
-
-    errors = {}
-
-    // VERIFICA COM O TRIM SE OS CAMPOS ESTÃO VAZIOS, O TRIM REMOVE TODOS OS ESPAÇOS EM BRANCOS
-    if (QRcode.trim() === "" || NovaSenha.trim() === "" || ConfirmarNovaSenha.trim() === "") {
-        errors.CampoVazio = 3; // ALGUM CAMPO ESTA VAZIO
-        return { errors }; // Retorna os erros imediatamente
-    }
-
-    if (!validator.isLength(NovaSenha, { min: 8 })) {
-        errors.NovaSenha = 1 //'A senha deve ter pelo menos 8 caracteres.';
-    }
-
-    if (NovaSenha !== ConfirmarNovaSenha) {
-        errors.ConfirmarNovaSenha = 2 //'As senhas não coincidem.';
-    }
-
-
-    // Se houver erros, retorne-os
-    if (Object.keys(errors).length > 0) {
-        return { errors };
-    }
-
-    // TODOS OS CAMPOS FORAM LIMPADOS - VERIFICAR SE JÁ EXISTE NO BANCO ANTES DE REGISTRAR
-
-    // Sanitizar dados
-
-    QRcode = validator.escape(QRcode);
-
 
     // Criptografando a senha em hexadecimal no algoritmo de sha256 para não mandar para o banco em plano branco
     let senhaHash = crypto.createHash('sha256').update(NovaSenha).digest('hex');
