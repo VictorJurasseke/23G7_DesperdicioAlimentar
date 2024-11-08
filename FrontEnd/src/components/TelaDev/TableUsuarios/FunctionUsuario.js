@@ -151,6 +151,7 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
                       <option disabled selected>Tipos de Acesso:</option>
                       <option value="0">Administrador</option>
                       <option value="1">Aluno</option>
+                      <option value="2">Usuário</option>
                     </select>
                   </div>
                   <div class="mb-3 text-start">

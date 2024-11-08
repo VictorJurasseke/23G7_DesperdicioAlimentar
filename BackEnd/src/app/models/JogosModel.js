@@ -14,6 +14,21 @@ module.exports.retornarTodosJogos = async () => {
     }
 };
 
+
+module.exports.retornarTodosJogosAtivos = async () => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+        const [linhas] = await conexao.execute('SELECT j.jo_status, j.ID_jogos, j.jo_nome, j.jo_datai, j.jo_dataf, e.es_nome FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola AND j.jo_status = 1 ORDER BY j.jo_datai;');
+        return linhas;
+    } catch (error) {
+        console.error("Erro ao listar todos os jogos ATIVOS", error);
+        throw error;
+    } finally {
+        db.liberarConexao(conexao);
+    }
+};
+
 //
 module.exports.retornarJogosDaEscola = async (ID_escola) => {
     console.log("MODEL:", ID_escola)
@@ -164,7 +179,7 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
     } catch (error) {
         console.error("Erro ao criar jogo:", error.message);
         if (error.errno == 1062) {
-            return { status: false, message: "Entrada de dados dupla" }
+            return { status: false, message: "Você não pode adicionar duas temporadas iguais!" }
         } else {
             return { status: false, message: "Erro Interno do servidor!" }
         }

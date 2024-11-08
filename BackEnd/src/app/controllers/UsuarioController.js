@@ -14,6 +14,10 @@ const verificarToken = require('../middleware/autenticar')
 // user_periodo: document.getElementById('periodo').value,
 // user_img_caminho: "", // Adicione o caminho da imagem se necessário
 // user_qrcode: "" // Adicione o QR code se necessário
+
+
+
+// ROTA DE CADASTRAR USUÁRIO SENDO USADA NA TELA DEV
 rotas.post('/', async (req, res) => {
 
     console.log(req.body)
@@ -65,36 +69,53 @@ rotas.get('/:id', verificarToken, async (req, res) => {
     }
 })
 
-// Registra usuario 
+// // Registra usuario  DELETAR CASO FUNCIONE TUDO CORRETAMENTE
+// rotas.post('/registrar', async (req, res) => {
 
-rotas.post('/registrar', async (req, res) => {
 
+//     let {
+//         nome,
+//         email,
+//         senha,
+//         confirmar_senha,
+//         turma,
+//         periodo,
+//         unidade,
+//         qrcode
+//     } = req.body
+
+//     user_img_caminho = "User.png"
+
+
+
+
+//     try {
+//         console.log(periodo)
+//         let linhas = await model.perfilNovo(nome, email, senha, qrcode, turma, unidade, periodo, user_img_caminho, confirmar_senha)
+//         res.json(linhas)
+//     } catch (error) {
+//         console.log("Erro ao criar seu perfil,", error)
+//     }
+// });
+
+
+// Validar Contado do aluno para se tornar usuário; passar O FORMULARIO E INDICAR QUAL O ID DO MEMSO
+rotas.post('/validar',verificarToken, async (req, res) => {
 
     let {
-        nome,
-        email,
-        senha,
-        confirmar_senha,
-        turma,
-        periodo,
-        unidade,
-        qrcode
+        NovaSenha,
+        ConfirmarNovaSenha,
+        QRcode
     } = req.body
 
-    user_img_caminho = "User.png"
-
-
-
-
     try {
-        console.log(periodo)
-        let linhas = await model.perfilNovo(nome, email, senha, qrcode, turma, unidade, periodo, user_img_caminho, confirmar_senha)
+        console.log("Corpo da Validação:",req.body)
+        let linhas = await model.ValidarConta(NovaSenha,QRcode,ConfirmarNovaSenha, req.info.ID_usuarios)
         res.json(linhas)
     } catch (error) {
-        console.log("Erro ao criar seu perfil,", error)
+        console.log("Erro ao validar conta do usuário; ERRO:", error)
     }
 });
-
 
 
 // Autentica usuário

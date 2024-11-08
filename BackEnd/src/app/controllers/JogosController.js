@@ -4,7 +4,7 @@ const model = require("../../app/models/JogosModel");
 const verificarToken = require('../middleware/autenticar')
 
 
-// Puxar todos os jogos
+// Puxar todos os jogos (TEMPORADAS)
 rotas.get('/', verificarToken, async (req, res) => {
     console.log("Requisição recebida em /api/jogos"); // Log
     try {
@@ -15,6 +15,20 @@ rotas.get('/', verificarToken, async (req, res) => {
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });
+
+// Puxar todos OS JOGOS ATIVOS
+rotas.get('/ativos', verificarToken, async (req, res) => {
+    console.log("Requisição recebida em /api/jogos"); // Log
+    try {
+        const jogos = await model.retornarTodosJogosAtivos();
+        res.json(jogos);
+    } catch (error) {
+        console.error("Erro ao listar os jogos", error);
+        res.status(500).json({ error: "Erro interno do servidor" });
+    }
+});
+
+
 
 // Puxar todos os jogos disponiveis em escola  X
 rotas.get('/disp/:ID_escola', verificarToken, async (req, res) => {
@@ -30,6 +44,9 @@ rotas.get('/disp/:ID_escola', verificarToken, async (req, res) => {
     }
 });
 
+
+
+// DELETAR ESCOLA ESPECIFICA
 rotas.delete('/:id', verificarToken, async (req, res) => {
     const { id } = req.params
     console.log(id)
@@ -46,7 +63,7 @@ rotas.delete('/:id', verificarToken, async (req, res) => {
 
 
 
-// Participar de um jogo precisa de 
+// ROTA DE PARTICIPAR DO JOGO 
 rotas.post('/participar', verificarToken, async (req, res) => {
     // Antes era por req.params, mas foi feita mudanças no banco então muda aqui também
     let {ID_jogos} = req.body
@@ -61,6 +78,7 @@ rotas.post('/participar', verificarToken, async (req, res) => {
     }
 });
 
+// Criar jogo
 rotas.post('/', verificarToken, async (req, res) => {
     const {
         unidade,

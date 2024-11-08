@@ -135,11 +135,11 @@ export const ModalDev = (Erro, setErro, navigate) => {
           </div>
           <div class="mb-3 text-start">
             <label for="dev_email" class="form-label">Senha:</label>
-            <input type="text" id="dev_senha" class="form-control" placeholder="Senha:">
+            <input type="password" id="dev_senha" class="form-control" placeholder="Senha:">
           </div>
           <div class="mb-3 text-start">
             <label for="dev_confirmar_email" class="form-label">Confirme sua senha:</label>
-            <input type="text" id="dev_confirmar_senha" class="form-control" placeholder="Confirmar senha:">
+            <input type="password" id="dev_confirmar_senha" class="form-control" placeholder="Confirmar senha:">
           </div>
         </form>
                     `,

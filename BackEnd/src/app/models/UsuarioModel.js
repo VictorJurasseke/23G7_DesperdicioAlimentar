@@ -12,8 +12,8 @@ module.exports.retornarTodosUsuario = async () => {
         //Executa o sql no bd
         const [linhas] = await conexao.execute(
             'SELECT u.ID_usuarios, u.user_nome, u.user_email, u.user_periodo, u.user_tipo_acesso FROM usuarios u LIMIT 15;')
-        
-        
+
+
 
         console.log(linhas)
         return linhas
@@ -26,9 +26,9 @@ module.exports.retornarTodosUsuario = async () => {
     }
 }
 
+// MODEL DE CADASTRAR - SENDO USADA NA TELA DEV
+module.exports.CadastrarUsuario = async (user_nome, user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode) => {
 
-module.exports.CadastrarUsuario = async (user_nome,user_email,user_senha,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode) =>{
-    
     let senhaHash = crypto.createHash('sha256').update(user_senha).digest('hex');
     console.log(senhaHash)
     let conexao;
@@ -40,17 +40,17 @@ module.exports.CadastrarUsuario = async (user_nome,user_email,user_senha,user_ti
 
         //Executa o sql no bd
         const [linhas] = await conexao.execute(
-            'INSERT INTO usuarios (user_nome,user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode) VALUES (?,?, ?, ?, ?, ?, ?)',[user_nome,user_email,senhaHash,user_tipo_acesso,user_periodo,user_img_caminho,user_qrcode])
+            'INSERT INTO usuarios (user_nome,user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode) VALUES (?,?, ?, ?, ?, ?, ?)', [user_nome, user_email, senhaHash, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode])
         console.log("Linhas do cadastrar", linhas)
-        
-        return {status:true}
+
+        return { status: true }
 
     } catch (error) {
         console.error("Erro ao cadastrar os usuarios", error)
         if (error.code == 'ER_DUP_ENTRY') {
-            return { status: false, message:"Entrada de dados dupla" }
-        } else{
-            return {status:false, message:"Erro Interno do servidor!"}
+            return { status: false, message: "Entrada de dados dupla" }
+        } else {
+            return { status: false, message: "Erro Interno do servidor!" }
         }
         throw error // Repassa o erro para a controller
     } finally {
@@ -58,6 +58,8 @@ module.exports.CadastrarUsuario = async (user_nome,user_email,user_senha,user_ti
     }
 
 }
+
+
 
 
 
@@ -78,24 +80,27 @@ module.exports.retornarUmUsuario = async (id) => {
     }
 }
 
-module.exports.perfilNovo = async (nome, email, senha, qrcode, turma, unidade, periodo, user_img_caminho, confirmar_senha) => {
+module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_usuarios) => {
+
+
+    QRcode = "10000000"
 
     errors = {}
-    if (!validator.isEmail(email)) {
-        errors.email = 1 // 'E-mail inválido.';
+
+    // VERIFICA COM O TRIM SE OS CAMPOS ESTÃO VAZIOS, O TRIM REMOVE TODOS OS ESPAÇOS EM BRANCOS
+    if (QRcode.trim() === "" || NovaSenha.trim() === "" || ConfirmarNovaSenha.trim() === "") {
+        errors.CampoVazio = 3; // ALGUM CAMPO ESTA VAZIO
+        return { errors }; // Retorna os erros imediatamente
     }
 
-    if (!validator.isLength(senha, { min: 8 })) {
-        errors.senha = 2 //'A senha deve ter pelo menos 8 caracteres.';
+    if (!validator.isLength(NovaSenha, { min: 8 })) {
+        errors.NovaSenha = 1 //'A senha deve ter pelo menos 8 caracteres.';
     }
 
-    if (senha !== confirmar_senha) {
-        errors.confirmar_senha = 3 //'As senhas não coincidem.';
+    if (NovaSenha !== ConfirmarNovaSenha) {
+        errors.ConfirmarNovaSenha = 2 //'As senhas não coincidem.';
     }
 
-    if (qrcode.length <= 1) {
-        errors.qrcode = 6 // QRCODE não existe
-    }
 
     // Se houver erros, retorne-os
     if (Object.keys(errors).length > 0) {
@@ -105,19 +110,16 @@ module.exports.perfilNovo = async (nome, email, senha, qrcode, turma, unidade, p
     // TODOS OS CAMPOS FORAM LIMPADOS - VERIFICAR SE JÁ EXISTE NO BANCO ANTES DE REGISTRAR
 
     // Sanitizar dados
-    nome = validator.escape(nome);
-    email = validator.normalizeEmail(email);
-    qrcode = validator.escape(qrcode);
-    periodo = validator.escape(periodo);
+
+    QRcode = validator.escape(QRcode);
 
 
     // Criptografando a senha em hexadecimal no algoritmo de sha256 para não mandar para o banco em plano branco
-    let senhaHash = crypto.createHash('sha256').update(senha).digest('hex');
+    let senhaHash = crypto.createHash('sha256').update(NovaSenha).digest('hex');
 
 
 
     let conexao;
-    let aluno = 1
 
 
 
@@ -125,20 +127,22 @@ module.exports.perfilNovo = async (nome, email, senha, qrcode, turma, unidade, p
     try {
         conexao = await db.criarConexao();
         const [resultado] = await conexao.execute(
-            'INSERT INTO usuarios (user_nome, user_email, user_qrcode, user_senha, user_tipo_acesso, ID_turmas, ID_escola, user_periodo, user_img_caminho) VALUES (?,?,?,?,?,?,?,?,?)',
-            [nome, email, qrcode, senhaHash, aluno, turma, unidade, periodo, user_img_caminho]
+            'UPDATE usuarios SET user_qrcode = ?, user_senha = ?, user_tipo_acesso = 2 WHERE ID_usuarios = ?',
+            [QRcode, senhaHash, ID_usuarios]
         )
-        return { status: true }
+        return { status: true, message: "Foi conta foi validada com sucesso!" }
     } catch (error) {
         if (error.code == 'ER_DUP_ENTRY') {
-            return { status: false }
+            return { status: false, message: "Algum usuário já usou este QRCODE, Tente Novamente:" }
         }
+        console.log(error)
         throw error // Repassa para a controller
     } finally {
         db.liberarConexao(conexao)
 
     }
 }
+
 
 
 const jwt = require('jsonwebtoken');
@@ -155,7 +159,7 @@ module.exports.retornarLogin = async (email, senha) => {
 
         // Executa a consulta ao banco de dados
         const [linhas] = await conexao.execute('SELECT * FROM usuarios WHERE user_email = ? AND user_senha = ?', [email, senhaHash]);
-   
+
         // Verifica se o usuário foi encontrado
         if (linhas.length === 0) {
             return { status: false };

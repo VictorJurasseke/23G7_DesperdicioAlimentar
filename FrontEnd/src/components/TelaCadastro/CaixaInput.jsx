@@ -5,17 +5,17 @@ const CaixaInput = ({ nomeCaixa, name, value, onChange, type }) => {
 
     return (
         <>
-            <div className="mb-0">
+            <div className="m-2">
                 <label htmlFor={name} className="form-label m-0">{nomeCaixa}</label>
                 <input
                     required
                     id={name}
                     name={name}
-                    value={value}
                     onChange={onChange}
+                    value={value}
                     className="form-control form-control-sm"
                     type={type}
-                    
+                    autoComplete={type}
                 />
 
 

@@ -287,6 +287,11 @@ export const atualizarDatas = () => {
 export const useImportarDadosJogos = (token, navigate) => {
 
     const [TodosJogos, setTodosJogos] = useState([])
+    
+    
+    
+    const [TodosJogosAtivos, setTodosJogosAtivos] = useState([])
+
 
     async function BuscarJogos() {
         try {
@@ -304,36 +309,56 @@ export const useImportarDadosJogos = (token, navigate) => {
         }
     }
 
-
-    return {
-        BuscarJogos,
-        TodosJogos
-    }
-}
-
-
-// Jogos especifico de escola x, só precisa passar o id da escola
-export const useImportarDadosJogosEspecifico = (token, navigate, ID_escola) => {
-    const [TableJogosEspecifico, setTableJogosEspecifico] = useState([])
-
-    async function BuscarJogosEspecifico() {
+    async function BuscarJogosAtivos() {
         try {
-            let resposta = await axios.get(`${urlJogos}/disp/${ID_escola}`, {  // Inclui ID_escola na URL
+            let resposta = await axios.get(urlJogos+"/ativos", {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            setTableJogosEspecifico(resposta.data);  // Corrige o nome do estado
+
+
+            setTodosJogosAtivos(resposta.data)
         } catch (error) {
-            console.log(error);
-            // SwalErroToken(navigate); // Descomente se estiver tratando erros com SweetAlert
+            // SwalErroToken(navigate)
+            console.log(error)
         }
     }
+
+
     return {
-        TableJogosEspecifico,
-        BuscarJogosEspecifico
+        BuscarJogos,
+        TodosJogos,
+
+        BuscarJogosAtivos,
+        TodosJogosAtivos
+
     }
 }
+
+
+// // Jogos especifico de escola x, só precisa passar o id da escola
+// export const useImportarDadosJogosEspecifico = (token, navigate, ID_escola) => {
+//     const [TableJogosEspecifico, setTableJogosEspecifico] = useState([])
+
+//     async function BuscarJogosEspecifico() {
+//         try {
+//             let resposta = await axios.get(`${urlJogos}/disp/${ID_escola}`, {  // Inclui ID_escola na URL
+//                 headers: {
+//                     'Authorization': `Bearer ${token}`
+//                 }
+//             });
+//             setTableJogosEspecifico(resposta.data);  // Corrige o nome do estado
+//         } catch (error) {
+//             console.log(error);
+//             // SwalErroToken(navigate); // Descomente se estiver tratando erros com SweetAlert
+//         }
+//     }
+//     return {
+//         TableJogosEspecifico,
+//         BuscarJogosEspecifico
+//     }
+// }
 
 
 /// Formato de data padrão
@@ -397,7 +422,7 @@ export const CriarJogo = async (atualizar, navigate, token, novoForm) => {
         if (!resposta.data.status) {
             swalWithBootstrapButtons.fire({
                 title: "Falhou!",
-                html: "Seu jogo não foi criado com sucesso!<br> <br> Código do erro: " + resposta.data.message,
+                html: "Seu jogo não foi criado com sucesso!<br> <br> Erro: " + resposta.data.message,
                 icon: "error"
             });
         } else {

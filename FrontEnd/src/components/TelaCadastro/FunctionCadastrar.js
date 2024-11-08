@@ -3,24 +3,24 @@ import axios from 'axios';
 
 export const urlUsuario = "http://localhost:3025/api/usuario";
 
-export const useCadastro = () => {
+export const useCadastro = (token, navigate) => {
 
 
   // Função chamada caso duplicação de dados no banco
-  const ModalErro = () =>{
+  const ModalErro = (message) => {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: "Já possui um usuário com estas informações pessoais!!",
+      text: message,
     });
   }
 
-  const ModalSucesso = () =>{
+  const ModalSucesso = (message) => {
     Swal.fire({
       title: "Concluido!",
-      text: "Sua conta foi criada com sucesso!!",
+      text: message,
       icon: "success",
-      footer: '<a href="/login">Entrar</a>'
+      footer: '<a href="/user">Recarregar Página</a>'
     });
   }
 
@@ -32,24 +32,20 @@ export const useCadastro = () => {
     erro_turma: false,
     erro_unidade: false,
     erro_qr: false,
+    erro_campo: false,
   });
 
   const [showScanner, setShowScanner] = useState(false);
 
-  const [Form, setForm] = useState({
-    nome: "",
-    email: "",
-    senha: "",
-    confirmar_senha: "",
-    turma: 1,
-    periodo: "Matutino",
-    unidade: 1,
-    qrcode: "",
+  const [FormValidar, setFormValidar] = useState({
+    NovaSenha: "",
+    ConfirmarNovaSenha: "",
+    QRcode: ""
   });
 
-  const AtualizarForm = (e) => {
+  const AtualizarFormValidar = (e) => {
     const { name, value } = e.target;
-    setForm(prevState => ({
+    setFormValidar(prevState => ({
       ...prevState,
       [name]: value,
     }));
@@ -67,45 +63,44 @@ export const useCadastro = () => {
   };
 
   const Cadastrar = async () => {
+    console.log("FUNção chamada")
+
     try {
       setErrosVisiveis({
-        erro_nome: false,
-        erro_email: false,
         erro_senha: false,
         erro_confirmar_senha: false,
-        erro_turma: false,
-        erro_unidade: false,
         erro_qr: false,
+        Campo: false,
       });
-      const resposta = await axios.post(`${urlUsuario}/registrar`, Form);
 
+      const resposta = await axios.post(`${urlUsuario}/validar`, FormValidar,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+      console.log(resposta)
       if (resposta.data.status === false) {
-        ModalErro()
+        ModalErro(resposta.data.message)
       } else if (!resposta.data.errors) {
-        ModalSucesso()
+        ModalSucesso(resposta.data.message)
       } else {
         for (const [chave, mensagem] of Object.entries(resposta.data.errors)) {
           switch (mensagem) {
             case 1:
-              MostrarErro("erro_email");
+              MostrarErro("erro_senha");
+              console.log("Senha precisa ser maior que 8 caractéres")
               break;
             case 2:
-              MostrarErro("erro_senha");
+              MostrarErro("erro_confirmar_senha");
+              console.log("As senhas não conferem")
               break;
             case 3:
-              MostrarErro("erro_confirmar_senha");
-              break;
-            case 4:
-              MostrarErro("erro_turma");
-              break;
-            case 5:
-              MostrarErro("erro_unidade");
-              break;
-            case 6:
-              MostrarErro("erro_qr");
+              MostrarErro("erro_campo");
+              console.log("Preencha todos os campos:")
               break;
             default:
-              break;
           }
         }
       }
@@ -117,9 +112,9 @@ export const useCadastro = () => {
   return {
     errosVisiveis,
     showScanner,
-    Form,
+    FormValidar,
     setShowScanner,
-    AtualizarForm,
+    AtualizarFormValidar,
     AtivarScan,
     Cadastrar,
   };

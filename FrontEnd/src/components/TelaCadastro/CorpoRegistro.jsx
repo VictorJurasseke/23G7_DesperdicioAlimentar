@@ -54,8 +54,8 @@
 //           <SelectUnidade name="unidade" value={Form.unidade} onChange={AtualizarForm} />
 //           <Turmas name="turma" value={Form.turma} onChange={AtualizarForm} />
 
-//           <QRcode name="qrcode" value={Form.qrcode} onChange={AtualizarForm} showScanner={showScanner} setShowScanner={setShowScanner} />
-//           {errosVisiveis.erro_qr && <ErroCaixa name="erro_qrcode" texto="QRCODE inválido ou já registrado!" />}
+{/* <QRcode name="qrcode" value={Form.qrcode} onChange={AtualizarForm} showScanner={showScanner} setShowScanner={setShowScanner} />
+{errosVisiveis.erro_qr && <ErroCaixa name="erro_qrcode" texto="QRCODE inválido ou já registrado!" />} */}
 
 //           <div className="d-grid gap-2">
 //             <button type="button" className="btn btn-warning text-white" onClick={AtivarScan}>Scan</button>

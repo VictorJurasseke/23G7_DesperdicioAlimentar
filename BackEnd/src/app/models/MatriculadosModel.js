@@ -58,6 +58,21 @@ module.exports.MatricularAlunos = async (ID_jogo, ID_turmas, ID_usuarios) => {
     try {
         conexao = await db.criarConexao();
 
+        // Passo 0: Ver se o jogo está ativo (1 = ATIVO, 2 = INATIVO)
+        const [JogosStatus] = await conexao.execute(
+            `SELECT * FROM jogos j WHERE j.ID_jogos = ? AND j.jo_status = 1`,
+            [ID_jogo]
+        );
+
+        console.log("Jogo", JogosStatus);
+
+        // Verifica se o array está vazio (significa que o jogo não está ativo)
+        if (JogosStatus.length === 0) {
+            console.log("Inativo");
+            return { status: false, message: "O jogo está inativo" };
+        }
+
+
         // Passo 1: Obter todos os pontos dos usuários já matriculados nesse jogo
         const [usuariosMatriculados] = await conexao.execute(
             `SELECT ID_usuarios FROM jogos_matricula WHERE ID_jogos = ?`,
