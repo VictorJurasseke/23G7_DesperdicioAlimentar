@@ -5,7 +5,7 @@ const ErroCaixa = ({ texto, chave }) => {
 
     return (
         <>
-         <p className="m-0 text-danger" key={chave} style={{fontSize:'12px'}}>
+         <p className="m-0 text-danger" style={{fontSize:'12px'}}>
           {iconeErro} {texto}
           </p>
          

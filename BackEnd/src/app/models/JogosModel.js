@@ -31,7 +31,6 @@ module.exports.retornarTodosJogosAtivos = async () => {
 
 //
 module.exports.retornarJogosDaEscola = async (ID_escola) => {
-    console.log("MODEL:", ID_escola)
     let conexao;
     try {
         conexao = await db.criarConexao();
@@ -118,7 +117,7 @@ module.exports.atualizarRankingJogo = async (ID_jogos) => {
 
 module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato) => {
     let conexao;
-    console.log("Model criação jogo", unidade, jo_nome, jo_tema, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato)
+
     try {
         conexao = await db.criarConexao();
 
@@ -153,8 +152,6 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
         );
 
         const ID_jogos_config = configCriada.insertId; // Pega o ID da nova configuração inserida
-        console.log("ID da config", ID_jogos_config)
-        console.log(unidade)
 
         // Inserir novo jogo na tabela 'jogos'
         const [jogoCriado] = await conexao.execute(
@@ -169,13 +166,10 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
             ) VALUES (?, ?, ?, ?, ?, ?,?)`,
             [unidade, jo_nome, jo_datai_formatada, jo_dataf_formatada, ID_jogos_config, jo_status, jo_tema,]
         );
-        console.log("Jogo", jogoCriado)
-        console.log("Config", configCriada)
         if (jogoCriado && configCriada) {
-            console.log("O jogo e a configuração foi criada com sucesso")
             return { status: true };
         }
-        return { status: false }
+        return { status: false, message: "Algo deu errado!" }
     } catch (error) {
         console.error("Erro ao criar jogo:", error.message);
         if (error.errno == 1062) {

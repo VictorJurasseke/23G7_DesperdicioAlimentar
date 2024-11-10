@@ -16,7 +16,7 @@ const swalWithBootstrapButtons = Swal.mixin({
 
 // Função de abrir a tela de edição de items
 
-export const ModalEditTurmas = (id,atualizar, token, navigate) => {
+export const ModalEditTurmas = (id, atualizar, token, navigate) => {
     swalWithBootstrapButtons.fire({
         title: "Edit User",
         text: "Here you can edit user details.",
@@ -26,7 +26,7 @@ export const ModalEditTurmas = (id,atualizar, token, navigate) => {
 
 // Função de Abrir Modal para deletar arquivos
 
-export const ModalDeleteTurmas = (id,atualizar, token, navigate) => {
+export const ModalDeleteTurmas = (id, atualizar, token, navigate) => {
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
         text: "Você não podera reverter isto!",
@@ -37,7 +37,7 @@ export const ModalDeleteTurmas = (id,atualizar, token, navigate) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deletarTurmas(id, atualizar,token, navigate);
+            deletarTurmas(id, atualizar, token, navigate);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
                 title: "Cancelado",
@@ -108,12 +108,11 @@ export const CriarTurmas = async (navigate, token, nome_turma, BuscarTurmas) => 
                 text: "Sua turma foi criada com sucesso!",
                 icon: "success"
             });
-         
+
         }
     } catch (error) {
+        SwalErroToken(navigate, error)
 
-        SwalErroToken(navigate) 
-        console.log(error)
     }
 
 
@@ -131,7 +130,8 @@ export const useImportarDadosTurmas = (token, navigate) => {
             });
             setTodasTurmas(resposta.data)
         } catch (error) {
-            SwalErroToken(navigate)
+            SwalErroToken(navigate, error)
+
 
         }
 
@@ -143,7 +143,7 @@ export const useImportarDadosTurmas = (token, navigate) => {
     }
 }
 
-export const deletarTurmas = async (id, atualizar,token, navigate) => {
+export const deletarTurmas = async (id, atualizar, token, navigate) => {
     try {
         let resposta = await axios.delete(`${urlTurmas}/${id}`, {
             headers: {
@@ -165,7 +165,6 @@ export const deletarTurmas = async (id, atualizar,token, navigate) => {
             });
         }
     } catch (error) {
-        console.error('Erro ao deletar uma turma:', error);
-        SwalErroToken(navigate)
+        SwalErroToken(navigate, error)
     }
-    }
+}

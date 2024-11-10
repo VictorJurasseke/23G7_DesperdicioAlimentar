@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { ErrosValidarConta } from '../NivelAcesso';
+import { SwalErroToken } from '../TelaPerfil/SwalError';
 
 export const urlUsuario = "http://localhost:3025/api/usuario";
 
@@ -9,7 +10,7 @@ export const useCadastro = (token, navigate) => {
 
 
   const ModalErroValidar = (errors) => {
-    
+
 
     console.log(errors)
 
@@ -22,7 +23,7 @@ export const useCadastro = (token, navigate) => {
       confirmButtonText: 'Tentar novamente',
     }).then((result) => {
       if (result.isConfirmed) {
-        
+
       }
     });
   }
@@ -40,12 +41,14 @@ export const useCadastro = (token, navigate) => {
 
   const ModalSucesso = (message) => {
     Swal.fire({
-      title: "Concluido!",
+      title: "Concluído!",
       text: message,
       icon: "success",
-      footer: '<a href="/user">Recarregar Página</a>'
+    }).then(() => {
+      window.location.reload(); // Recarrega a página quando o modal é fechado
     });
-  }
+  };
+
 
   // faz parte do qrcode - scanner
   const [showScanner, setShowScanner] = useState(false);
@@ -76,8 +79,30 @@ export const useCadastro = (token, navigate) => {
     Campo: false,
   })
 
+
   const Cadastrar = async () => {
 
+    let nova_senha = FormValidar.NovaSenha.trim().length
+    let qrcode = FormValidar.QRcode.trim().length
+    let confirmar_senha = FormValidar.ConfirmarNovaSenha.trim().length
+
+    console.log("FORMULARIO", qrcode, confirmar_senha, nova_senha)
+    // como funciona o prevERROS para mudar apenas a propriedade campo
+    //   setErrosVisiveis(prevErros => ({
+    //     ...prevErros,        // Pega todas as propriedades do estado atual (errosVisiveis)
+    //     Campo: true,         // Atualiza apenas a propriedade 'Campo'
+    // }));
+
+
+    if (nova_senha === 0 || qrcode === 0 || confirmar_senha === 0) {
+      setErrosVisiveis(prevErros => ({
+        ...prevErros,
+        Campo: true,
+      }))
+
+      return
+      // return (console.log("preenhcer os campos boy")); // Interrompe o fluxo de execução para evitar a continuação
+    }
     // Muda tudo pra false para tirar os erros da tela e mostrar denovo caso seja necessario
     try {
       setErrosVisiveis({
@@ -87,7 +112,7 @@ export const useCadastro = (token, navigate) => {
         Campo: false,
       });
 
-      console.log("A")
+      // console.log("A")
       const resposta = await axios.post(`${urlUsuario}/validar`, FormValidar,
         {
           headers: {
@@ -95,28 +120,25 @@ export const useCadastro = (token, navigate) => {
           }
         });
 
-      console.log(resposta.data)
+
 
       if (resposta.data.errors) {
 
         console.log("Há erros presentes", resposta.data.errors)
-        console.log("ERROS do visivel:",errosVisiveis)
+        console.log("ERROS do visivel:", errosVisiveis)
         ErrosValidarConta(resposta.data.errors, setErrosVisiveis, errosVisiveis)
       }
 
+      console.log(resposta)
       if (resposta.data.status === false) {
         ModalErro(resposta.data.message)
 
       } else if (!resposta.data.errors) {
         ModalSucesso(resposta.data.message)
-
-      } else {
-        // Mostrar erro de alguma forma na tela com o sup
-
-
       }
     } catch (error) {
       console.error("Erro inesperado:", error);
+      SwalErroToken(navigate)
     }
   };
 

@@ -1,7 +1,9 @@
 
-export const SwalErroToken = (navigate) => {
-    let timerInterval;
-    const swalWithBootstrapButtons = Swal.mixin({
+export const SwalErroToken = (navigate, error) => {
+    if (error.response.status = 403 || error.response.status == 501){
+        
+        let timerInterval;
+        const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-success",
             cancelButton: "btn btn-danger"
@@ -32,9 +34,10 @@ export const SwalErroToken = (navigate) => {
     }).then((result) => {
         if (result.dismiss === Swal.DismissReason.timer) {
             localStorage.removeItem("token"); // Remove o token
-            console.log("Indo para tela login, apenas retirar comentario")
-            
-            // navigate('/login');
+            navigate('/login');
         }
     });
-};
+}else{
+    console.log("Ocorreu o seguinte erro:",error.response.data)
+}
+}

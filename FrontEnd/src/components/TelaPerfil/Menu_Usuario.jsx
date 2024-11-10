@@ -13,7 +13,7 @@ const Menu_Usuario = ({Dados_usuario, token, navigate}) => {
     const {TodosJogosAtivos, BuscarJogosAtivos} = useImportarDadosJogos(token, navigate) // puxa todos os jogos da unidade 5
 
 
-    console.log("Todos os jogos do sistema ativo:",TodosJogosAtivos)
+    // console.log("Todos os jogos do sistema ativo:",TodosJogosAtivos)
 
     useEffect(() => {
         if (Dados_usuario.user_tipo_acesso === 2) {

@@ -25,7 +25,7 @@ export const ModalEditMatriculados = (id) => {
 
 // Função de Abrir Modal para deletar arquivos
 
-export const ModalDeleteMatriculados = (ID_usuarios, BuscarTodosMatriculados,BuscarNaoMatriculados, navigate, token) => {
+export const ModalDeleteMatriculados = (ID_usuarios, BuscarTodosMatriculados, BuscarNaoMatriculados, navigate, token) => {
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
         text: "Você não podera reverter isto!",
@@ -36,8 +36,8 @@ export const ModalDeleteMatriculados = (ID_usuarios, BuscarTodosMatriculados,Bus
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deletarMatriculados(ID_usuarios, BuscarTodosMatriculados,BuscarNaoMatriculados, navigate, token);
-           
+            deletarMatriculados(ID_usuarios, BuscarTodosMatriculados, BuscarNaoMatriculados, navigate, token);
+
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
                 title: "Cancelado",
@@ -62,13 +62,13 @@ export const useImportarDadosMatriculados = (token, navigate) => {
             });
             setTodosMatriculados(resposta.data)
         } catch (error) {
-            // SwalErroToken(navigate)
-            console.log(error)
+            SwalErroToken(navigate, error)
 
         }
 
     }
 
+    // BUSCA TODOS OS USUARIOS 
     async function BuscarNaoMatriculados() {
 
         try {
@@ -77,12 +77,10 @@ export const useImportarDadosMatriculados = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            console.log("Resp", resposta)
             setTodosNaoMatriculados(resposta.data)
-            console.log("AAAAAAAAAAAAAA", resposta)
         } catch (error) {
-            // SwalErroToken(navigate)
-            console.log(error)
+            SwalErroToken(navigate, error)
+
 
         }
 
@@ -107,8 +105,6 @@ const renderizarTurmas = (TodasTurmas) => {
 
     return TodasTurmas.map(turmas => `<option value='${turmas.ID_turmas}' name="${turmas.tur_nome}" }>${turmas.tur_nome}</option>`).join('');
 };
-
-// dando erro aqui, não esta lendo como função
 
 const renderizarUsuarios = (NaoMatriculados) => {
 
@@ -206,14 +202,14 @@ export const MatricularAluno = async (navigate, token, form, BuscarTodosMatricul
             });
         }
     } catch (error) {
-        // SwalErroToken(navigate)
-        console.log(error)
+        SwalErroToken(navigate, error)
+
     }
 }
 
 
-export const deletarMatriculados = async (ID_usuarios, BuscarTodosMatriculados,BuscarNaoMatriculados, navigate, token) => {
-// O BUSCAR NÃO MATRICULADOS ESTA DANDO ERRO, NÃO ESTA ATUALIZANDO A LISTA COMO DEVERIA
+export const deletarMatriculados = async (ID_usuarios, BuscarTodosMatriculados, BuscarNaoMatriculados, navigate, token) => {
+    // O BUSCAR NÃO MATRICULADOS ESTA DANDO ERRO, NÃO ESTA ATUALIZANDO A LISTA COMO DEVERIA
     try {
         let resposta = await axios.delete(`${urlMatriculados}/${ID_usuarios}`, {
             headers: {
@@ -238,7 +234,6 @@ export const deletarMatriculados = async (ID_usuarios, BuscarTodosMatriculados,B
             });
         }
     } catch (error) {
-        console.log(error)
-        // SwalErroToken(navigate)
+        SwalErroToken(navigate, error)
     }
 };

@@ -5,7 +5,7 @@ import QrScanner from 'qr-scanner';
 
 
 
-const QRcode = ({ showScanner, setShowScanner, name, onChange }) => {
+const QRcode = ({ showScanner, setShowScanner, name, onChange  }) => {
 
 
 
@@ -21,6 +21,7 @@ const QRcode = ({ showScanner, setShowScanner, name, onChange }) => {
     let qrScanner;
     if (showScanner && videoRef.current) {
       qrScanner = new QrScanner(videoRef.current, (result) => {
+       
         setScanResult(result); // `result.data` é geralmente uma string 
         console.log(scanResult)
         setShowScanner(false); // Oculta o scanner após sucesso

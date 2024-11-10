@@ -43,7 +43,6 @@ module.exports.retornarNaoMatriculados = async () => {
     try {
         conexao = await db.criarConexao();
         const [linhas] = await conexao.execute('SELECT u.ID_usuarios, u.user_nome, u.user_email, u.user_periodo, u.user_tipo_acesso FROM usuarios u WHERE u.user_tipo_acesso = 2 LIMIT 15;');
-        console.log(linhas)
         return linhas;
     } catch (error) {
         console.error("Erro ao listar todos os usuarios", error);
@@ -64,11 +63,10 @@ module.exports.MatricularAlunos = async (ID_jogo, ID_turmas, ID_usuarios) => {
             [ID_jogo]
         );
 
-        console.log("Jogo", JogosStatus);
+     
 
         // Verifica se o array está vazio (significa que o jogo não está ativo)
         if (JogosStatus.length === 0) {
-            console.log("Inativo");
             return { status: false, message: "O jogo está inativo" };
         }
 
@@ -94,8 +92,7 @@ module.exports.MatricularAlunos = async (ID_jogo, ID_turmas, ID_usuarios) => {
             [ID_usuarios]
         );
 
-        console.log(jogando)
-        return { status: true }
+        return { status: true, massage:"jogando!" }
 
         return linhas;
     } catch (error) {

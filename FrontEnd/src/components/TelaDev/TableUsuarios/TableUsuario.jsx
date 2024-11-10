@@ -13,7 +13,7 @@ import { BiAddToQueue } from "react-icons/bi";
 const TableUsuario = ({ token, navigate }) => {
 
     const { TodosUsuarios, BuscarTodosUsuarios } = useImportarDadosUsuario(token, navigate)
-    console.log(TodosUsuarios)
+
     useEffect(() => {
         BuscarTodosUsuarios()
     }, [])

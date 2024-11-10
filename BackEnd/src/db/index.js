@@ -4,11 +4,11 @@
 const mysql = require('mysql2/promise');
 
 
-//Configurar meu banco com os dados corretos
+//Configurar meu banco com os dados corretos // o password em casa é requisito
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    // password: '1234',
+    password: '12345678',
     database: "Banco_Projeto_Senai_Hatch",
     port:3306,
 })

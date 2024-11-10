@@ -28,35 +28,39 @@ export const StatusJogo = (jo_status) => {
 }
 
 export const ErrosValidarConta = (errors, setErrosVisiveis,errosVisiveis) => {
-  console.log("ERRO NO VALIDARFUNCAO:", errors[0]);
+
 
   errors.forEach((erro) => {
     switch (erro) {
-      case "- A senha deve ter pelo menos 8 caracteres":
+      case "8MIN":
         setErrosVisiveis((prevState) => ({
           ...prevState,
           erro_senha: true,
         }));
         break;
 
-      case "- As senhas não conferem":
+      case "NEWSENHAWRONG":
         setErrosVisiveis((prevState) => ({
           ...prevState,
           erro_confirmar_senha: true,
         }));
         break;
 
-      case "- O qrcode é necessario!":
+      case "QRCODEREQUIRED":
         setErrosVisiveis((prevState) => ({
           ...prevState,
           erro_qr: true,
         }));
         break;
-
+        
+        case "CAMPO":
+          setErrosVisiveis((prevState) => ({
+            ...prevState,
+            Campo: true,
+          }));
+          break;
       // Caso de erro desconhecido
       default:
-        console.log("Erro desconhecido:", erro);
-        console.log("ERRO DESCONEHCIDO LER O COISO DE FALSE E TRUE AQ",errosVisiveis)
         break;
     }
   });

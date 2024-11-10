@@ -25,7 +25,8 @@ export const usePerfilDados = (token, navigate) => {
             });
             setDados_usuario(resposta.data[0]);
         } catch (error) {
-                SwalErroToken(navigate)
+            SwalErroToken(navigate, error)
+
           
         }
     };

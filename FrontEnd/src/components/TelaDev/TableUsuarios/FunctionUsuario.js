@@ -3,6 +3,7 @@ import axios from 'axios';
 export const urlUsuario = "http://localhost:3025/api/usuario";
 import { SwalErroToken } from '../../TelaPerfil/SwalError';
 import { Form } from 'react-router-dom';
+import CaixaInput from '../../TelaCadastro/CaixaInput';
 
 // Variavel necessaria para o SweetAlert2
 
@@ -64,8 +65,8 @@ export const useImportarDadosUsuario = (token, navigate) => {
             });
             setTodosUsuarios(resposta.data)
         } catch (error) {
-            SwalErroToken(navigate)
-            console.log(error)
+            SwalErroToken(navigate, error)
+
         }
 
     }
@@ -97,8 +98,8 @@ export const deletarUsuario = async (id, atualizar, token, navigate) => {
 
         }
     } catch (error) {
-        SwalErroToken(navigate)
-        console.error('Erro ao deletar um jogo:', error);
+        SwalErroToken(navigate, error)
+
     }
 };
 // estou adicionando usuarios com SVC
@@ -143,7 +144,7 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
                   </div>
                   <div class="mb-3 text-start">
                     <label for="user_senha" class="form-label">Senha:</label>
-                    <input type="password" id="user_senha" class="form-control" placeholder="Sesisp@SeuRM">
+                    <input autoComplete="password" type="password" id="user_senha" class="form-control" placeholder="Sesisp@SeuRM">
                   </div>
                   <div class="mb-3 text-start">
                     <label for="tipo_acesso" class="form-label">Tipo de Acesso:</label>
@@ -178,10 +179,10 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
                 user_img_caminho: "User.png", // Adicione o caminho da imagem se necessário
                 user_qrcode: "" // Adicione o QR code se necessário
             };
-            
+
             console.log("Objeto Form:", Form);
             CriarUsuario(navigate, token, Form, BuscarTodosUsuarios)
-          
+
         }
     });
 };
@@ -215,8 +216,6 @@ export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios) =
             console.log("Usuário criado com sucesso");
         }
     } catch (error) {
-        // Aqui você pode tratar o erro específico, se necessário
-        // SwalErroToken(navigate);
-        console.log("Erro ao criar usuário:", error);
+        SwalErroToken(navigate, error);
     }
 };

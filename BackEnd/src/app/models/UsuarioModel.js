@@ -17,7 +17,6 @@ module.exports.retornarTodosUsuario = async () => {
 
 
 
-        console.log(linhas)
         return linhas
 
     } catch (error) {
@@ -32,7 +31,7 @@ module.exports.retornarTodosUsuario = async () => {
 module.exports.CadastrarUsuario = async (user_nome, user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode) => {
 
     let senhaHash = crypto.createHash('sha256').update(user_senha).digest('hex');
-    console.log(senhaHash)
+   
     let conexao;
 
     try {
@@ -43,7 +42,7 @@ module.exports.CadastrarUsuario = async (user_nome, user_email, user_senha, user
         //Executa o sql no bd
         const [linhas] = await conexao.execute(
             'INSERT INTO usuarios (user_nome,user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode) VALUES (?,?, ?, ?, ?, ?, ?)', [user_nome, user_email, senhaHash, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode])
-        console.log("Linhas do cadastrar", linhas)
+        
 
         return { status: true }
 
@@ -82,6 +81,8 @@ module.exports.retornarUmUsuario = async (id) => {
     }
 }
 
+
+// VALILDAR CONTA USADA NA TELA ALUNO
 module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_usuarios) => {
 
     // Criptografando a senha em hexadecimal no algoritmo de sha256 para não mandar para o banco em plano branco
@@ -100,7 +101,7 @@ module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_u
             'UPDATE usuarios SET user_qrcode = ?, user_senha = ?, user_tipo_acesso = 2 WHERE ID_usuarios = ?',
             [QRcode, senhaHash, ID_usuarios]
         )
-        return { status: true, message: "Foi conta foi validada com sucesso!" }
+        return { status: true, message: "Sua conta foi validada com sucesso!" }
     } catch (error) {
         if (error.code == 'ER_DUP_ENTRY') {
             return { status: false, message: "Algum usuário já usou este QRCODE, Tente Novamente:" }

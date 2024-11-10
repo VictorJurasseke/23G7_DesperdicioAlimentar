@@ -60,7 +60,8 @@ export const useImportarDadosUnidade = (token, navigate) => {
          
             setTodasUnidade(resposta.data);
         } catch (error) {
-            SwalErroToken(navigate)
+            SwalErroToken(navigate, error)
+
         }
     }
 
@@ -96,8 +97,8 @@ export const deletarUnidade = async (id, BuscarUnidades, token, navigate) => {
 
         }
     } catch (error) {
-        SwalErroToken(navigate)
-        console.error('Erro ao deletar uma escola:', error);
+        SwalErroToken(navigate, error)
+
     }
 };
 
@@ -167,8 +168,8 @@ export const CriarUnidade = async (navigate, token, nome_unidade, BuscarUnidades
         }
     } catch (error) {
 
-        SwalErroToken(navigate)
-        console.log(error)
+        SwalErroToken(navigate, error)
+
     }
 
 

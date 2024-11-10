@@ -99,7 +99,7 @@ rotas.get('/:id', verificarToken, async (req, res) => {
 // });
 
 
-// Validar Contado do aluno para se tornar usuário; passar O FORMULARIO E INDICAR QUAL O ID DO MEMSO
+// Validar Conta do aluno para se tornar usuário; passar O FORMULARIO E INDICAR QUAL O ID DO MEMSO
 const yup = require('yup');
 
 //Valida os campos nome email senha e confirmar senha
@@ -107,38 +107,50 @@ const yup = require('yup');
 const usuarioSchema =
     yup.object().shape({
 
-        NovaSenha: yup.string().min(8, "- A senha deve ter pelo menos 8 caracteres").required("- A senha é obrigatória"),
-        QRcode: yup.string().required("- O qrcode é necessario!"),
+        NovaSenha: yup.string().min(8, "8MIN").required("SENHAREQUIRED"),
+        QRcode: yup.string().required("QRCODEREQUIRED"),
         ConfirmarNovaSenha: yup
             .string()
-            .oneOf([yup.ref('NovaSenha'), null], "- As senhas não conferem")
-            .required("A confirmação de senha é obrigatória"),
+            .oneOf([yup.ref('NovaSenha'), null], "NEWSENHAWRONG")
+            .required("SENHAREQUIRED"),
     });
 
 // Validar a conta do usuário
 rotas.post('/validar', verificarToken, async (req, res) => {
+    console.log("Corpo da Requisição:", req.body);
+    console.log("ID do Usuário:", req.info.ID_usuarios);
 
-
-
-
-    let {
-        NovaSenha,
-        ConfirmarNovaSenha,
-        QRcode
-    } = req.body
-
+    const { NovaSenha, ConfirmarNovaSenha, QRcode } = req.body;
 
     try {
-        
-        let YUP = await usuarioSchema.validate(req.body, { abortEarly: false });
+        // Valida o corpo da requisição usando yup
+        await usuarioSchema.validate(req.body, { abortEarly: false });
 
-        console.log("ERRO",YUP.ValidationError.errors)
-        console.log("Corpo da Validação:", req.body)
-        let linhas = await model.ValidarConta(NovaSenha, QRcode, ConfirmarNovaSenha, req.info.ID_usuarios)
-        res.json(linhas)
+        // Log para verificar se a validação foi bem-sucedida
+        console.log("Validação bem-sucedida.");
 
+        // Verifique os valores antes de chamar o model
+        console.log("Chamando ValidarConta com os parâmetros:", {
+            NovaSenha,
+            QRcode,
+            ConfirmarNovaSenha,
+            ID_usuarios: req.info.ID_usuarios
+        });
+
+        // Chama a função do modelo para validar a conta
+        const linhas = await model.ValidarConta(NovaSenha, QRcode, ConfirmarNovaSenha, req.info.ID_usuarios);
+
+        // Verifica o retorno da model antes de enviar a resposta
+        console.log("Retorno de ValidarConta:", linhas);
+
+        res.json(linhas);
     } catch (error) {
-        res.json(error)
+        if (error instanceof yup.ValidationError) {
+            console.log("Erros de validação do Yup:", error.errors);
+            return res.status(400).json({ errors: error.errors });
+        }
+        console.error("Erro inesperado:", error); // Log para erros não esperados
+        res.status(500).json({ error: "Erro interno do servidor" });
     }
 });
 

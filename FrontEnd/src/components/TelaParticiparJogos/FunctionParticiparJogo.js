@@ -64,8 +64,7 @@ const ParticiparJogo = async (ID_jogos, jo_nome, es_nome, token, navigate) => {
             })
         }
     } catch (error) {
-        console.log(error);
-        SwalErroToken(navigate)
+        SwalErroToken(navigate, error)
     }
 };
 

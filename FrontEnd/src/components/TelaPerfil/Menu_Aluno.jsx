@@ -9,6 +9,7 @@ import CaixaInput from '../TelaCadastro/CaixaInput'
 
 import ErroCaixa from '../TelaCadastro/Erro'
 import { useCadastro } from '../TelaCadastro/FunctionCadastrar';
+import QRcode from '../TelaCadastro/QRcode';
 
 
 // TERMINAR A PARTE QRCODE <requisito do sistema>
@@ -30,6 +31,9 @@ const Menu_Aluno = ({ Dados_usuario, token, navigate }) => {
     // { errosVisiveis.erro_qr && <ErroCaixa name="erro_qrcode" texto="QRCODE inválido ou já registrado!" /> }
 
 
+    const mandarresultado = (result) =>{
+        console.log(result)
+    }
     // Mostrar Todos os jogos 
     // const { TableJogosEspecifico, BuscarJogosEspecifico } = useImportarDadosJogosEspecifico(token, navigate, 5) // puxa todos os jogos da unidade 5 APENAS
 
@@ -50,9 +54,11 @@ const Menu_Aluno = ({ Dados_usuario, token, navigate }) => {
                     <CaixaInput nomeCaixa={"Confirmar nova senha:"} name={"ConfirmarNovaSenha"} type={"password"} value={FormValidar.ConfirmarNovaSenha} onChange={AtualizarFormValidar} />
                     {errosVisiveis.erro_confirmar_senha && (<ErroCaixa chave={3} texto="As senhas precisam ser iguais!" />)}
 
+                    <QRcode name="QRcode" value={FormValidar.QRcode}  onChange={AtualizarFormValidar} showScanner={showScanner} setShowScanner={setShowScanner}></QRcode>
+                    {errosVisiveis.Campo && (<ErroCaixa chave={4} name="erro_campo" texto="É necessario preencher todos os campos" />)}
 
                     <div className='gap-2 d-flex flex-column mt-5'>
-                        {errosVisiveis.erro_campo && (<ErroCaixa chave={4} name="erro_campo" texto="É necessario preencher todos os campos" />)}
+                        <button type="button" className="btn btn-warning text-white" onClick={AtivarScan}>Scan</button>
                         <a onClick={Cadastrar} name={"QRcode"} className="btn btn-primary">Submit</a>
                     </div>
                 </form>

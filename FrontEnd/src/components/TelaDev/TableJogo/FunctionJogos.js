@@ -182,7 +182,7 @@ export const ModalCriarJogo = (atualizar, navigate, token, TodasUnidade, setForm
             const jo_datai_formatada = formatarDataParaBanco(jo_datai);
             const jo_dataf_formatada = formatarDataParaBanco(jo_dataf);
 
-            
+
 
 
 
@@ -261,12 +261,12 @@ export const atualizarDatas = () => {
             break;
     }
 
-    
+
 
     // Normalizando as datas
     const dataInicioObj = new Date(jo_datai.value);
     const dataFimObj = new Date(document.getElementById("jo_dataf").value);
-    
+
     // Resetando as horas para 00:00:00
     dataInicioObj.setHours(0, 0, 0, 0);
     dataFimObj.setHours(0, 0, 0, 0);
@@ -287,12 +287,12 @@ export const atualizarDatas = () => {
 export const useImportarDadosJogos = (token, navigate) => {
 
     const [TodosJogos, setTodosJogos] = useState([])
-    
-    
-    
+
+
+
     const [TodosJogosAtivos, setTodosJogosAtivos] = useState([])
 
-
+    // FUNCAO QUE BUSCA TODOS OS JOGOS NO BANCO
     async function BuscarJogos() {
         try {
             let resposta = await axios.get(urlJogos, {
@@ -304,24 +304,23 @@ export const useImportarDadosJogos = (token, navigate) => {
 
             setTodosJogos(resposta.data)
         } catch (error) {
-            // SwalErroToken(navigate)
-            console.log(error)
+            SwalErroToken(navigate, error) 
+
         }
     }
 
+    // FUNCAO QUE BUSCA TODOS OS JOGOS ATIVOS  DO BANCO
     async function BuscarJogosAtivos() {
         try {
-            let resposta = await axios.get(urlJogos+"/ativos", {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+            let resposta = await axios.get(urlJogos + "/ativos", {
+                headers: { "Authorization": `Bearer ${token}` }
             });
 
 
             setTodosJogosAtivos(resposta.data)
         } catch (error) {
-            // SwalErroToken(navigate)
-            console.log(error)
+            SwalErroToken(navigate, error) 
+
         }
     }
 
@@ -401,7 +400,7 @@ export const deletarJogos = async (id, atualizar, navigate, token) => {
             console.log("Excluído");
         }
     } catch (error) {
-        SwalErroToken(navigate)
+        SwalErroToken(navigate, error) 
     }
 };
 
@@ -435,8 +434,7 @@ export const CriarJogo = async (atualizar, navigate, token, novoForm) => {
             console.log("Jogo criado sucesso");
         }
     } catch (error) {
-
-        SwalErroToken(navigate)
-        console.log(error)
+         SwalErroToken(navigate, error) 
+        
     }
 };
