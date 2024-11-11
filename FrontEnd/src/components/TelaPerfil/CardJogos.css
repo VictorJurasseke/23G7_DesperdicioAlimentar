@@ -1,11 +1,10 @@
 /* SummerCard.css */
 .summer-card {
-    background-color: #FFEB3B;
+    background-color: #ffd600;
     color: #E91E63;
-    width: 350px;
     position: relative;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    width: 90%;
+    width: 80%;
 }
 
 .title {
@@ -41,4 +40,12 @@
 
 .participate-btn:hover {
     background-color: #C2185B;
+}
+
+.back-summer{
+    width: 80%;
+    height: 80%;
+    top:80px;
+    left:130px;
+    background-color: #fabf7a;
 }

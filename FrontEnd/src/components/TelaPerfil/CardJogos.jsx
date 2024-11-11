@@ -36,8 +36,9 @@ const CardJogos = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nome
 
   return (
     <>
+    <div className='position-absolute col-10 back-summer rounded-3'>aaa</div>
       <div className="summer-card p-4 rounded-3 ">
-        <div className='text-start flex-column col-5 d-flex'>
+        <div className='text-start flex-column col-4 d-flex'>
           <h2 className="title ">TEMPORADA DE VERÃO</h2>
           <p className="lyrics">
             'Cause the players gonna play, play, play, play, play<br />
