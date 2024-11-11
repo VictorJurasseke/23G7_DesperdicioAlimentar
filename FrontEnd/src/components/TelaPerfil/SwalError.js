@@ -1,6 +1,6 @@
 
 export const SwalErroToken = (navigate, error) => {
-    if (error.response.status = 403 || error.response.status == 501){
+    if (error.response.status = 403 || error.response.status == 501 || error.response.status == 401 ){
         
         let timerInterval;
         const swalWithBootstrapButtons = Swal.mixin({
@@ -10,7 +10,6 @@ export const SwalErroToken = (navigate, error) => {
         },
         buttonsStyling: false
     });
-
     swalWithBootstrapButtons.fire({
         icon: "error",
         title: `Sua sessão expirou ou ocorreu um erro!`,
@@ -34,10 +33,10 @@ export const SwalErroToken = (navigate, error) => {
     }).then((result) => {
         if (result.dismiss === Swal.DismissReason.timer) {
             localStorage.removeItem("token"); // Remove o token
-            navigate('/login');
+            navigate('/login');  
         }
     });
 }else{
-    console.log("Ocorreu o seguinte erro:",error.response.data)
+        console.log("Ocorreu o seguinte erro:",error.response.status)
 }
 }

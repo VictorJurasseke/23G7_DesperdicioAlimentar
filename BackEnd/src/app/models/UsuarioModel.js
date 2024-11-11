@@ -103,10 +103,12 @@ module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_u
         )
         return { status: true, message: "Sua conta foi validada com sucesso!" }
     } catch (error) {
+        console.log(error)
         if (error.code == 'ER_DUP_ENTRY') {
             return { status: false, message: "Algum usuário já usou este QRCODE, Tente Novamente:" }
+        } else{
+            return {status:false, message :" Erro desconhecido!", erro: error}
         }
-        console.log(error)
         throw error // Repassa para a controller
     } finally {
         db.liberarConexao(conexao)

@@ -147,7 +147,7 @@ rotas.post('/validar', verificarToken, async (req, res) => {
     } catch (error) {
         if (error instanceof yup.ValidationError) {
             console.log("Erros de validação do Yup:", error.errors);
-            return res.status(400).json({ errors: error.errors });
+            return res.json({ errors: error.errors });
         }
         console.error("Erro inesperado:", error); // Log para erros não esperados
         res.status(500).json({ error: "Erro interno do servidor" });

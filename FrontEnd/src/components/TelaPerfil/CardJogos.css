@@ -1,0 +1,44 @@
+/* SummerCard.css */
+.summer-card {
+    background-color: #FFEB3B;
+    color: #E91E63;
+    width: 350px;
+    position: relative;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 90%;
+}
+
+.title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    border-bottom: 2px solid #E91E63; 
+}
+
+.lyrics {
+    font-style: italic;
+
+}
+
+.dates {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.participate-btn {
+    background-color: #E91E63;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+.participate-btn:hover {
+    background-color: #C2185B;
+}

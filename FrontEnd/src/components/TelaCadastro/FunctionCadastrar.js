@@ -121,7 +121,7 @@ export const useCadastro = (token, navigate) => {
         });
 
 
-
+      console.log("resposta req:",resposta.data)
       if (resposta.data.errors) {
 
         console.log("Há erros presentes", resposta.data.errors)
@@ -138,7 +138,7 @@ export const useCadastro = (token, navigate) => {
       }
     } catch (error) {
       console.error("Erro inesperado:", error);
-      SwalErroToken(navigate)
+      SwalErroToken(navigate, error)
     }
   };
 
