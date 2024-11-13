@@ -32,10 +32,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });  // Middleware do Multer para gerenciar uploads
 
 // Serve arquivos estáticos da pasta public/img
-app.use("/public/img", express.static(path.join(__dirname, 'public', 'img')));
+app.use("/public", express.static("./public/img"));
 
 // Serve arquivos estáticos da pasta public/Pets
-app.use("/public/Pets", express.static(path.join(__dirname, 'public', 'Pets')));
+app.use("/public/Pets", express.static("./public/pets"));
 
 // Controllers
 const ctrlUsuario = require("./app/controllers/UsuarioController");
