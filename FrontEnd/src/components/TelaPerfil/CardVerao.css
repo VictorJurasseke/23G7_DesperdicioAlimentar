@@ -4,17 +4,19 @@
     color: #E91E63;
     position: relative;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    width: 80%;
+    width: 1200px;
+    border-radius: 90px;
+
 }
 
-.title {
-    font-size: 1.8rem;
+.title-summer {
+    white-space: nowrap;
     font-weight: bold;
-    border-bottom: 2px solid #E91E63; 
 }
 
-.lyrics {
+.lyrics-summer {
     font-style: italic;
+    color:#7b5b3a;
 
 }
 
@@ -23,29 +25,29 @@
     font-size: 0.9rem;
 }
 
-.participate-btn {
-    background-color: #E91E63;
-    color: white;
-    border: none;
+
+.participar-btn-summer {
+    background-color: #f9a722;
+    border: 2px solid #ffffff;
+    color: #ff4e4e;
     border-radius: 20px;
     padding: 0.5rem 1rem;
     font-weight: bold;
+    font-size: 25px;
     display: flex;
     align-items: center;
-    gap: 0.3rem;
-    position: absolute;
+    gap: 0.3rem;    
     bottom: 1rem;
     right: 1rem;
 }
 
-.participate-btn:hover {
-    background-color: #C2185B;
-}
+
 
 .back-summer{
-    width: 80%;
-    height: 80%;
-    top:80px;
-    left:130px;
+    width:  1200px;
+    height: 95%;
+    top:50px;
+    left:120px;
     background-color: #fabf7a;
+    border-radius: 90px;
 }

@@ -21,7 +21,7 @@ const Menu_Usuario = ({Dados_usuario, token, navigate}) => {
         }
     }, [Dados_usuario.user_tipo_acesso]);
 
-
+    console.log(TodosJogosAtivos)
 
 
     return (
@@ -29,10 +29,9 @@ const Menu_Usuario = ({Dados_usuario, token, navigate}) => {
            
                 <div className="text-center p-3 position-relative" style={{ zIndex: 2 }}>
                     {TodosJogosAtivos.length === 0 ? (
-                        <>Não há jogos na sua escola - Usuário</>
+                        <>Não há nenhum jogo disponivel em sua escola!</>
                     ) : (
                         <>
-                            <p>Veja todos os jogos da sua escola:</p>
                             <div className="col-12 gap-2 d-flex flex-wrap justify-content-center">
                                 {TodosJogosAtivos.map((item) => (
                                     // puxa todos os jogos do banco que estão disponiveis na sua escola
@@ -51,6 +50,7 @@ const Menu_Usuario = ({Dados_usuario, token, navigate}) => {
                                         es_nome={item.es_nome}
                                         token={token}
                                         navigate={navigate}
+                                        jo_tema={item.jo_tema}
                                     />
                                 ))}
                             </div>

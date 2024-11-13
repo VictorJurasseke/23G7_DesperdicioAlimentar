@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
+import { useImportarDadosTurmas } from '../TelaDev/TableTurmas/FunctionTurmas';
 
 import { ModalParticiparJogos } from './FunctionParticiparJogo';
 import { StatusJogo } from '../NivelAcesso';
-import './CardJogos.css'
 
-const CardJogos = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nome, token, navigate, jo_status }) => {
+import CardVerao from './CardVerao';
+import CardOutono from './CardOutono';
+import CardInverno from './CardInverno';
+import CardPrimavera from './CardPrimavera';
 
+
+const CardJogos = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nome, token, navigate, jo_status, jo_tema }) => {
+
+  const { TodasTurmas, BuscarTurmas } = useImportarDadosTurmas(token, navigate)
+
+  useEffect(()=>{
+    BuscarTurmas()
+  }, [])
+
+  console.log(jo_tema)
 
   // <div className="card" style={{ width: "18rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
   //   <div className="card-body">
@@ -36,21 +49,19 @@ const CardJogos = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nome
 
   return (
     <>
-    <div className='position-absolute col-10 back-summer rounded-3'>aaa</div>
-      <div className="summer-card p-4 rounded-3 ">
-        <div className='text-start flex-column col-4 d-flex'>
-          <h2 className="title ">TEMPORADA DE VERÃO</h2>
-          <p className="lyrics">
-            'Cause the players gonna play, play, play, play, play<br />
-            And the haters gonna hate, hate, hate, hate, hate<br />
-            Baby, I'm just gonna shake, shake, shake, shake, shake
-          </p>
-        <p className="dates text-light  fw-bold fs-6">Data Início: 01/01/2024<br />Data Fim: 20/03/2024</p>
-        </div>
-        <button className="participate-btn">
-          <span role="img" aria-label="sun">☀️</span> Participar
-        </button>
-      </div>
+      {jo_tema === 1 && (
+        <CardVerao TodasTurmas={TodasTurmas} jo_nome={jo_nome} jo_datai={jo_datai} jo_dataf={jo_dataf} ID_jogos={ID_jogos} ID_usuarios={ID_usuarios} es_nome={es_nome} token={token} navigate={navigate} Participar={ModalParticiparJogos} />
+      )}
+
+      {jo_tema === 2 && (
+        <CardOutono TodasTurmas={TodasTurmas} jo_nome={jo_nome} jo_datai={jo_datai} jo_dataf={jo_dataf} ID_jogos={ID_jogos} ID_usuarios={ID_usuarios} es_nome={es_nome} token={token} navigate={navigate} Participar={ModalParticiparJogos} />
+      )}
+      {jo_tema === 3 && (
+        <CardInverno TodasTurmas={TodasTurmas} jo_nome={jo_nome} jo_datai={jo_datai} jo_dataf={jo_dataf} ID_jogos={ID_jogos} ID_usuarios={ID_usuarios} es_nome={es_nome} token={token} navigate={navigate} Participar={ModalParticiparJogos} />
+      )}
+      {jo_tema === 4 && (
+        <CardPrimavera TodasTurmas={TodasTurmas} jo_nome={jo_nome} jo_datai={jo_datai} jo_dataf={jo_dataf} ID_jogos={ID_jogos} ID_usuarios={ID_usuarios} es_nome={es_nome} token={token} navigate={navigate} Participar={ModalParticiparJogos} />
+      )}
     </>
   );
 };

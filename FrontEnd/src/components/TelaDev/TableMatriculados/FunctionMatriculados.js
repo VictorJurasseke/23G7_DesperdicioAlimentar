@@ -101,7 +101,7 @@ const renderizarJogos = (TodosJogos) => {
     return TodosJogos.map(jogos => `<option value='${jogos.ID_jogos}' name="${jogos.jo_nome}" }>${jogos.jo_nome}</option>`).join('');
 };
 
-const renderizarTurmas = (TodasTurmas) => {
+export const renderizarTurmas = (TodasTurmas) => {
 
     return TodasTurmas.map(turmas => `<option value='${turmas.ID_turmas}' name="${turmas.tur_nome}" }>${turmas.tur_nome}</option>`).join('');
 };

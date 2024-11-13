@@ -1,0 +1,50 @@
+.Autumn-card {
+    background-color: #a72300;
+    color: #ff8a36;
+    position: relative;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    border-radius: 90px;
+
+
+}
+
+.title-outono {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.lyrics-outono {
+    font-style: italic;
+    color: #ffc34f;
+
+}
+
+
+.participar-btn-Autumn {
+    background-color: #025e00;
+    border: 2px solid black;
+    color: #ff8a36;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+.participate-btn:hover {
+    background-color: #C2185B;
+}
+
+.back-Autumn {
+    width:  1200px;
+    height: 95%;
+    top:50px;
+    left:120px;
+    background-color: #ce5a3b;
+    border-radius: 90px;
+}

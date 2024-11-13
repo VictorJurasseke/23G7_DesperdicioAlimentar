@@ -8,6 +8,10 @@ import TelaTurmas from '../components/TelaDev/TableTurmas/TelaTurmas';
 import TelaUsuario from '../components/TelaDev/TableUsuarios/TelaUsuario';
 import TelaMatriculados from '../components/TelaDev/TableMatriculados/TelaMatriculados';
 import LoadingComponent from '../components/TelaPerfil/LoadingComponent';
+import TelaPets from '../components/TelaDev/TablePets/TelaPets';
+
+
+
 import { useNavigate } from 'react-router-dom';
 
 const TelaDev = () => {
@@ -15,11 +19,11 @@ const TelaDev = () => {
   const [Radio, setRadio] = useState('option1');
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  
+
   const FuncaoAlvo = (alvoCapturado) => {
     setRadio(alvoCapturado);
   };
-  
+
   const [loading, setLoading] = useState(true); // Estado para gerenciar o carregamento
   // Simulação de carregamento de dados dos componentes
   useEffect(() => {
@@ -36,7 +40,7 @@ const TelaDev = () => {
 
   return (
     <>
-    
+
       <div className='d-flex flex-column min-vh-100'>
         <TelasTroca FuncaoAlvo={FuncaoAlvo} />
         <div className='d-flex flex-column flex-fill'>
@@ -45,6 +49,7 @@ const TelaDev = () => {
           {Radio === 'option3' && <TelaUsuario token={token} navigate={navigate} />}
           {Radio === 'option4' && <TelaMatriculados token={token} navigate={navigate} />}
           {Radio === 'option5' && <TelaJogo token={token} navigate={navigate} />}
+          {Radio === 'option6' && <TelaPets token={token} navigate={navigate} />}
         </div>
       </div>
     </>

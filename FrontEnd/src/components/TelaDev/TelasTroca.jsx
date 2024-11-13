@@ -30,6 +30,9 @@ const TelasTroca = ({FuncaoAlvo}) => {
        
           <input type="radio" className="btn-check " name="options" id="option5" autoComplete="off" onChange={PassarInfo} />
           <label className="btn text-secondary" htmlFor="option5">Jogos</label>
+         
+          <input type="radio" className="btn-check " name="options" id="option6" autoComplete="off" onChange={PassarInfo} />
+          <label className="btn text-secondary" htmlFor="option6">Pets</label>
        
         </div>
         <form className="d-flex" role="search" >

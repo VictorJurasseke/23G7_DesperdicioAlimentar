@@ -66,11 +66,11 @@ rotas.delete('/:id', verificarToken, async (req, res) => {
 // ROTA DE PARTICIPAR DO JOGO 
 rotas.post('/participar', verificarToken, async (req, res) => {
     // Antes era por req.params, mas foi feita mudanças no banco então muda aqui também
-    let {ID_jogos} = req.body
+    let {ID_jogos, ID_turmas} = req.body
     console.log("Requisição recebida em /api/jogos/:", ID_jogos, " no id do usuario", req.info.ID_usuarios); // Log
     try {
                                                 // ID DO USUARIO, ID DO JOGO QUE VAI PARTICIPAR, periodo do usuario, e a turma do usuario
-        const jogos = await model.ParticiparJogo(req.info.ID_usuarios, ID_jogos);
+        const jogos = await model.ParticiparJogo(req.info.ID_usuarios, ID_jogos, ID_turmas);
         res.json(jogos);
     } catch (error) {
         console.error("Erro ao tentar participar do jogo", error);
