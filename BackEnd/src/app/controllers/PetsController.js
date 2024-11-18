@@ -82,4 +82,21 @@ rotas.delete('/:id/:nome', verificarToken, async (req, res) => {
     }
 });
 
+rotas.post('/pets', verificarToken, async (req, res) => {
+    console.log(`Requisição post recebida em /api/pets`)
+
+    try {
+        const pets = await model.CriarPetPadrao();
+        res.json(pets);
+    } catch (error) {
+        console.error("Erro ao apagar um pet", error);
+        res.status(500).json({ error: "Erro interno do servidor" });
+    }
+});
+
+
+
+
 module.exports = rotas;
+
+

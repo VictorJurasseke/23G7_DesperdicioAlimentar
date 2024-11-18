@@ -62,7 +62,7 @@ export const useImportarDadosPets = (token, navigate) => {
 };
 
 // // Função para deletar um pet
-export const deletarPet = async (id,nome, atualizar, token, navigate) => {
+export const deletarPet = async (id, nome, atualizar, token, navigate) => {
     try {
         const resposta = await axios.delete(`${urlPets}/${id}/${nome}`, {
             headers: { 'Authorization': `Bearer ${token}` }
@@ -86,7 +86,6 @@ export const deletarPet = async (id,nome, atualizar, token, navigate) => {
     }
 };
 
-// Função para criar um pet via formulário e imagem
 export const ModalCriarPet = async (token, navigate, TodosPets, BuscarTodosPets) => {
     Swal.fire({
         title: "Inserir Pet",
@@ -123,9 +122,12 @@ export const ModalCriarPet = async (token, navigate, TodosPets, BuscarTodosPets)
         `,
         icon: "info",
         confirmButtonColor: "#198754",
+        denyButtonColor: "#ffc107",
         confirmButtonText: "Cadastrar",
-    }).then(async (result) => {
-        if (result.isConfirmed) {
+        showDenyButton: true, // Habilita o botão de "Cadastrar Pets Padrão"
+        denyButtonText: "Cadastrar Pets Padrão", // Texto do botão "Cadastrar Pets Padrão"
+
+        preConfirm: async () => {
             const formData = new FormData();
             formData.append("nome_pet", document.getElementById("nome_pet").value);
             formData.append("desc_pet", document.getElementById("desc_pet").value);
@@ -138,9 +140,51 @@ export const ModalCriarPet = async (token, navigate, TodosPets, BuscarTodosPets)
                 formData.append("pet_img_caminho", fileInput.files[0]);
             }
 
-            CriarPet(token, navigate, formData, BuscarTodosPets)
+            return formData; // Retorna os dados para serem usados após o clique no botão "Cadastrar"
+        }
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const formData = result.value;
+            CriarPet(token, navigate, formData, BuscarTodosPets);
+        } else if (result.isDenied) {
+            // Chama a função para cadastrar pets padrão
+            CadastrarPetsPadrao(token, navigate, BuscarTodosPets);
         }
     });
+};
+
+const CadastrarPetsPadrao = async (token, navigate, BuscarTodosPets) => {
+    try {
+        // Enviar a requisição POST para o endpoint /pets
+        const resposta = await axios.post(urlPets+'/pets', {}, {
+            headers: {
+                "Authorization": `Bearer ${token}`, // Apenas o token no cabeçalho
+            },
+        });
+
+        // Exibir a resposta no console para depuração
+        console.log(resposta);
+
+        if (resposta.data.status === true) {
+            // Se a resposta for bem-sucedida, pode chamar alguma ação, como buscar todos os pets ou exibir uma mensagem
+            swalWithBootstrapButtons.fire({
+                title: "Criado!",
+                text: "Pets padrão cadastrados com sucesso!",
+                icon: "success"
+            });
+            BuscarTodosPets()
+        } else {
+            // Caso contrário, exibe uma mensagem de erro com a resposta
+            swalWithBootstrapButtons.fire({
+                title: "Falhou!",
+                html: "Os pets padrão não foram cadastrados com sucesso!<br> <br> Código do erro: " + (resposta.data.message || 'Erro desconhecido'),
+                icon: "error"
+            });
+        }
+    } catch (error) {
+        // Tratar erros na requisição, como token inválido
+        SwalErroToken(navigate, error);
+    }
 };
 
 
