@@ -42,8 +42,7 @@ module.exports.CriarPet = async (nome_pet, caminho_pet, desc_pet, ponto_pet, rar
 };
 
 
-
-module.exports.ApagarPet = async (id) => {
+module.exports.ApagarPet = async (id, nome) => {
     let conexao;
     try {
         conexao = await db.criarConexao();

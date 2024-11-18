@@ -70,10 +70,11 @@ rotas.post('/', verificarToken, upload.single('pet_img_caminho'), async (req, re
 });
 
 
-rotas.delete('/:id', verificarToken, async (req, res) => {
+rotas.delete('/:id/:nome', verificarToken, async (req, res) => {
     console.log(`Requisição delete recebida em /api/pets/${req.params.id}`); // Log
+    console.log(`Requisição delete recebida em /api/pets/${req.params.nome}`); // Log
     try {
-        const pets = await model.ApagarPet(req.params.id);
+        const pets = await model.ApagarPet(req.params.id,req.params.nome);
         res.json(pets);
     } catch (error) {
         console.error("Erro ao apagar um pet", error);

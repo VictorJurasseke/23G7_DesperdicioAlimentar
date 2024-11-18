@@ -19,7 +19,7 @@ const PetsTR = ({ ID_pet, caminho_pet, desc_pet, ponto_pet, raridade_pet, token,
                 <td className='fs-5'>
                     <div className='col-12 d-flex justify-content-evenly'>
                         <a onClick={() => { ModalEditPets(ID_pet, atualizar, token, navigate) }}><HiPencil /></a>  {/* Modificado ID_pet */}
-                        <a onClick={() => { ModalDeletePet(ID_pet, atualizar, token, navigate) }}><HiOutlineTrash /></a>  {/* Modificado ID_pet */}
+                        <a onClick={() => { ModalDeletePet(ID_pet,caminho_pet, atualizar, token, navigate) }}><HiOutlineTrash /></a>  {/* Modificado ID_pet */}
                     </div>
                 </td>
             </tr>

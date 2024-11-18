@@ -62,9 +62,9 @@ export const useImportarDadosPets = (token, navigate) => {
 };
 
 // // Função para deletar um pet
-export const deletarPet = async (id, atualizar, token, navigate) => {
+export const deletarPet = async (id,nome, atualizar, token, navigate) => {
     try {
-        const resposta = await axios.delete(`${urlPets}/${id}`, {
+        const resposta = await axios.delete(`${urlPets}/${id}/${nome}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!resposta.data.status) {
