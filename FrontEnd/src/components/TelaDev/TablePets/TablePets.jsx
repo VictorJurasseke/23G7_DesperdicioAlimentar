@@ -33,12 +33,13 @@ const TablePets = ({ token, navigate }) => {
                     {TodosPets.map((item) => (
                         <PetsTR
                             key={item.ID_pet}
+                            ID_pet={item.ID_pet}
                             nome_pet={item.nome_pet}
                             caminho_pet={item.caminho_pet}
                             desc_pet={item.desc_pet}
                             ponto_pet={item.ponto_pet}
                             raridade_pet={item.raridade_pet}
-                            atualizar={BuscarPets}
+                            atualizar={BuscarTodosPets}
                             navigate={navigate}
                             token={token}
                         />
@@ -50,7 +51,7 @@ const TablePets = ({ token, navigate }) => {
                 <div className='d-flex align-items-center'>
                     <BiAddToQueue
                         className='text-success'
-                        onClick={() => { ModalCriarPet(token, navigate, BuscarTodosPets) }}
+                        onClick={() => { ModalCriarPet(token, navigate, TodosPets, BuscarTodosPets) }}
                         style={{ fontSize: '40px', marginRight: '15px', cursor: 'pointer' }}
                     />
                 </div>

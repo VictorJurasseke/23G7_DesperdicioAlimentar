@@ -115,8 +115,8 @@ export const ModalCriarPet = async (token, navigate, TodosPets, BuscarTodosPets)
                     <option value="Comum">Comum</option>
                     <option value="Incomum">Incomum</option>
                     <option value="Raro">Raro</option>
-                    <option value="Épico">Épico</option>
-                    <option value="Lendário">Lendário</option>
+                    <option value="Epico">Épico</option>
+                    <option value="Lendario">Lendário</option>
                 </select>
             </div>
         </form>
@@ -127,7 +127,7 @@ export const ModalCriarPet = async (token, navigate, TodosPets, BuscarTodosPets)
     }).then(async (result) => {
         if (result.isConfirmed) {
             const formData = new FormData();
-            formData.append("pet_nome", document.getElementById("nome_pet").value);
+            formData.append("nome_pet", document.getElementById("nome_pet").value);
             formData.append("desc_pet", document.getElementById("desc_pet").value);
             formData.append("ponto_pet", document.getElementById("ponto_pet").value);
             formData.append("raridade_pet", document.getElementById("raridade_pet").value);
@@ -153,19 +153,19 @@ export const CriarPet = async (token, navigate, formData, BuscarTodosPets) => {
                 "Authorization": `Bearer ${token}`,
             },
         });
-        console.log(resposta)
-        if (resposta.data.status !== true) {
-            swalWithBootstrapButtons.fire({
-                title: "Falhou!",
-                html: "Seu pet não foi criado com sucesso!<br> <br> Código do erro: " + (resposta.data.message || 'Erro desconhecido'),
-                icon: "error"
-            });
-        } else {
+        console.log(resposta.data.status)
+        if (resposta.data.status == true) {
             BuscarTodosPets(); // Atualiza a lista
             swalWithBootstrapButtons.fire({
                 title: "Criado!",
                 text: "Seu pet foi criado com sucesso!",
                 icon: "success"
+            });
+        } else {
+            swalWithBootstrapButtons.fire({
+                title: "Falhou!",
+                html: "Seu pet não foi criado com sucesso!<br> <br> Código do erro: " + (resposta.data.message || 'Erro desconhecido'),
+                icon: "error"
             });
         }
     } catch (error) {
