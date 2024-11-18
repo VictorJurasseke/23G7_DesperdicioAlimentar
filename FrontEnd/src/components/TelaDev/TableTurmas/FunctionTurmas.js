@@ -61,19 +61,29 @@ export const ModalCriarTurma = (token, navigate, BuscarTurmas) => {
             <label for="jo_nome" class="form-label">Nome da turma:</label>
             <input type="text" id="nome_turma" class="form-control" placeholder="Ex: 3 Ano do Ensino Médio">
           </div>
+          <p id="error-turma" class="text-danger" style="display: none;">Preencha todos os campos</p>
         </form>
                     `,
         showCancelButton: true,
         confirmButtonText: "Criar Jogo",
         cancelButtonText: "Cancelar",
         reverseButtons: true,
-    }).then((result) => {
-        if (result.isConfirmed) {
+        preConfirm: () => {
             const nome_turma = document.getElementById("nome_turma").value;
 
-            console.log(nome_turma)
+            if (!nome_turma) {
+                document.getElementById("error-turma").style.display = "block"
+                return false
+            }
 
-            CriarTurmas(navigate, token, nome_turma, BuscarTurmas)
+            return nome_turma
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+
+
+            CriarTurmas(navigate, token, result.value, BuscarTurmas)
 
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire({

@@ -6,19 +6,76 @@ const model = require("../../app/models/UsuarioModel")
 const verificarToken = require('../middleware/autenticar')
 
 
-// Cadastrar usuário 
-// user_nome: document.getElementById('user_nome').value,
-// user_email: document.getElementById('user_email').value,
-// user_senha: document.getElementById('user_senha').value,
-// user_tipo_acesso: document.getElementById('tipo_acesso').value,
-// user_periodo: document.getElementById('periodo').value,
-// user_img_caminho: "", // Adicione o caminho da imagem se necessário
-// user_qrcode: "" // Adicione o QR code se necessário
+// Validar Conta do aluno para se tornar usuário; passar O FORMULARIO E INDICAR QUAL O ID DO MEMSO
+
+
+//Valida os campos nome email senha e confirmar senha
+
+const yup = require('yup');
+
+
+const ValidarusuarioSchema = yup.object().shape({
+
+
+    // Validar conta do usuario
+    NovaSenha: yup
+        .string()
+        .min(8, "8MIN")
+        .required("SENHAREQUIRED"),
+
+    QRcode: yup
+        .string()
+        .required("QRCODEREQUIRED"),
+
+    ConfirmarNovaSenha: yup
+        .string()
+        .oneOf([yup.ref('NovaSenha'), null], "NEWSENHAWRONG")
+        .required("SENHAREQUIRED"),
+
+
+});
+//
+
+const CriarusuarioSchema = yup.object().shape({
+    // Criar usuário
+    user_nome: yup
+        .string()
+        .required("- O nome não foi preenchido"),
+
+    user_email: yup
+        .string()
+        .required("- O email não foi preenchido")
+        .email("- O email não é valido"),
+
+    user_senha: yup
+        .string()
+        .required("- A senha não foi preenchida")
+        .min(8, "- A senha precisa ter no minimo 8 caractéres"),
+
+    user_tipo_acesso: yup
+        .string()
+        .required("- Não foi selecionado o nivel de acesso do usuário"),
+
+    user_periodo: yup
+        .string()
+        .required("- Não foi selecionado o periodo do usuário"),
+
+    user_img_caminho: yup
+        .string()
+        .required(),
+
+    // 
+});
+
+
 
 
 
 // ROTA DE CADASTRAR USUÁRIO SENDO USADA NA TELA DEV
 rotas.post('/', async (req, res) => {
+
+
+
 
     console.log(req.body)
     let {
@@ -32,10 +89,20 @@ rotas.post('/', async (req, res) => {
     } = req.body
     console.log(user_nome)
     try {
+
+        await CriarusuarioSchema.validate(req.body, { abortEarly: false });
+
+
+
+
         res.json(await model.CadastrarUsuario(user_nome, user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode));
     } catch (error) {
-        console.log('Erro ao Logar', error);
-        res.status(500).json({ error: 'Erro interno do servidor' });
+        if (error instanceof yup.ValidationError) {
+            console.log("Erros de validação do Yup:", error.errors);
+            return res.json({ errors: error.errors, status: 301,  });
+        }
+        console.error("Erro inesperado:", error); // Log para erros não esperados
+        res.status(500).json({ error: "Erro interno do servidor" });
     }
 
 
@@ -69,51 +136,9 @@ rotas.get('/:id', verificarToken, async (req, res) => {
     }
 })
 
-// // Registra usuario  DELETAR CASO FUNCIONE TUDO CORRETAMENTE
-// rotas.post('/registrar', async (req, res) => {
-
-
-//     let {
-//         nome,
-//         email,
-//         senha,
-//         confirmar_senha,
-//         turma,
-//         periodo,
-//         unidade,
-//         qrcode
-//     } = req.body
-
-//     user_img_caminho = "User.png"
 
 
 
-
-//     try {
-//         console.log(periodo)
-//         let linhas = await model.perfilNovo(nome, email, senha, qrcode, turma, unidade, periodo, user_img_caminho, confirmar_senha)
-//         res.json(linhas)
-//     } catch (error) {
-//         console.log("Erro ao criar seu perfil,", error)
-//     }
-// });
-
-
-// Validar Conta do aluno para se tornar usuário; passar O FORMULARIO E INDICAR QUAL O ID DO MEMSO
-const yup = require('yup');
-
-//Valida os campos nome email senha e confirmar senha
-
-const usuarioSchema =
-    yup.object().shape({
-
-        NovaSenha: yup.string().min(8, "8MIN").required("SENHAREQUIRED"),
-        QRcode: yup.string().required("QRCODEREQUIRED"),
-        ConfirmarNovaSenha: yup
-            .string()
-            .oneOf([yup.ref('NovaSenha'), null], "NEWSENHAWRONG")
-            .required("SENHAREQUIRED"),
-    });
 
 // Validar a conta do usuário
 rotas.post('/validar', verificarToken, async (req, res) => {
@@ -124,7 +149,7 @@ rotas.post('/validar', verificarToken, async (req, res) => {
 
     try {
         // Valida o corpo da requisição usando yup
-        await usuarioSchema.validate(req.body, { abortEarly: false });
+        await ValidarusuarioSchema.validate(req.body, { abortEarly: false });
 
         // Log para verificar se a validação foi bem-sucedida
         console.log("Validação bem-sucedida.");

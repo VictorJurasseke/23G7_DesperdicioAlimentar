@@ -149,7 +149,7 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
                   <div class="mb-3 text-start">
                     <label for="tipo_acesso" class="form-label">Tipo de Acesso:</label>
                     <select id="tipo_acesso" class="form-select" aria-label="Default select example">
-                      <option disabled selected>Tipos de Acesso:</option>
+                      <option disabled selected value="">Tipos de Acesso:</option>
                       <option value="0">Administrador</option>
                       <option value="1">Aluno</option>
                       <option value="2">Usuário</option>
@@ -158,7 +158,7 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
                   <div class="mb-3 text-start">
                     <label for="periodo" class="form-label">Período:</label>
                     <select id="periodo" class="form-select" aria-label="Default select example">
-                      <option disabled selected>Periodos:</option>
+                      <option disabled selected value="" >Periodos:</option>
                       <option value="Matutino">Matutino</option>
                       <option value="Noturno">Noturno</option>
                     </select>
@@ -167,7 +167,10 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
         icon: "info",
         showCancelButton: false,
         confirmButtonColor: "#198754",
-        confirmButtonText: "Cadastrar"
+        confirmButtonText: "Cadastrar",
+        preConfirm: () => {
+
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             const Form = {
@@ -179,7 +182,8 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
                 user_img_caminho: "User.png", // Adicione o caminho da imagem se necessário
                 user_qrcode: "" // Adicione o QR code se necessário
             };
-
+            
+            console.log("Periodoo", Form.user_periodo)
             console.log("Objeto Form:", Form);
             CriarUsuario(navigate, token, Form, BuscarTodosUsuarios)
 
@@ -188,8 +192,12 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
 };
 
 
+
+
 // CriarUsuario
 export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios) => {
+
+
     try {
         const resposta = await axios.post(`${urlUsuario}`, Form, {
             headers: {
@@ -198,14 +206,16 @@ export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios) =
             }
         });
 
-        console.log(resposta.data.status);
 
-        if (resposta.data.status !== true) {
-            swalWithBootstrapButtons.fire({
-                title: "Falhou!",
-                html: "Seu usuário não foi criado com sucesso!<br> <br> Código do erro: " + resposta.data.message || 'Erro desconhecido',
-                icon: "error"
-            });
+        console.log(resposta.data.status);
+        console.log("respota", resposta);
+
+
+        if (resposta.data.errors) {
+
+            console.log("Há erros presentes", resposta.data.errors)
+
+            ModalErroUsuario(resposta.data.errors, token, navigate, BuscarTodosUsuarios)
         } else {
             BuscarTodosUsuarios(); // Atualiza a lista
             swalWithBootstrapButtons.fire({
@@ -218,4 +228,28 @@ export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios) =
     } catch (error) {
         SwalErroToken(navigate, error);
     }
-};
+}
+
+
+
+export const ModalErroUsuario = (errors, token, navigate, BuscarTodosUsuarios) => {
+
+
+    const erroFormatado = errors.join('<br>')
+
+
+
+    Swal.fire({
+        title: 'Erro!',
+        html: erroFormatado,
+        icon: 'error',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        confirmButtonText: 'Tentar novamente',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            ModalCriarUsuario(token, navigate, BuscarTodosUsuarios);
+        }
+    });
+}
+

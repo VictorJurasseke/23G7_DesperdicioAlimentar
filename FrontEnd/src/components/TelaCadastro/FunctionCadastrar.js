@@ -112,7 +112,7 @@ export const useCadastro = (token, navigate) => {
         Campo: false,
       });
 
-      // console.log("A")
+      // Função que valida com o formulario do cliente se ele pode ou não virar usuario do site com seus dados
       const resposta = await axios.post(`${urlUsuario}/validar`, FormValidar,
         {
           headers: {
@@ -120,7 +120,7 @@ export const useCadastro = (token, navigate) => {
           }
         });
 
-
+      console.log(resposta)
       console.log("resposta req:",resposta.data)
       if (resposta.data.errors) {
 

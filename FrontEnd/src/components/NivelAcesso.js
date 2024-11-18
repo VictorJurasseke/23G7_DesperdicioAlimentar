@@ -15,6 +15,8 @@ export const NivelAcesso = (nivel_acesso) => {
   }
   return nivel_acesso
 }
+
+// Recebe o status do jogo para pintar de verde ou vermelho no teladev-jogos
 export const StatusJogo = (jo_status) => {
   switch (jo_status) {
     case 1:
@@ -27,6 +29,8 @@ export const StatusJogo = (jo_status) => {
   return jo_status
 }
 
+
+// Serve para validar a conta quando o usuário vai criar sua senha
 export const ErrosValidarConta = (errors, setErrosVisiveis,errosVisiveis) => {
 
 

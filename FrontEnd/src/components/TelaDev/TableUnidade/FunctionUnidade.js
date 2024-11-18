@@ -57,7 +57,7 @@ export const useImportarDadosUnidade = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-         
+
             setTodasUnidade(resposta.data);
         } catch (error) {
             SwalErroToken(navigate, error)
@@ -117,19 +117,31 @@ export const ModalCriarUnidade = (token, navigate, BuscarUnidades) => {
             <label for="jo_nome" class="form-label">Nome da sua unidade:</label>
             <input type="text" id="nome_unidade" class="form-control" placeholder="Ex: SESI CE-138 ANASTACIO">
           </div>
+          <p id="error-unidade" class="text-danger" style="display: none;">Preencha todos os campos</p>
         </form>
                     `,
         showCancelButton: true,
         confirmButtonText: "Criar Jogo",
         cancelButtonText: "Cancelar",
         reverseButtons: true,
+        preConfirm: () => {
+            const nome_unidade = document.getElementById("nome_unidade").value
+
+            console.log("valor unidade", nome_unidade.length)
+            typeof nome_unidade
+
+            if (nome_unidade.length == 0) {
+                console.log("passou por aqui")
+                document.getElementById("error-unidade").style.display = "block"
+                return false
+            }
+            return nome_unidade
+        }
     }).then((result) => {
         if (result.isConfirmed) {
-            const nome_unidade = document.getElementById("nome_unidade").value;
+            console.log(result)
 
-            console.log(nome_unidade)
-
-            CriarUnidade(navigate, token, nome_unidade, BuscarUnidades)
+            CriarUnidade(navigate, token, result.value, BuscarUnidades)
 
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire({
