@@ -13,11 +13,14 @@ app.use(express.json());
 
 // const upload = multer({ storage });  // Middleware do Multer para gerenciar uploads
 
-// Serve arquivos estáticos da pasta public/img
+// Serve arquivos estáticos da pasta public/img; ou seja para acessar as imagens de /public/img basta escrever /public/Pet.gif
 app.use("/public", express.static("./public/img"));
 
-// Serve arquivos estáticos da pasta public/Pets
-app.use("/Pets", express.static("./public/Pets"));
+
+
+// Serve arquivos estáticos da pasta public/Pets 
+// ou seja para acessar as imagens de /public/Pets basta escrever /public/Pet.gif
+app.use("/Pets", express.static("./public/PetsClientes"));
 
 // Controllers
 const ctrlUsuario = require("./app/controllers/UsuarioController");

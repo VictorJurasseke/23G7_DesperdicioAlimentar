@@ -66,11 +66,11 @@ module.exports.CriarPetPadrao = async () => {
         conexao = await db.criarConexao();
         
         for (const pet of pets) {
-            const { ID_pet, nome_pet, caminho_pet, desc_pet, ponto_pet, raridade_pet, peso_pet } = pet;
+            const { nome_pet, caminho_pet, desc_pet, ponto_pet, raridade_pet, peso_pet } = pet;
             await conexao.execute(
-                `INSERT INTO pets (ID_pet, nome_pet, caminho_pet, desc_pet, ponto_pet, raridade_pet, peso_pet) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [ID_pet, nome_pet, caminho_pet, desc_pet, ponto_pet, raridade_pet, peso_pet]
+                `INSERT INTO pets (nome_pet, caminho_pet, desc_pet, ponto_pet, raridade_pet, peso_pet) 
+                 VALUES (?, ?, ?, ?, ?, ?)`,
+                [nome_pet, caminho_pet, desc_pet, ponto_pet, raridade_pet, peso_pet]
             );
         }
 

@@ -41,7 +41,7 @@ const TelaPerfil = () => {
             {Dados_usuario ? ( // Verifica se Dados_usuario não é null e se o token está correto
                 <>
                     <div className="col-12 d-flex flex-column overflow-hidden text-dark min-vh-100 position-relative z-2">
-                        <Header />
+                        <Header Dados_usuario={Dados_usuario}/>
                         <div className="col-12 mt-5 text-dark position-relative">
                             <CardPerfil
                                 nome={Dados_usuario.user_nome}

@@ -104,6 +104,8 @@ module.exports.ParticiparJogo = async (ID_usuarios, ID_jogos, ID_turmas) => {
             [ID_usuarios]
         );
 
+        // Passo 5: Criar seu inventario com o pet inicial o Ovo
+
         return { status: true, massage: "jogando!" }
 
     } catch (error) {
