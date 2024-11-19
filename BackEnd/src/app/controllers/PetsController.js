@@ -70,6 +70,7 @@ rotas.post('/', verificarToken, upload.single('pet_img_caminho'), async (req, re
 });
 
 
+// Apaga um pet especifico
 rotas.delete('/:id/:nome', verificarToken, async (req, res) => {
     console.log(`Requisição delete recebida em /api/pets/${req.params.id}`); // Log
     console.log(`Requisição delete recebida em /api/pets/${req.params.nome}`); // Log
@@ -82,7 +83,9 @@ rotas.delete('/:id/:nome', verificarToken, async (req, res) => {
     }
 });
 
-rotas.post('/pets', verificarToken, async (req, res) => {
+
+// Rota que cria todos os pets padrões fornecidos pelo sistema
+rotas.post('/criarPets', verificarToken, async (req, res) => {
     console.log(`Requisição post recebida em /api/pets`)
 
     try {
@@ -90,6 +93,22 @@ rotas.post('/pets', verificarToken, async (req, res) => {
         res.json(pets);
     } catch (error) {
         console.error("Erro ao apagar um pet", error);
+        res.status(500).json({ error: "Erro interno do servidor" });
+    }
+});
+
+
+rotas.get('/temporada', verificarToken, async (req, res) => {
+    console.log(`Requisição get recebida em /api/pets/temporadaAtual`)
+
+
+
+    
+    try {
+        const pets = await model.ProcurarPetJogo(req.info.ID_usuarios);
+        res.json(pets);
+    } catch (error) {
+        console.error("Erro ao procurar seus pets", error);
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });

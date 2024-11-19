@@ -65,7 +65,7 @@ export const ModalCriarTurma = (token, navigate, BuscarTurmas) => {
         </form>
                     `,
         showCancelButton: true,
-        confirmButtonText: "Criar Jogo",
+        confirmButtonText: "Criar Turma",
         cancelButtonText: "Cancelar",
         reverseButtons: true,
         preConfirm: () => {

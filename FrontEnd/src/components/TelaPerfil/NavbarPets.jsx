@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 import Egg from '../../../public/img/Egg.gif'
 import NeyMar from '../../../public/img/CoelhoNeymar.gif'
 import Card_pet from '../TelaPerfil/Card_pet'
+import { usePetsDados } from './FunctionPets';
 
-const NavBarPets = () => {
+
+
+const NavBarPets = ({token, navigate}) => {
+
+    const {TodosPetsTemporada, ProcurarPets} = usePetsDados(token, navigate) 
+
+    useEffect(()=>{
+        ProcurarPets()
+    },[])
+
     return (
         <>
             
@@ -18,8 +28,15 @@ const NavBarPets = () => {
                 </div>
             </nav>
             <div className='col-12 d-flex gap-3'>
-                <Card_pet nome={"Ovo"} caminho={Egg}></Card_pet>
-                <Card_pet nome={"Neylho"} caminho={NeyMar}></Card_pet>
+                {TodosPetsTemporada && TodosPetsTemporada.map((item)=>{
+                    return(
+                        <Card_pet
+                         key={item}
+                         nome={item.nome_pet} 
+                         caminho={item.caminho_pet}
+                         pontuacao_pet={item.pontuacao_pet}></Card_pet>
+                    )
+                })}
             </div>
         </>
     );

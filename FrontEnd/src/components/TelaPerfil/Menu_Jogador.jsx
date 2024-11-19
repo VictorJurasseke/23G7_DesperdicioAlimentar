@@ -15,8 +15,8 @@ const Menu_Jogador = ({Dados_usuario, token, navigate}) => {
         <>
             
                 <div className="text-center p-3 position-relative" style={{ zIndex: 2 }}>
-                    <h1>Tela Inventario do jogo atual</h1>
-                    <NavBarPets/>
+                    
+                    <NavBarPets token={token} navigate={navigate}/>
                     
                     
                 </div>

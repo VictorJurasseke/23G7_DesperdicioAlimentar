@@ -104,7 +104,19 @@ module.exports.ParticiparJogo = async (ID_usuarios, ID_jogos, ID_turmas) => {
             [ID_usuarios]
         );
 
-        // Passo 5: Criar seu inventario com o pet inicial o Ovo
+        // Passo 5: Achar o ovo na tabela pets >
+
+        const [ovo] = await conexao.execute(
+            'SELECT ID_pet FROM pets WHERE nome_pet = "Egg" AND caminho_pet = "Egg.gif"'
+        )
+    
+
+     
+        
+        // Passo 6: Criar seu inventario com o pet inicial o Ovo
+        const [Inventario] = await conexao.execute(
+            'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data) VALUES(?,?,?,?)',[ID_jogos,ID_usuarios,ovo[0].ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' ')]
+        )
 
         return { status: true, massage: "jogando!" }
 

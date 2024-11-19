@@ -82,3 +82,34 @@ module.exports.CriarPetPadrao = async () => {
         db.liberarConexao(conexao);
     }
 };
+
+
+
+
+
+module.exports.ProcurarPetJogo = async (ID_usuarios) => {
+
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+        
+        
+        // Preciso saber qual jogo o usuario participa
+
+        const [Jogo] = await conexao.execute('SELECT m.ID_jogos FROM jogos j, jogos_matricula m  WHERE m.ID_usuarios = ? AND m.ID_jogos = j.ID_jogos AND j.jo_status = 1', [ID_usuarios]);
+
+        const ID_jogos = Jogo[0].ID_jogos
+
+        const [Pets] = await conexao.execute('SELECT p.nome_pet, p.caminho_pet, i.pontuacao_pet FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ? ;', [ID_usuarios, ID_jogos]);
+        console.log("Pets do usuario",Pets)
+
+        return { status: true, message:"Pets selecionados com sucesso!", pets:Pets}
+        
+    } catch (error) {
+        return { status: false, error: error }
+        throw error // Repassa para a controller
+    } finally {
+        db.liberarConexao(conexao)
+
+    }
+};

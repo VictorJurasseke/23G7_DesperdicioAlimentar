@@ -156,7 +156,7 @@ export const ModalCriarPet = async (token, navigate, TodosPets, BuscarTodosPets)
 const CadastrarPetsPadrao = async (token, navigate, BuscarTodosPets) => {
     try {
         // Enviar a requisição POST para o endpoint /pets
-        const resposta = await axios.post(urlPets+'/pets', {}, {
+        const resposta = await axios.post(urlPets+'/criarPets', {}, {
             headers: {
                 "Authorization": `Bearer ${token}`, // Apenas o token no cabeçalho
             },
