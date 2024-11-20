@@ -137,11 +137,11 @@ export const ModalCriarJogo = (atualizar, navigate, token, TodasUnidade, setForm
     </div>
     <!-- Campos adicionais de configuração -->
     <div class="mb-3 text-start">
-        <label for="valor_grama" class="form-label">Peso por Pontos (g):</label>
+        <label for="valor_grama" class="form-label">Peso médio das refeições:</label>
         <input type="number" step="0.001" id="valor_grama" class="form-control" placeholder="0.200">
     </div>
     <div class="mb-3 text-start">
-        <label for="valor_pontos" class="form-label">Valor de Pontos:</label>
+        <label for="valor_pontos" class="form-label">Valor de Pontos Maximo:</label>
         <input type="number" id="valor_pontos" class="form-control" placeholder="1">
     </div>
     <div class="mb-3 text-start">

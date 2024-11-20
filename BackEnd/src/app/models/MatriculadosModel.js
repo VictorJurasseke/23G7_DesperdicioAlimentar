@@ -26,7 +26,9 @@ module.exports.ApagarMatriculas = async (ID_usuarios) => {
             `UPDATE usuarios SET user_tipo_acesso = 2 WHERE ID_usuarios = ?;`,
             [ID_usuarios]
         );
-        const [linhas] = await conexao.execute('DELETE FROM jogos_matricula WHERE ID_usuarios = ?', [ID_usuarios]);
+
+        const [inventario] = await conexao.execute('DELETE FROM inventario_matricula WHERE ID_usuarios', [ID_usuarios])
+        const [matricula] = await conexao.execute('DELETE FROM jogos_matricula WHERE ID_usuarios = ?', [ID_usuarios]);
         return { status: true }
     } catch (error) {
         return { status: false, message: error }
@@ -52,6 +54,7 @@ module.exports.retornarNaoMatriculados = async () => {
     }
 };
 
+//Matriculados pela tela dev
 module.exports.MatricularAlunos = async (ID_jogo, ID_turmas, ID_usuarios) => {
     let conexao;
     try {
@@ -91,6 +94,18 @@ module.exports.MatricularAlunos = async (ID_jogo, ID_turmas, ID_usuarios) => {
             `UPDATE usuarios SET user_tipo_acesso = 3 WHERE ID_usuarios = ?;`,
             [ID_usuarios]
         );
+
+        const [ovo] = await conexao.execute(
+            'SELECT ID_pet FROM pets WHERE nome_pet = "Egg" AND caminho_pet = "Egg.gif"'
+        )
+    
+
+     
+        
+        // Passo 6: Criar seu inventario com o pet inicial o Ovo
+        const [Inventario] = await conexao.execute(
+            'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data) VALUES(?,?,?,?)',[ID_jogo,ID_usuarios,ovo[0].ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' ')]
+        )
 
         return { status: true, massage:"jogando!" }
 

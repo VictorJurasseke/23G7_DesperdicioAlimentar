@@ -8,9 +8,10 @@ const UrlDadosPets = "http://localhost:3025/api/pets";
 export const usePetsDados = (token, navigate) => {
 
     const [TodosPetsTemporada, setTodosPetsTemporada] = useState(null);
+    const [jo_nome, setjo_nome] = useState(null)
+    const [evolucao, setEvolucao] = useState(null)
 
-    
-    
+
     // Função para procurar todos os pets do usuario no jogo especifico e mandar as info dele
     const ProcurarPets = async () => {
         if (!token) {
@@ -18,18 +19,19 @@ export const usePetsDados = (token, navigate) => {
             return;
         }
         try {
-            let resposta = await axios.get(UrlDadosPets+`/temporada`, {
+            let resposta = await axios.get(UrlDadosPets + `/temporada`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
-            console.log(resposta)
+            setjo_nome(resposta.data.jo_nome)
             setTodosPetsTemporada(resposta.data.pets);
+            setEvolucao(resposta.data.evolucao)
+            console.log(resposta)
         } catch (error) {
             SwalErroToken(navigate, error)
 
-          
+
         }
     };
 
@@ -38,5 +40,81 @@ export const usePetsDados = (token, navigate) => {
     //     ProcurarPets();
     // }, []); // Array vazio garante que o efeito será executado apenas uma vez
 
-    return { TodosPetsTemporada, ProcurarPets }; // Retorna o estado
+    return { TodosPetsTemporada, ProcurarPets, jo_nome, evolucao }; // Retorna o estado
 };
+
+
+
+export const ModalPetProgresso = async (evolucao, ID_inventario, token, navigate, ponto_evo, ProcurarPets) => {
+    if (!evolucao) {
+
+        Swal.fire({
+            title: "Simular desperdicio",
+            html: `
+            <form id="form-pet">
+                    <label for="raridade_pet" class="form-label">Selecione o desperdicio do usuário  enviado pela balança do refeitório:</label>
+                    <select id="desperdicio" class="form-select">
+                        <option value="" selected disabled>Selecione a quantidade de desperdicio:</option>
+                        <option class="bg-success" value="1">Menor que 50g</option>
+                        <option class="bg-warning" value="2">Entre 50g e 200g</option>
+                        <option class="bg-danger" value="3">Maior que 200g</option>
+                    </select>
+                </div>
+            </form>
+            `,
+            icon: "info",
+            confirmButtonColor: "#198754",
+            confirmButtonText: "Simular",
+
+            preConfirm: async () => {
+                const desperdicio = document.getElementById("desperdicio").value
+                if (!desperdicio) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Você precisa selecionar algum peso!",
+                    });
+                    return false
+                }
+                return desperdicio
+            }
+        }).then(async (result) => {
+            SimularProgressoBalanca(result.value, ID_inventario, token, navigate, ponto_evo, ProcurarPets)
+        });
+    } else {
+        console.log("Mascote já evoluido")
+    }
+};
+
+const sortearDecimal = (min, max) => {
+    return Math.random() * (max - min) + min;
+};
+const SimularProgressoBalanca = async (desperdicio, ID_inventario, token, navigate, ponto_evo, ProcurarPets) => {
+    let valorAleatorioDesperdicado = 0;
+
+    if (desperdicio == 1) {
+        valorAleatorioDesperdicado = sortearDecimal(0, 0.50);  
+    } else if (desperdicio == 2) {
+        valorAleatorioDesperdicado = sortearDecimal(0, 0.200);  
+    } else if (desperdicio == 3) {
+        valorAleatorioDesperdicado = sortearDecimal(0.200, 0.999);  
+    }
+
+    try {
+        let resposta = await axios.get(
+            `${UrlDadosPets}/progresso/${valorAleatorioDesperdicado}/${ID_inventario}`, 
+            {
+                headers: { 'Authorization': `Bearer ${token}` }
+            }
+        );
+
+        // Atualiza a barra de progresso com o valor correto
+        const pontuacaoFinal = Math.min(resposta.data.pontuacao_final, ponto_evo);
+        ProcurarPets()
+        console.log("Nova pontuação:", pontuacaoFinal); // Debug
+
+    } catch (error) {
+        SwalErroToken(navigate, error);
+    }
+};
+

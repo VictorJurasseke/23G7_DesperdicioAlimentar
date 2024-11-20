@@ -1,0 +1,113 @@
+Na tela de jogo no inventario, eu preciso da pontuação do pet para ele upar, assim eu crio a barra de progresso relativa com os valores, o nome e caminho do pet, no backend, eu preciso verificar se o pet já atingiu seu pontos_pet para evoluir, ou seja, quando eu me cadastrar em um jogo, me mostrara todos os pets que eu tenho naquela temporada e vera  se meu pet sorteado com o peso pet, já atingiu sem ponto de evolução, se ele não tiver atingido ele mantem seu ID_pet, para poder saber qual é o pet verdadeiro ali, e altera somente o nome_pet e caminoh_pet para o pet Egg. Assim ele esconde o pet, se passando pelo ovo até o usuário terminar de upar ele, variando ao pet sorteado, tem a característica do pet chamado raridade_pet,que altera qual o caminho_pet do ovo, se for raro ele vira o ovo raro, indicando que o usuário conseguiu um ovo raro, na rota se ele verificar que o usuário conseguiu terminar de evoluir seu ovo, ele ganhara outro ovo, mantendo o ciclo infinitamente.
+
+Para fingir o progresso tem um botão no card perfil, que você pode selecionar quanto você quer simular de desperdiçio, sendo Pouco, Médio e alto, sendo
+
+Quase Nulo(Menor que 50g): Peso < 50g
+
+O desperdício é mínimo e ideal, representando o objetivo principal do jogo.
+
+Pouco Desperdício(Entre 50g e 200g): 50g ≤ Peso < 200g
+
+O desperdício está em um nível aceitável, mas ainda há espaço para melhorias.
+
+Muito Desperdício(Maior que 200g): Peso ≥ 200g
+
+O desperdício é excessivo e está longe do objetivo desejado.
+
+<option class="bg-success" value="Minimo">Menor que 50g</option>
+<option class="bg-warning" value="Moderado">Entre 50g e 200g</option>
+<option class="bg-danger" value="Alto">Maior que 200g</option>
+
+
+Se o usuário desperdiçar Menos que 50g então ele consegue a pontuação maxima no jogo, definida no jogo
+
+Se o usuário desperdiçar entre 50g e 200g ele consegue então metade da pontuação maxima, definida no jogo
+
+Se o usuario desperdiçar mais que 200g ele não conseguira nenhum avanço no jogo, e talvéz previamente até mesmo perder pontos por isso.
+
+Quando a temporada encerrrar, o usuario podera ver os pets que ele teve em temporada X, e reiniciara o inventario dele para o primeiro ovo em ciclo novamente.
+
+PETS: ID_pet, nome_pet, caminho_pet, desc_pet, ponto_pet, raridade_pet, peso_pet
+
+INVENTARIO_PETS: ID_inv_pets, ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet
+
+Na rota de peso eu preciso passar o peso, o ID de inventario matricula, para poder achar qual o pet exato na tabela que me refiro, assim eu somo a pontuacao_pet verificando qual o nivel de desperdiçio, somo a pontuacao que o pet ganhou, verifico se ele já evoluiu, ou seja se já atingiu a meta setado previamente pelo dono do sistema quando registrou o mascote se não, eu retorno seu nome como Ovo Comum, Ovo Raro, Ovo Épico ou Ovo Lendario junto com suas imagens interessante tambem, mudar a cor do card de acordo com a raridade_pet e na tela de listar pets, ele tem em vista que o usuário pode escolher qual o mascote visivel com um campo novo que é necessario em inventario_matricula, e mando para jogos_matricula a quantidade de peso desperdiçado pelo usuário, para ser enviado em relatorio e tals  
+
+
+
+=============================================================================================
+
+Na Tela de Jogo: Inventário
+
+- A pontuação do pet é necessária para ele "upar".
+- A barra de progresso é relativa aos valores de pontuação do pet.
+- Exibe o nome e o caminho do pet no inventário.
+- No Backend: Verificação de Pontos do Pet
+- Verificar se o pet já atingiu seus pontos necessários para evoluir.
+
+Se não atingiu:
+
+- Mantém o ID_pet para identificar o pet verdadeiro.
+- Altera somente nome_pet e caminho_pet para "Pet Egg" (escondendo o pet até ser evoluído).
+- A raridade do pet (raridade_pet) altera o caminho do ovo:
+- Pet raro → Ovo raro (visual diferenciado).
+- Se o pet terminou de evoluir:
+- Ganha outro ovo, iniciando um novo ciclo de evolução.
+- Simulação do Progresso: Botão no Card Perfil
+
+Permite selecionar o nível de desperdício:
+
+Quase Nulo (Peso < 50g)
+
+-Desperdício mínimo e ideal.
+
+Pouco Desperdício (50g ≤ Peso < 200g)
+
+- Nível aceitável, mas precisa de melhorias.
+
+Muito Desperdício (Peso ≥ 200g)
+
+-Desperdício excessivo, fora do objetivo do jogo.
+
+Pontuação Baseada no Desperdício
+
+Quase Nulo (Peso < 50g): Pontuação máxima.
+
+Pouco Desperdício (50g ≤ Peso < 200g): Metade da pontuação máxima.
+
+Muito Desperdício (Peso ≥ 200g): Nenhum avanço, podendo até perder pontos.
+
+
+Encerramento da Temporada
+- Exibe os pets obtidos na temporada anterior.
+- Reinicia o inventário com o primeiro ovo do ciclo.
+
+
+Estrutura de Dados
+PETS
+
+ID_pet, nome_pet, caminho_pet, desc_pet, ponto_pet, raridade_pet, peso_pet.
+INVENTARIO_PETS
+
+ID_inv_pets, ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet.
+Rota de Peso
+Recebe:
+
+Peso do desperdício.
+ID_inv_pets para localizar o pet na tabela.
+Processa:
+
+Soma a pontuação do pet com base no nível de desperdício.
+Verifica se o pet já atingiu a meta de evolução:
+Não evoluído: Retorna como "Ovo Comum", "Ovo Raro", "Ovo Épico" ou "Ovo Lendário" (com suas respectivas imagens).
+Evoluído: Inicia outro ciclo.
+Adicionais:
+
+Cor do card muda conforme a raridade (raridade_pet).
+Usuário escolhe o pet visível no inventário com um novo campo em INVENTARIO_PETS.
+Envia o peso desperdiçado para JOGOS_MATRICULA, gerando relatórios futuros.
+
+
+
+
+ 

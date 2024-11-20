@@ -113,6 +113,20 @@ rotas.get('/temporada', verificarToken, async (req, res) => {
     }
 });
 
+rotas.get('/progresso/:valorAleatorioDesperdicado/:ID_inventario', verificarToken, async (req,res) =>{
+    console.log("Requisicão get recebida em api/pets/progresso")
+    const desperdicio = req.params.valorAleatorioDesperdicado
+    const ID_inventario = req.params.ID_inventario
+    const ID_usuarios = req.info.ID_usuarios
+    try{
+        const pets = await model.ProgressoPet(desperdicio,ID_inventario,ID_usuarios)
+        res.json(pets)
+    } catch (error){
+        console.log("Erro ao simular progresso", error);
+        res.status(500).json({error:"Erro interno do servidor :p"})
+    }
+})
+
 
 
 

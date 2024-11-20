@@ -31,7 +31,7 @@ export const StatusJogo = (jo_status) => {
 
 
 // Serve para validar a conta quando o usuário vai criar sua senha
-export const ErrosValidarConta = (errors, setErrosVisiveis,errosVisiveis) => {
+export const ErrosValidarConta = (errors, setErrosVisiveis, errosVisiveis) => {
 
 
   errors.forEach((erro) => {
@@ -56,16 +56,37 @@ export const ErrosValidarConta = (errors, setErrosVisiveis,errosVisiveis) => {
           erro_qr: true,
         }));
         break;
-        
-        case "CAMPO":
-          setErrosVisiveis((prevState) => ({
-            ...prevState,
-            Campo: true,
-          }));
-          break;
+
+      case "CAMPO":
+        setErrosVisiveis((prevState) => ({
+          ...prevState,
+          Campo: true,
+        }));
+        break;
       // Caso de erro desconhecido
       default:
         break;
     }
   });
 };
+export const MudarFundoraridade = (tipo) => {
+  let cor;
+  switch (tipo) {
+    case "Comum":
+      cor = "#007BFF";  // Azul
+      break;
+    case "Raro":
+      cor = "#FFA500";  // Laranja
+      break;
+    case "Épico":
+      cor = "#800080";  // Roxo
+      break;
+    case "Lendario":
+      cor = "#FFD700";  // Dourado
+      break;
+    default:
+      cor = "#000000";  // Cor padrao (caso o tipo nao seja reconhecido)
+  }
+  return cor;
+};
+
