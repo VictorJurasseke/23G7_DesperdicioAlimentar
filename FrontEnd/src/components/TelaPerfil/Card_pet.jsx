@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { ModalPetProgresso } from './FunctionPets';
 import { MudarFundoraridade } from '../NivelAcesso';
 
+
 const Url = 'http://localhost:3025/Pets/';
 
 const Card_pet = ({ nome, caminho, nivel_pet, raridade, evolucao, ID_inventario, ponto_evo, token, navigate,ProcurarPets }) => {
@@ -33,7 +34,7 @@ const Card_pet = ({ nome, caminho, nivel_pet, raridade, evolucao, ID_inventario,
                     {nome}
                 </h5>
 
-                {!evolucao && (
+                {evolucao == 1 && (
                     <div className="progress" style={{ height: '10px' }}>
                         <div
                             className="progress-bar"

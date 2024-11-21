@@ -9,9 +9,8 @@ import { usePetsDados } from './FunctionPets';
 
 const NavBarPets = ({token, navigate}) => {
 
-    const {TodosPetsTemporada, ProcurarPets, jo_nome, evolucao} = usePetsDados(token, navigate) 
+    const {TodosPetsTemporada, ProcurarPets, jo_nome} = usePetsDados(token, navigate) 
 
-    console.log("Evolução",evolucao)
     console.log(TodosPetsTemporada)
     useEffect(()=>{
         ProcurarPets()
@@ -38,7 +37,7 @@ const NavBarPets = ({token, navigate}) => {
                          raridade={item.raridade_pet}
                          nome={item.nome_pet} 
                          caminho={item.caminho_pet}
-                         evolucao={evolucao}
+                         evolucao={item.evolucao}
                          ID_inventario={item.ID_inv_pets}
                          ponto_evo={item.ponto_pet}
                          nivel_pet={item.pontuacao_pet}

@@ -98,6 +98,8 @@ rotas.post('/criarPets', verificarToken, async (req, res) => {
 });
 
 
+
+//Procura todos os pets do usuario na temporada atual que ele participa
 rotas.get('/temporada', verificarToken, async (req, res) => {
     console.log(`Requisição get recebida em /api/pets/temporadaAtual`)
 
@@ -113,8 +115,13 @@ rotas.get('/temporada', verificarToken, async (req, res) => {
     }
 });
 
+
+//Rota que simula o progresso do usuário, verifica se o seu pet atingiu passo de evolução, e atribui pontos para o pet, soma o total de desperdicio do usuário,
+// e a quantidade de pontos já conseguida pelo mesmo
 rotas.get('/progresso/:valorAleatorioDesperdicado/:ID_inventario', verificarToken, async (req,res) =>{
     console.log("Requisicão get recebida em api/pets/progresso")
+
+    // Variavel que guarda um valor entre 0.800kg e 0.200kg
     const desperdicio = req.params.valorAleatorioDesperdicado
     const ID_inventario = req.params.ID_inventario
     const ID_usuarios = req.info.ID_usuarios

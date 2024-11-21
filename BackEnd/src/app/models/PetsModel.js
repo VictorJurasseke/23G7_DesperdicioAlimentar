@@ -8,6 +8,9 @@ const upload = multer({ storage });  // Usando o multer com a configuração de 
 const db = require('../../db');
 const { pets } = require('../pets');
 
+// TODOS OS OVOS FODAS
+
+
 
 module.exports.retornarPets = async () => {
     let conexao;
@@ -86,7 +89,7 @@ module.exports.CriarPetPadrao = async () => {
 
 
 
-// Procura qual os pets que o usuario possui, e verifica se ele já esta em sua forma final
+// Procura qual os pets que o usuario possui, e verifica se ele já esta em sua forma final, se o mascote chegou neste ponto, ele deveria ganhar um mascote novo
 module.exports.ProcurarPetJogo = async (ID_usuarios) => {
     let conexao;
     try {
@@ -103,13 +106,35 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
 
         // Passo 2: Obter os pets do usuário
         const [Pets] = await conexao.execute(
-            'SELECT p.nome_pet, p.caminho_pet, p.ID_pet, i.pontuacao_pet, p.raridade_pet, i.ID_inv_pets, p.ponto_pet FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ?;',
+            'SELECT p.nome_pet, p.caminho_pet, p.ID_pet, i.pontuacao_pet, p.raridade_pet, i.ID_inv_pets, p.ponto_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ?;',
             [ID_usuarios, ID_jogos]
         );
         console.log("Pets do usuário:", Pets);
 
-        // se estiver true, quer dizer que o pet já evoluiu, ou seja esta retornando seus valores reais
-        let evolucao = false
+
+
+        // Função que verifica qual a raridade do mascote para trocar a cor do ovo:
+        const TrocarOvo = (raridade) => {
+            let CaminhoOvo;
+            switch (raridade) {
+              case "Comum":
+                CaminhoOvo = "EggComum.gif";  // Azul
+                break;
+              case "Raro":
+                CaminhoOvo = "EggRaro.gif";  // Laranja
+                break;
+              case "Épico":
+                CaminhoOvo = "EggEpico.gif";  // Roxo
+                break;
+              case "Lendário":
+                CaminhoOvo = "EggLendario.gif";  // Dourado
+                break;
+              default:
+                CaminhoOvo = "Egg.gif";  // CaminhoOvo padrao (caso o tipo nao seja reconhecido)
+            }
+            return CaminhoOvo;
+          };
+
         // Passo 3: Verificar a pontuação de evolução de cada pet
         for (let pet of Pets) {
 
@@ -119,16 +144,36 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
                 [pet.ID_pet]
             );
 
+            console.log(pet.evolucao)
             // Verifica se a pontuação do pet é suficiente para evoluir
-            if (pet.pontuacao_pet >= PontoEvoPet[0].ponto_pet) {
-                console.log("manter imagem e nome")
-                evolucao = true
-            } else {
-                // Substitui nome e imagem do pet por Egg se não pode evoluir
-                evolucao = false
-                pet.nome_pet = "Egg";
-                pet.caminho_pet = "Egg.gif";
+            if (pet.pontuacao_pet >= PontoEvoPet[0].ponto_pet && pet.evolucao === 1) {
+                console.log("O mascote acabou de evoluir!!! usando valor evolucao 2 para simular primeira vez, necessario dar um novo ovo para o usuario!");
+                
+                // Altera na função atual e no banco, para a proxima chamada!
+                pet.evolucao = 2
+                await conexao.execute(
+                    'UPDATE inventario_matricula SET evolucao = 2 WHERE ID_usuarios = ? AND ID_pets = ?',
+                    [ID_usuarios, pet.ID_pet]
+                );
+           
+            } else if (pet.evolucao == 2) {
+               
+                console.log("O mascote já passou por uma evolução, não será necessário simular primeira vez");
+
+                pet.evolucao = 3; // Pet evolui para o nível 3 não é necessario nenhuma mudança no front
+                await conexao.execute(
+                    'UPDATE inventario_matricula SET evolucao = 3 WHERE ID_usuarios = ? AND ID_pets = ?',
+                    [ID_usuarios, pet.ID_pet]
+                );
+
+               
+            } else if(pet.evolucao == 3){
+                console.log('Evoluido')
+            }else{
+                pet.caminho_pet = 'Egg.gif'
+                pet.nome_pet = 'Egg'
             }
+
         }
 
         // Retorna os pets com a informação de se podem evoluir ou não, com o nome e imagem alterados se necessário
@@ -137,7 +182,6 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             message: "Pets selecionados com sucesso!",
             pets: Pets,
             jo_nome: jo_nome,
-            evolucao: evolucao
         };
 
     } catch (error) {
@@ -149,7 +193,7 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
 };
 
 
-
+// APENAS SIMULA O PROGRESSO DO PET, FALTA REGISTRAR POR QRCODE E NÃO POR ID
 module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) => {
     console.log("Valor desperdiçado:", desperdicio);
     let conexao;
@@ -164,9 +208,11 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
 
         console.log(jogo[0]);
 
-        // Valor grama é a média de uma refeição
+        // Valor grama é a média de uma refeição - pode ser usada para relatório
         console.log(jogo[0].valor_grama);
         const MediaRefeicao = jogo[0].valor_grama;
+
+        // Pontos dado na configuração do jogo!
         const PontosPorRefeicaoPerfeita = jogo[0].valor_pontos;
 
         // Lógica de multiplicador diário
@@ -197,14 +243,14 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
                 multiplicadorDia = jogo[0].jogos_pts_sabado;
                 break;
             default:
-                multiplicadorDia = 1; // Caso o valor de `getDay()` não seja válido
+                multiplicadorDia = 1; // Caso o valor de `getDay()` não seja válido da multiplicador de 1
         }
 
-        // Atualiza o peso acumulativo
+        // Pega o id do jogo e guarda nesta variavel
         const ID_jogo = jogo[0].ID_jogos;
         console.log(ID_usuarios);
 
-        // Atualiza o peso acumulativo do usuário
+        // Atualiza o peso acumulativo do usuário no jogos_matricula
         const [PesoAcumulativoSoma] = await conexao.execute(
             'UPDATE jogos_matricula SET peso_acumulativo = peso_acumulativo + ? WHERE ID_jogos = ? AND ID_usuarios = ?',
             [desperdicio, ID_jogo, ID_usuarios]
@@ -219,7 +265,8 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
             pontosAtribuidos = PontosPorRefeicaoPerfeita;
         } else if (desperdicio > 50 && desperdicio <= 200) {
             // Desperdício moderado, ganha metade dos pontos
-            pontosAtribuidos = PontosPorRefeicaoPerfeita / 2;
+            pontosAtribuidos = (PontosPorRefeicaoPerfeita / 2);
+            console.log("Meio coiso-suposto 5", pontosAtribuidos)
         } else {
             // Desperdício alto, não ganha pontos
             pontosAtribuidos = 0;
@@ -228,7 +275,7 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
         // Aplica o multiplicador diário à pontuação
         pontosAtribuidos *= multiplicadorDia;
 
-        // Atualiza os pontos do usuário com a pontuação calculada
+        // Atualiza os pontos do usuário com a pontuação calculada, se houver alguma mudança
         if (pontosAtribuidos > 0) {
 
             // Soma os pontos do usuario em total em sua matricula, ou sejá quantidade de pontos usadas no rank

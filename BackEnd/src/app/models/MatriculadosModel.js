@@ -54,7 +54,7 @@ module.exports.retornarNaoMatriculados = async () => {
     }
 };
 
-//Matriculados pela tela dev
+//Matriculados pela tela dev - Função em andamento porque tem que arrumar o sorteamento do ovo por aqui tambem, capaz de eu só apagar esta
 module.exports.MatricularAlunos = async (ID_jogo, ID_turmas, ID_usuarios) => {
     let conexao;
     try {

@@ -9,7 +9,7 @@ export const usePetsDados = (token, navigate) => {
 
     const [TodosPetsTemporada, setTodosPetsTemporada] = useState(null);
     const [jo_nome, setjo_nome] = useState(null)
-    const [evolucao, setEvolucao] = useState(null)
+   
 
 
     // Função para procurar todos os pets do usuario no jogo especifico e mandar as info dele
@@ -26,7 +26,7 @@ export const usePetsDados = (token, navigate) => {
             });
             setjo_nome(resposta.data.jo_nome)
             setTodosPetsTemporada(resposta.data.pets);
-            setEvolucao(resposta.data.evolucao)
+            
             console.log(resposta)
         } catch (error) {
             SwalErroToken(navigate, error)
@@ -40,13 +40,13 @@ export const usePetsDados = (token, navigate) => {
     //     ProcurarPets();
     // }, []); // Array vazio garante que o efeito será executado apenas uma vez
 
-    return { TodosPetsTemporada, ProcurarPets, jo_nome, evolucao }; // Retorna o estado
+    return { TodosPetsTemporada, ProcurarPets, jo_nome }; // Retorna o estado
 };
 
 
 
 export const ModalPetProgresso = async (evolucao, ID_inventario, token, navigate, ponto_evo, ProcurarPets) => {
-    if (!evolucao) {
+    if (evolucao == 1) {
 
         Swal.fire({
             title: "Simular desperdicio",
