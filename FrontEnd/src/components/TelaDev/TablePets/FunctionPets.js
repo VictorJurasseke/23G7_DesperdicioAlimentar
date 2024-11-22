@@ -105,17 +105,16 @@ export const ModalCriarPet = async (token, navigate, TodosPets, BuscarTodosPets)
             </div>
             <div class="mb-3 text-start">
                 <label for="ponto_pet" class="form-label">Pontos para o pet evoluir:</label>
-                <input type="number" id="ponto_pet" class="form-control" placeholder="Pontos do Pet" />
+                <input type="number" id="ponto_pet" class="form-control" placeholder="Pontos padrão 100" />
             </div>
             <div class="mb-3 text-start">
                 <label for="raridade_pet" class="form-label">Raridade do Pet:</label>
                 <select id="raridade_pet" class="form-select">
                     <option disabled selected>Selecione a raridade:</option>
                     <option value="Comum">Comum</option>
-                    <option value="Incomum">Incomum</option>
                     <option value="Raro">Raro</option>
-                    <option value="Epico">Épico</option>
-                    <option value="Lendario">Lendário</option>
+                    <option value="Épico">Épico</option>
+                    <option value="Lendário">Lendário</option>
                 </select>
             </div>
         </form>

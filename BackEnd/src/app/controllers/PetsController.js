@@ -36,11 +36,10 @@ rotas.post('/', verificarToken, upload.single('pet_img_caminho'), async (req, re
     const { nome_pet, desc_pet, ponto_pet, raridade_pet } = req.body;
 
     const pesosPorRaridade = {
-        Lendario: 0.005,
-        Comum: 0.6,
-        Raro: 0.2,
-        Incomum: 0.4,
-        Epico: 0.1,
+        Lendário: 0.05,
+        Comum: 0.5,
+        Raro: 0.3,
+        Épico: 0.08,
     };
     let peso_pet = pesosPorRaridade[raridade_pet];
     console.log(peso_pet)

@@ -14,7 +14,7 @@ const pets = [
         desc_pet: "Um coelhinho elegante e charmoso.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.6,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -23,7 +23,7 @@ const pets = [
         desc_pet: "Um macaco misterioso e sombrio.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.2,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -32,7 +32,7 @@ const pets = [
         desc_pet: "Um macaco dourado com mistérios ocultos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.005,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -41,7 +41,7 @@ const pets = [
         desc_pet: "Um macaco rosa cheio de energia.",
         ponto_pet: 100,
         raridade_pet: "Épico",
-        peso_pet: 0.1,
+        peso_pet: 0.08,
         evolucao: 1
     },
     {
@@ -50,7 +50,7 @@ const pets = [
         desc_pet: "Um adorável macaco roxo.",
         ponto_pet: 100,
         raridade_pet: "Raro",  // Alterado para "Raro"
-        peso_pet: 0.4,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -59,7 +59,7 @@ const pets = [
         desc_pet: "Um macaco alegre com um arco-íris.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.6,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -68,7 +68,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Épico",
-        peso_pet: 0.1,
+        peso_pet: 0.08,
         evolucao: 1
     },
 ];
