@@ -6,7 +6,7 @@ export const pets = [
         ponto_pet: 0,
         raridade_pet: "Comum",
         peso_pet: 0,
-        evolucao: false
+        evolucao: 1
     },
     {
         nome_pet: "Gentle Bunny",
@@ -15,7 +15,7 @@ export const pets = [
         ponto_pet: 100,
         raridade_pet: "Comum",
         peso_pet: 0.6,
-        evolucao: false
+        evolucao: 1
     },
     {
         nome_pet: "Monkey Black",
@@ -24,7 +24,7 @@ export const pets = [
         ponto_pet: 100,
         raridade_pet: "Raro",
         peso_pet: 0.2,
-        evolucao: false
+        evolucao: 1
     },
     {
         nome_pet: "Golden Shadow Monkey",
@@ -33,7 +33,7 @@ export const pets = [
         ponto_pet: 100,
         raridade_pet: "Lendário",
         peso_pet: 0.005,
-        evolucao: false
+        evolucao: 1
     },
     {
         nome_pet: "Pink Power Monkey",
@@ -42,7 +42,7 @@ export const pets = [
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.1,
-        evolucao: false
+        evolucao: 1
     },
     {
         nome_pet: "Cute Purple Monkey",
@@ -51,7 +51,7 @@ export const pets = [
         ponto_pet: 100,
         raridade_pet: "Raro",  // Alterado para "Raro"
         peso_pet: 0.4,
-        evolucao: false
+        evolucao: 1
     },
     {
         nome_pet: "Happy Rainbow Monkey",
@@ -60,7 +60,7 @@ export const pets = [
         ponto_pet: 100,
         raridade_pet: "Comum",
         peso_pet: 0.6,
-        evolucao: false
+        evolucao: 1
     },
     {
         nome_pet: "Avatar Monkey",
@@ -69,11 +69,13 @@ export const pets = [
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.1,
-        evolucao: false
+        evolucao: 1
     },
 ];
 
-const sorteioComBaseNoPeso = (pets) => {
+export const sorteioComBaseNoPeso = (pets) => {
+    
+    
     const pesoTotal = pets.reduce((acc, pet) => acc + pet.peso_pet, 0);
     const sorteioAleatorio = Math.random() * pesoTotal;  // Sorteio aleatório entre 0 e o peso total
     console.log('Sorteio Aleatório:', sorteioAleatorio);
@@ -89,5 +91,3 @@ const sorteioComBaseNoPeso = (pets) => {
     }
 };
 
-console.log(pets);
-console.log(sorteioComBaseNoPeso(pets));

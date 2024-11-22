@@ -9,7 +9,7 @@ export const usePetsDados = (token, navigate) => {
 
     const [TodosPetsTemporada, setTodosPetsTemporada] = useState(null);
     const [jo_nome, setjo_nome] = useState(null)
-   
+
 
 
     // Função para procurar todos os pets do usuario no jogo especifico e mandar as info dele
@@ -26,7 +26,7 @@ export const usePetsDados = (token, navigate) => {
             });
             setjo_nome(resposta.data.jo_nome)
             setTodosPetsTemporada(resposta.data.pets);
-            
+
             console.log(resposta)
         } catch (error) {
             SwalErroToken(navigate, error)
@@ -58,6 +58,7 @@ export const ModalPetProgresso = async (evolucao, ID_inventario, token, navigate
                         <option class="bg-success" value="1">Menor que 50g</option>
                         <option class="bg-warning" value="2">Entre 50g e 200g</option>
                         <option class="bg-danger" value="3">Maior que 200g</option>
+                        <option class="bg-light" value="upar">Evoluir Mascote</option>
                     </select>
                 </div>
             </form>
@@ -79,7 +80,9 @@ export const ModalPetProgresso = async (evolucao, ID_inventario, token, navigate
                 return desperdicio
             }
         }).then(async (result) => {
-            SimularProgressoBalanca(result.value, ID_inventario, token, navigate, ponto_evo, ProcurarPets)
+            if (result.isConfirmed) {
+                SimularProgressoBalanca(result.value, ID_inventario, token, navigate, ponto_evo, ProcurarPets)
+            }
         });
     } else {
         console.log("Mascote já evoluido")
@@ -93,16 +96,18 @@ const SimularProgressoBalanca = async (desperdicio, ID_inventario, token, naviga
     let valorAleatorioDesperdicado = 0;
 
     if (desperdicio == 1) {
-        valorAleatorioDesperdicado = sortearDecimal(0, 0.50);  
+        valorAleatorioDesperdicado = sortearDecimal(0, 0.050);
     } else if (desperdicio == 2) {
-        valorAleatorioDesperdicado = sortearDecimal(0, 0.200);  
+        valorAleatorioDesperdicado = sortearDecimal(0.051, 0.200);
     } else if (desperdicio == 3) {
-        valorAleatorioDesperdicado = sortearDecimal(0.200, 0.999);  
+        valorAleatorioDesperdicado = sortearDecimal(0.200, 0.999);
+    } else if(desperdicio === "upar"){
+        valorAleatorioDesperdicado = 100
     }
 
     try {
         let resposta = await axios.get(
-            `${UrlDadosPets}/progresso/${valorAleatorioDesperdicado}/${ID_inventario}`, 
+            `${UrlDadosPets}/progresso/${valorAleatorioDesperdicado}/${ID_inventario}`,
             {
                 headers: { 'Authorization': `Bearer ${token}` }
             }
