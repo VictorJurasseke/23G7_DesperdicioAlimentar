@@ -1,0 +1,14 @@
+.pets-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* Espaçamento entre os cards */
+    transition: all 0.5s ease-in-out; /* Suaviza o movimento dos cards */
+}
+
+.card-pet {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card-pet:hover {
+    transform: scale(1.1); /* Faz o card crescer ao passar o mouse */
+}

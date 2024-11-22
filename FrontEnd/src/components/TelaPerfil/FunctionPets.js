@@ -24,6 +24,7 @@ export const usePetsDados = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            console.log(resposta)
             setjo_nome(resposta.data.jo_nome)
             setTodosPetsTemporada(resposta.data.pets);
 
@@ -89,9 +90,24 @@ export const ModalPetProgresso = async (evolucao, ID_inventario, token, navigate
     }
 };
 
+export const MostrarOvo = (raridade) => {
+    const ovos = {
+        Comum: "EggComum.gif",  // Azul
+        Raro: "EggRaro.gif",     // Laranja
+        Épico: "EggEpico.gif",   // Roxo
+        Lendário: "EggLendario.gif",  // Dourado
+    };
+    return ovos[raridade] || "Egg.gif";  // CaminhoOvo padrão (caso o tipo não seja reconhecido)
+};
+
+
+
+
 const sortearDecimal = (min, max) => {
     return Math.random() * (max - min) + min;
 };
+
+
 const SimularProgressoBalanca = async (desperdicio, ID_inventario, token, navigate, ponto_evo, ProcurarPets) => {
     let valorAleatorioDesperdicado = 0;
 
@@ -101,7 +117,7 @@ const SimularProgressoBalanca = async (desperdicio, ID_inventario, token, naviga
         valorAleatorioDesperdicado = sortearDecimal(0.051, 0.200);
     } else if (desperdicio == 3) {
         valorAleatorioDesperdicado = sortearDecimal(0.200, 0.999);
-    } else if(desperdicio === "upar"){
+    } else if (desperdicio === "upar") {
         valorAleatorioDesperdicado = 100
     }
 
@@ -116,6 +132,7 @@ const SimularProgressoBalanca = async (desperdicio, ID_inventario, token, naviga
         // Atualiza a barra de progresso com o valor correto
         const pontuacaoFinal = Math.min(resposta.data.pontuacao_final, ponto_evo);
         ProcurarPets()
+        console.log("Resposta da simulação", resposta)
         console.log("Nova pontuação:", pontuacaoFinal); // Debug
 
     } catch (error) {

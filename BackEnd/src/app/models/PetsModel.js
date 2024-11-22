@@ -7,6 +7,7 @@ const { storage } = require('../../app');  // Importando o storage configurado
 const upload = multer({ storage });  // Usando o multer com a configuração de armazenamento
 const db = require('../../db');
 const { pets, sorteioComBaseNoPeso } = require('../pets');
+const e = require('express');
 
 // TODOS OS OVOS FODAS
 
@@ -88,6 +89,7 @@ module.exports.CriarPetPadrao = async () => {
 
 
 
+// PROCURAR TELA PERFIL Procura todos os ultimos mascotes que já passaram por evolução
 
 // Procura qual os pets que o usuario possui, e verifica se ele já esta em sua forma final, se o mascote chegou neste ponto, ele deveria ganhar um mascote novo
 module.exports.ProcurarPetJogo = async (ID_usuarios) => {
@@ -101,95 +103,23 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             [ID_usuarios]
         );
 
-        const ID_jogos = Jogo[0].ID_jogos;
-        const jo_nome = Jogo[0].jo_nome;
+
+
 
         // Passo 2: Obter os pets do usuário
         const [Pets] = await conexao.execute(
-            'SELECT p.nome_pet, p.caminho_pet, p.ID_pet, i.pontuacao_pet, p.raridade_pet, i.ID_inv_pets, p.ponto_pet, p.desc_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ? ORDER BY i.ID_inv_pets DESC;',
-            [ID_usuarios, ID_jogos]
+            'SELECT p.nome_pet, p.caminho_pet, p.ID_pet, i.pontuacao_pet, p.raridade_pet, i.ID_inv_pets, p.ponto_pet, p.desc_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ? ORDER BY i.ID_inv_pets DESC LIMIT 9;',
+            [ID_usuarios, Jogo[0].ID_jogos]
         );
         console.log("Pets do usuário:", Pets);
 
 
-
-        // Função que verifica qual a raridade do mascote para trocar a cor do ovo:
-        const TrocarOvo = (raridade) => {
-            console.log("Raridade do ovo:", raridade)
-            let CaminhoOvo;
-            switch (raridade) {
-                case "Comum":
-                    CaminhoOvo = "EggComum.gif";  // Azul
-                    break;
-                case "Raro":
-                    CaminhoOvo = "EggRaro.gif";  // Laranja
-                    break;
-                case "Épico":
-                    CaminhoOvo = "EggEpico.gif";  // Roxo
-                    break;
-                case "Lendário":
-                    CaminhoOvo = "EggLendario.gif";  // Dourado
-                    break;
-                default:
-                    CaminhoOvo = "Egg.gif";  // CaminhoOvo padrao (caso o tipo nao seja reconhecido)
-            }
-            return CaminhoOvo;
-        };
-
-        // Passo 3: Verificar a pontuação de evolução de cada pet
-        for (let pet of Pets) {
-
-            // Acha o valor de pontuação do pet especifico pertencente ao usuario
-            const [PontoEvoPet] = await conexao.execute(
-                'SELECT ponto_pet FROM pets WHERE ID_pet = ?',
-                [pet.ID_pet]
-            );
-
-
-            // Verifica se a pontuação do pet é suficiente para evoluir
-            if (pet.pontuacao_pet >= PontoEvoPet[0].ponto_pet && pet.evolucao === 1) {
-                console.log("O mascote acabou de evoluir!!! usando valor evolucao 2 para simular primeira vez, necessario dar um novo ovo para o usuario!");
-
-                // Altera na função atual e no banco, para a proxima chamada!
-                pet.evolucao = 2
-                await conexao.execute(
-                    'UPDATE inventario_matricula SET evolucao = 2 WHERE ID_usuarios = ? AND ID_pets = ?',
-                    [ID_usuarios, pet.ID_pet]
-                );
-
-
-
-            } else if (pet.pontuacao_pet >= PontoEvoPet[0].ponto_pet && pet.evolucao == 2) {
-
-                console.log("O mascote já passou por uma evolução, não será necessário simular primeira vez");
-
-                pet.evolucao = 3; // Pet evolui para o nível 3 não é necessario nenhuma mudança no front
-                await conexao.execute(
-                    'UPDATE inventario_matricula SET evolucao = 3 WHERE ID_usuarios = ? AND ID_pets = ?',
-                    [ID_usuarios, pet.ID_pet]
-                );
-
-
-            } else if (pet.pontuacao_pet >= PontoEvoPet[0].ponto_pet && pet.evolucao == 3) {
-                console.log('Evoluido')
-            } else {
-                await conexao.execute(
-                    'UPDATE inventario_matricula SET evolucao = 1 WHERE ID_usuarios = ? AND ID_pets = ?',
-                    [ID_usuarios, pet.ID_pet]
-                );
-                pet.evolucao = 1
-                pet.caminho_pet = TrocarOvo(pet.raridade_pet)
-                pet.nome_pet = 'Egg'
-            }
-
-        }
-
-        // Retorna os pets com a informação de se podem evoluir ou não, com o nome e imagem alterados se necessário
+        // Retorna todos os mascotes
         return {
             status: true,
             message: "Pets selecionados com sucesso!",
             pets: Pets,
-            jo_nome: jo_nome,
+            jo_nome: Jogo[0].jo_nome,
         };
 
     } catch (error) {
@@ -199,6 +129,48 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
         db.liberarConexao(conexao);
     }
 };
+
+
+// Função que verifica a raridade do mascote para trocar a cor do ovo:
+
+
+// for (let pet of Pets) {
+//     const [PontoEvoPet] = await conexao.execute(
+//         'SELECT ponto_pet FROM pets WHERE ID_pet = ?',
+//         [pet.ID_pet]
+//     );
+
+//     //Ponto para evoluir o mascote
+//     const pontoEvolucao = PontoEvoPet[0].ponto_pet;
+
+//     if (pet.pontuacao_pet >= pontoEvolucao) {
+//         if (pet.evolucao === 1) {
+//             console.log("O mascote acabou de evoluir!!!");
+//             pet.evolucao = 2;
+//         } else if (pet.evolucao === 2) {
+//             console.log("O mascote já passou por uma evolução!");
+//             pet.evolucao = 3; // Pet evolui para o nível 3
+//         }
+
+//         await conexao.execute(
+//             'UPDATE inventario_matricula SET evolucao = ? WHERE ID_usuarios = ? AND ID_pets = ?',
+//             [pet.evolucao, ID_usuarios, pet.ID_pet]
+//         );
+//     } else {
+//         pet.evolucao = 1;
+//         pet.caminho_pet = TrocarOvo(pet.raridade_pet);
+//         pet.nome_pet = 'Egg';
+//         await conexao.execute(
+//             'UPDATE inventario_matricula SET evolucao = 1 WHERE ID_usuarios = ? AND ID_pets = ?',
+//             [ID_usuarios, pet.ID_pet]
+//         );
+//     }
+// }
+
+
+
+
+
 
 
 // APENAS SIMULA O PROGRESSO DO PET, FALTA REGISTRAR POR QRCODE E NÃO POR ID
@@ -214,7 +186,9 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
             [ID_inventario]
         );
 
-        console.log(jogo[0]);
+        const ID_jogo = jogo[0].ID_jogos;
+
+
 
         // Valor grama é a média de uma refeição - pode ser usada para relatório
         const MediaRefeicao = jogo[0].valor_grama;
@@ -254,7 +228,6 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
         }
 
         // Pega o id do jogo e guarda nesta variavel
-        const ID_jogo = jogo[0].ID_jogos;
 
         // Atualiza o peso acumulativo do usuário no jogos_matricula
         const [PesoAcumulativoSoma] = await conexao.execute(
@@ -262,7 +235,7 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
             [desperdicio, ID_jogo, ID_usuarios]
         );
 
-        
+
         // Verifica o desperdício e aplica os pontos conforme a regra
         let pontosAtribuidos = 0;
 
@@ -300,33 +273,39 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
                 'UPDATE inventario_matricula SET pontuacao_pet = pontuacao_pet + ? WHERE ID_jogos = ? AND ID_usuarios = ?',
                 [pontosAtribuidos, ID_jogo, ID_usuarios]
             );
-        }
 
-        const [Evolucao] = await conexao.execute(
-            `
-            SELECT i.pontuacao_pet, p.ponto_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.pontuacao_pet >= p.ponto_pet AND i.ID_usuarios = ? AND i.ID_inv_pets = ?
-            `,
-            [ID_usuarios, ID_inventario]
-        );
-
-
-        if (Evolucao.length > 0 || Evolucao.evolucao == 1) {
-            console.log("ganhando novo mascote")
-            const [TodosPets] = await conexao.execute(
-                'SELECT * FROM pets',
+            const [Mascote] = await conexao.execute(
+                `SELECT i.pontuacao_pet, p.ponto_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.pontuacao_pet >= p.ponto_pet AND i.ID_usuarios = ? AND i.ID_inv_pets = ?`,
+                [ID_usuarios, ID_inventario]
             );
 
-            const PetSorteio = sorteioComBaseNoPeso(TodosPets)
-            // Passo 6: Criar o inventário do usuário com o ovo sorteado
-            const [Inventario] = await conexao.execute(
-                'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao) VALUES(?,?,?,?,?,?)',
-                [ID_jogo, ID_usuarios, PetSorteio.ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' '), 0, 1]
-            );
+
+            console.log("EVOLUTIONb", Mascote[0].evolucao)
+
+            if (Mascote.length > 0 && Mascote[0].evolucao == 1) {
+                await conexao.execute(
+                    'UPDATE inventario_matricula SET evolucao = 2 WHERE ID_inv_pets = ?',
+                    [ID_inventario]
+                );
+                const [pets] = await conexao.execute('SELECT * FROM pets')
+                const ovo = sorteioComBaseNoPeso(pets)
+                console.log(ovo.ID_pet)
+                const DataAtual = new Date().toISOString().split('T')[0];
+
+                await conexao.execute('INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao) VALUES(?,?,?,?,?,?)', [ID_jogo, ID_usuarios, ovo.ID_pet,DataAtual, 0, 1])
+
+            }
+            // Se a requisição vier com linhas, quer dizer que o mascote evoluiu
+            // Se esta com o evolucao = 1,quer dizer que é a primeira vez que isso acontece
+
+            console.log("ganhando novo mascote");
+        } else {
+            console.log("O mascote ainda não está apto a evolução");
         }
-        
 
 
-        return { status: true, message: "Seu pet teve seu progresso aumentado com sucesso", pontucao_final: pontuacao_final[0].pontuacao_pet };
+
+        return { status: true, message: "Seu pet teve seu progresso aumentado com sucesso" };
     } catch (error) {
         console.error("Erro ao inserir os pets", error);
         return { status: false, error: error.message };

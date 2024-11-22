@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ModalPetProgresso } from './FunctionPets';
+import { ModalPetProgresso, MostrarOvo } from './FunctionPets';
 import { MudarFundoraridade } from '../NivelAcesso';
-
+import './div_pets.css'
 
 const Url = 'http://localhost:3025/Pets/';
 
 const Card_pet = ({ nome, caminho, nivel_pet, raridade, evolucao, ID_inventario, ponto_evo, token, navigate,ProcurarPets }) => {
+    
+    
+    if(evolucao == 1){
+        caminho = MostrarOvo(raridade)
+        nome = "Ovo"
+    }
+    
+
+  
+
     const BarraProgresso = Math.min(nivel_pet, ponto_evo);
-    console.log("Barra atualizada")
+    console.log("Tela atualizada")
     const corFundo = MudarFundoraridade(raridade);
 
+           
+
     return (
-        <div className="card col-1 shadow text-dark">
+        <div className="card col-1 shadow text-dark card-pet ">
             <img
                 src={Url + caminho}
                 className="card-img-top"
