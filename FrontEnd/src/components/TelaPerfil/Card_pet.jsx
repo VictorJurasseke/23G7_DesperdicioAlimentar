@@ -27,7 +27,7 @@ const Card_pet = ({ nome, caminho, nivel_pet, raridade, evolucao, ID_inventario,
         <div className="card col-1 shadow text-dark card-pet ">
             <img
                 src={Url + caminho}
-                className="card-img-top"
+                className="card-img-top img-ajustada"
                 style={{ filter: 'saturate(120%)' }}
                 alt={nome}
                 onClick={() => {

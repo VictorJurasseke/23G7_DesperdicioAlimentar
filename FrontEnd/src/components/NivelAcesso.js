@@ -81,7 +81,7 @@ export const MudarFundoraridade = (tipo) => {
     case "Épico":
       cor = "#800080";  // Roxo
       break;
-    case "Lendario":
+    case "Lendário":
       cor = "#FFD700";  // Dourado
       break;
     default:
