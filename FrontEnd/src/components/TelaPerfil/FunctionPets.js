@@ -91,6 +91,7 @@ export const ModalPetProgresso = async (evolucao, ID_inventario, token, navigate
 };
 
 export const MostrarOvo = (raridade) => {
+    console.log(raridade)
     const ovos = {
         Comum: "EggComum.gif",  // Azul
         Raro: "EggRaro.gif",     // Laranja
