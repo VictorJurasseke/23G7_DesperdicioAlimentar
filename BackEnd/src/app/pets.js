@@ -1,4 +1,4 @@
-export const pets = [
+const pets = [
     {
         nome_pet: "Egg",
         caminho_pet: "Egg.gif",
@@ -73,7 +73,7 @@ export const pets = [
     },
 ];
 
-export const sorteioComBaseNoPeso = (pets) => {
+const sorteioComBaseNoPeso = (pets) => {
     
     
     const pesoTotal = pets.reduce((acc, pet) => acc + pet.peso_pet, 0);
@@ -90,4 +90,7 @@ export const sorteioComBaseNoPeso = (pets) => {
         }
     }
 };
+
+
+module.exports = { pets, sorteioComBaseNoPeso };
 

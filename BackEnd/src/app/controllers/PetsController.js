@@ -84,7 +84,7 @@ rotas.delete('/:id/:nome', verificarToken, async (req, res) => {
 });
 
 
-// Rota que cria todos os pets padrões fornecidos pelo sistema
+// Rota que cria todos os pets padrões fornecidos pelo sistema e pasta PetsClientes
 rotas.post('/criarPets', verificarToken, async (req, res) => {
     console.log(`Requisição post recebida em /api/pets`)
 

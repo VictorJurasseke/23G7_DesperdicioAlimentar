@@ -1,4 +1,8 @@
 const db = require('../../db');
+const pet = require('../pets')
+const {sorteioComBaseNoPeso } = require('../pets');
+
+
 
 module.exports.retornarTodosJogos = async () => {
     let conexao;
@@ -62,27 +66,6 @@ module.exports.ApagarJogos = async (id) => {
 
     }
 };
-
-
-
-
-const sorteioComBaseNoPeso = (pets) => {
-    const pesoTotal = pets.reduce((acc, pet) => acc + pet.peso_pet, 0);  // Somando o peso de todos os pets
-    const sorteioAleatorio = Math.random() * pesoTotal;  // Sorteio aleatório entre 0 e o peso total
-
-    let TodosPetsChance = 0;
-
-    // Verifica em qual intervalo o sorteio caiu
-    for (const pet of pets) {
-        TodosPetsChance += pet.peso_pet;
-        if (sorteioAleatorio < TodosPetsChance) {
-            return pet;  // Retorna o pet sorteado
-        }
-    }
-};
-
-
-
 
 
 

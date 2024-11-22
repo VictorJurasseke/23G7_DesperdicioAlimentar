@@ -49,12 +49,12 @@ function Header({ Dados_usuario }) {
       <Collapse isOpen={isOpen} navbar>
         <Nav className="ml-auto d-flex justify-content-end col-12 p-1 gap-4" navbar>
           <NavItem className="d-flex align-items-center">
-            <NavLink className="text-dark fs-6 fw-bold" href="/list">
+            <NavLink className="text-dark fs-6" href="/list">
               Jogadores
             </NavLink>
           </NavItem>
           <NavItem className="d-flex align-items-center">
-            <NavLink className="text-dark fs-6 fw-bold" href="/rank">
+            <NavLink className="text-dark fs-6" href="/rank">
               Rank
             </NavLink>
           </NavItem>
