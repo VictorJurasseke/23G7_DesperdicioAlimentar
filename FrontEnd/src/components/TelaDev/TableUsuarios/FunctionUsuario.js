@@ -28,7 +28,7 @@ export const ModalEditUsuario = (id, atualizar, token, navigate) => {
 
 // Função de Abrir Modal para deletar arquivos
 
-export const ModalDeleteUsuario = (id, atualizar, token, navigate) => {
+export const ModalDeleteUsuario = (id, atualizar, token, navigate,setUsuarioFiltrado) => {
 
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
@@ -40,7 +40,7 @@ export const ModalDeleteUsuario = (id, atualizar, token, navigate) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deletarUsuario(id, atualizar, token, navigate);
+            deletarUsuario(id, atualizar, token, navigate,setUsuarioFiltrado);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
                 title: "Cancelado",
@@ -54,7 +54,7 @@ export const ModalDeleteUsuario = (id, atualizar, token, navigate) => {
 export const useImportarDadosUsuario = (token, navigate) => {
     const [TodosUsuarios, setTodosUsuarios] = useState([])
 
-    async function BuscarTodosUsuarios() {
+    async function BuscarTodosUsuarios(setUsuarioFiltrado) {
 
 
         try {
@@ -63,6 +63,7 @@ export const useImportarDadosUsuario = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            setUsuarioFiltrado(resposta.data)
             setTodosUsuarios(resposta.data)
         } catch (error) {
             SwalErroToken(navigate, error)
@@ -73,11 +74,12 @@ export const useImportarDadosUsuario = (token, navigate) => {
 
     return {
         TodosUsuarios,
-        BuscarTodosUsuarios
+        BuscarTodosUsuarios,
+        setTodosUsuarios
     }
 }
 
-export const deletarUsuario = async (id, atualizar, token, navigate) => {
+export const deletarUsuario = async (id, atualizar, token, navigate,setUsuarioFiltrado) => {
     try {
         let resposta = await axios.delete(`${urlUsuario}/${id}`);
         if (!resposta.data.status) {
@@ -89,7 +91,7 @@ export const deletarUsuario = async (id, atualizar, token, navigate) => {
             });
         } else {
             console.log(resposta.data)
-            atualizar(); // Atualiza a lista após a exclusão
+            atualizar(setUsuarioFiltrado); // Atualiza a lista após a exclusão
             swalWithBootstrapButtons.fire({
                 title: "Deleted!",
                 text: "Seu usuario foi deletado!",
@@ -130,7 +132,7 @@ export const ModalAdicionarUsuario = (token, navigate, BuscarTodosUsuarios) => {
 
 
 
-export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) => {
+export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios, setUsuarioFiltrado) => {
     Swal.fire({
         title: "Inserir usuários",
         html: `<form id="form-jogo">
@@ -185,7 +187,7 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
             
             console.log("Periodoo", Form.user_periodo)
             console.log("Objeto Form:", Form);
-            CriarUsuario(navigate, token, Form, BuscarTodosUsuarios)
+            CriarUsuario(navigate, token, Form, BuscarTodosUsuarios,setUsuarioFiltrado)
 
         }
     });
@@ -195,7 +197,7 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios) =>
 
 
 // CriarUsuario
-export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios) => {
+export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios,setUsuarioFiltrado) => {
 
 
     try {
@@ -211,13 +213,13 @@ export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios) =
         console.log("respota", resposta);
 
 
-        if (resposta.data.errors) {
+        if (resposta.data.errors || resposta.status == false) {
 
             console.log("Há erros presentes", resposta.data.errors)
 
             ModalErroUsuario(resposta.data.errors, token, navigate, BuscarTodosUsuarios)
         } else {
-            BuscarTodosUsuarios(); // Atualiza a lista
+            BuscarTodosUsuarios(setUsuarioFiltrado); // Atualiza a lista
             swalWithBootstrapButtons.fire({
                 title: "Criado!",
                 text: "Seu usuário foi criado com sucesso!",

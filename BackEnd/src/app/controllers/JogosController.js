@@ -44,6 +44,20 @@ rotas.get('/disp/:ID_escola', verificarToken, async (req, res) => {
     }
 });
 
+// Altera o stado do jogo
+rotas.put('/mudarStatus/:statusReal/:ID_jogo', verificarToken, async (req, res) => {
+    
+    console.log("Requisição recebida em /api/jogos/mudarStatus"); // Log
+
+    try {
+        const jogos = await model.MudarStatus(req.params.statusReal, req.params.ID_jogo);
+        res.json(jogos);
+    } catch (error) {
+        console.error("Erro ao listar os jogos", error);
+        res.status(500).json({ error: "Erro interno do servidor" });
+    }
+});
+
 
 
 // DELETAR ESCOLA ESPECIFICA

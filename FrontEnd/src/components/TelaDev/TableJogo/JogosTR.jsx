@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 import { HiPencil, HiOutlineTrash, HiMenuAlt1 } from "react-icons/hi";
-import { ModalDeleteJogos, ModalEditJogos, formatarData, ModalConfigJogos } from './FunctionJogos';
+import { ModalDeleteJogos, ModalEditJogos, formatarData, ModalConfigJogos,MudarStatus } from './FunctionJogos';
 
 
 
@@ -26,7 +26,7 @@ return (
                 <a onClick={() => { ModalDeleteJogos(id, atualizar, navigate, token) }}><HiOutlineTrash /></a>
                 <a onClick={() => { ModalConfigJogos(id, atualizar, navigate, token) }}><HiMenuAlt1 /></a>
             </td>
-            <td className={status}></td>    
+            <td className={status} onClick={()=>{MudarStatus(id, atualizar, navigate, token, status)}}></td>    
 
         </tr>
     </>

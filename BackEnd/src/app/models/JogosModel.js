@@ -68,6 +68,28 @@ module.exports.ApagarJogos = async (id) => {
 };
 
 
+module.exports.MudarStatus = async (Status, ID_jogo) => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+
+        // Deletar usuários associados à escola
+
+        const [jogosInativos] = await conexao.execute('UPDATE jogos SET jo_status = 2 WHERE id_jogos != ?',[ID_jogo])
+
+        // Finalmente, deletar a escola
+        const [linhas] = await conexao.execute('UPDATE jogos SET jo_status = ? WHERE id_jogos = ?', [Status, ID_jogo]);
+
+
+        return { status: true }
+    } catch (error) {
+        return { status: false, error: error }
+        throw error // Repassa para a controller
+    } finally {
+        db.liberarConexao(conexao)
+
+    }
+};
 
 module.exports.ParticiparJogo = async (ID_usuarios, ID_jogos, ID_turmas) => {
     let conexao;

@@ -18,7 +18,8 @@ const UsuarioTR = ({
     user_periodo,
     token,
     navigate,
-    atualizar
+    atualizar,
+    setUsuarioFiltrado
 }) => {
     return (
 
@@ -34,7 +35,7 @@ const UsuarioTR = ({
                 <td className='fs-5'>
                     <div className='col-12 d-flex justify-content-evenly'>
                     <a onClick={()=>{ModalEditUsuario(ID_usuarios, atualizar, token, navigate)}}><HiPencil /></a>
-                    <a onClick={()=>{ModalDeleteUsuario(ID_usuarios, atualizar, token, navigate)}}><HiOutlineTrash /></a>
+                    <a onClick={()=>{ModalDeleteUsuario(ID_usuarios, atualizar, token, navigate, setUsuarioFiltrado)}}><HiOutlineTrash /></a>
                     </div>
                 </td>
             </tr>

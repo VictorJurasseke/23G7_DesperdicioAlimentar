@@ -223,61 +223,71 @@ export const ModalCriarJogo = (atualizar, navigate, token, TodasUnidade, setForm
     // Atualizar as datas conforme a estação muda no select, ou seja o valor do jo_estacao mudou, ele já pega e atualiza as datas
     document.getElementById("jo_tema").addEventListener("change", atualizarDatas);
 };
-
 export const atualizarDatas = () => {
     const jo_tema = document.getElementById("jo_tema").value;
     const jo_datai = document.getElementById("jo_datai");
     const jo_dataf = document.getElementById("jo_dataf");
     const jo_nome = document.getElementById("jo_nome");
-    const jo_status = document.getElementById("jo_status")
-    const jogos_data_mudanca = new Date();
+    const jo_status = document.getElementById("jo_status");
+    const anoAtual = new Date().getFullYear();
+    const jogos_pts_segunda = document.getElementById("jogos_pts_segunda");
+    const jogos_pts_terca = document.getElementById("jogos_pts_terca");
+    const jogos_pts_quarta = document.getElementById("jogos_pts_quarta");
+    const jogos_pts_quinta = document.getElementById("jogos_pts_quinta");
+    const jogos_pts_sexta = document.getElementById("jogos_pts_sexta");
+    const jogos_pts_sabado = document.getElementById("jogos_pts_sabado");
+    const jogos_pts_domingo = document.getElementById("jogos_pts_domingo");
+    const valor_grama = document.getElementById("valor_grama");
+    const valor_pontos = document.getElementById("valor_pontos");
+    const tara_prato = document.getElementById("tara_prato");
+   
 
-    switch (jo_tema) {
-        case "1":
-            jo_datai.value = "2024-01-30";
-            jo_dataf.value = "2024-03-20";
-            jo_nome.value = "Temporada de Verão"
+    // Definindo as temporadas em um objeto para simplificar a atribuição
+    const temporadas = {
+        "1": { inicio: `${anoAtual}-01-30`, fim: `${anoAtual}-03-20`, nome: "Temporada de Verão", jogos_pts_segunda:1, jogos_pts_terca:1, jogos_pts_quarta:1, jogos_pts_quinta:1, jogos_pts_sexta:1, jogos_pts_sabado:1, jogos_pts_domingo:1, valor_grama:0.800, valor_pontos:10, tara_prato:0.150 },
+        "2": { inicio: `${anoAtual}-03-21`, fim: `${anoAtual}-06-21`, nome: "Temporada de Outono", jogos_pts_segunda:1, jogos_pts_terca:1, jogos_pts_quarta:1, jogos_pts_quinta:1, jogos_pts_sexta:1, jogos_pts_sabado:1, jogos_pts_domingo:1, valor_grama:0.800, valor_pontos:10, tara_prato:0.150  },
+        "3": { inicio: `${anoAtual}-06-22`, fim: `${anoAtual}-09-22`, nome: "Temporada de Inverno", jogos_pts_segunda:1, jogos_pts_terca:1, jogos_pts_quarta:1, jogos_pts_quinta:1, jogos_pts_sexta:1, jogos_pts_sabado:1, jogos_pts_domingo:1, valor_grama:0.800, valor_pontos:10, tara_prato:0.150 },
+        "4": { inicio: `${anoAtual}-09-23`, fim: `${anoAtual}-12-10`, nome: "Temporada de Primavera", jogos_pts_segunda:1, jogos_pts_terca:1, jogos_pts_quarta:1, jogos_pts_quinta:1, jogos_pts_sexta:1, jogos_pts_sabado:1, jogos_pts_domingo:1, valor_grama:0.800, valor_pontos:10, tara_prato:0.150 }
+    };
 
-            break;
-        case "2":
-            jo_datai.value = "2024-03-21";
-            jo_dataf.value = "2024-06-21";
-            jo_nome.value = "Temporada de Outono";
-            break;
-        case "3":
-            jo_datai.value = "2024-06-22";
-            jo_dataf.value = "2024-09-22";
-            jo_nome.value = "Temporada de Inverno"
-            break;
-        case "4":
-            jo_datai.value = "2024-09-23";
-            jo_dataf.value = "2024-12-10";
-            jo_nome.value = "Temporada de Primavera"
-            break;
-        default:
-            jo_datai.value = "";
-            jo_dataf.value = "";
-            jo_nome.value = ""
-            break;
+    // Se o tema for válido, define as datas e o nome
+    if (temporadas[jo_tema]) {
+        const temporada = temporadas[jo_tema];
+        jo_datai.value = temporada.inicio;
+        jo_dataf.value = temporada.fim;
+        jo_nome.value = temporada.nome;
+        jogos_pts_segunda.value = temporada.jogos_pts_segunda
+        jogos_pts_terca.value = temporada.jogos_pts_terca
+        jogos_pts_quarta.value = temporada.jogos_pts_quarta
+        jogos_pts_quinta.value = temporada.jogos_pts_quinta
+        jogos_pts_sexta.value = temporada.jogos_pts_sexta
+        jogos_pts_sabado.value = temporada.jogos_pts_sabado
+        jogos_pts_domingo.value = temporada.jogos_pts_domingo
+        valor_grama.value = temporada.valor_grama
+        valor_pontos.value = temporada.valor_pontos
+        tara_prato.value = temporada.tara_prato
+    } else {
+        jo_datai.value = "";
+        jo_dataf.value = "";
+        jo_nome.value = "";
     }
-
-
 
     // Normalizando as datas
     const dataInicioObj = new Date(jo_datai.value);
-    const dataFimObj = new Date(document.getElementById("jo_dataf").value);
+    const dataFimObj = new Date(jo_dataf.value);
 
     // Resetando as horas para 00:00:00
     dataInicioObj.setHours(0, 0, 0, 0);
     dataFimObj.setHours(0, 0, 0, 0);
 
-    console.log("DataFimObj:", dataFimObj);
-
     // Verificando se a data atual está dentro do intervalo
+    const jogos_data_mudanca = new Date();  // Data atual
     const novoStatus = (jogos_data_mudanca >= dataInicioObj && jogos_data_mudanca <= dataFimObj) ? "1" : "2";
 
+    
+
     // Atualizando o valor do select
-    jo_status.value = novoStatus; // Isso vai definir o valor selecionado do select
+    jo_status.value = novoStatus;  // Isso vai definir o valor selecionado do select
     console.log("Valor do select jo_status:", jo_status.value);
 };
 
@@ -425,7 +435,7 @@ export const CriarJogo = async (atualizar, navigate, token, novoForm) => {
                 icon: "error"
             });
         } else {
-            atualizar(); // Atualiza a lista após a exclusão
+            atualizar(); // Atualiza a lista após a criação
             swalWithBootstrapButtons.fire({
                 title: "Criado!",
                 text: "Seu jogo foi criado com sucesso!",
@@ -438,3 +448,48 @@ export const CriarJogo = async (atualizar, navigate, token, novoForm) => {
         
     }
 };
+
+
+export const MudarStatus = async (id, atualizar, navigate, token, status)=>{
+
+
+    let statusReal 
+    console.log(status)
+    switch(status){
+        case "bg-success":
+            statusReal = 2
+            break;
+        default:
+            statusReal = 1 //ATIVAR
+    }
+
+    try {
+
+        const resposta = await axios.put(`${urlJogos}/mudarStatus/${statusReal}/${id}`, {}, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(resposta);
+        if (!resposta.data.status) {
+            swalWithBootstrapButtons.fire({
+                title: "Falhou!",
+                html: "Seu jogo não teve a mudança de status com sucesso!<br> <br> Erro: " + resposta.data.message,
+                icon: "error"
+            });
+        } else {
+            atualizar(); // Atualiza a lista após a mudança
+            swalWithBootstrapButtons.fire({
+                title: "Criado!",
+                text: "Seu jogo foi alterado com sucesso!",
+                icon: "success"
+            });
+            console.log("Jogo criado sucesso");
+        }
+    } catch (error) {
+         SwalErroToken(navigate, error) 
+        
+    }
+
+}
