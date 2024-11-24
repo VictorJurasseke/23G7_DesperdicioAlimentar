@@ -1,0 +1,30 @@
+Validar caso jogo esteja inativo nas telas jogador
+
+Avisar o dev quando o jogo estiver acabando, ou automatizar o inicio de outro jogo
+
+Criar a descrição dos mascotes
+
+Colocar os outros mascotes do nicolas no array pets
+
+Filtro no painel de dev
+
+Tela de editar no painel do dev
+
+Validar erros no painel de dev
+
+Tela listagem
+
+Arrumar rank dos usuários, adicionar trigger para isto sei la
+
+Colocar opção de mudar a imagem do usuário e escolher seu pet visível para a tela de listagem
+
+Criar campo quantidade para listar as quantidades de mascotes repetidos o usuário tem
+
+Arrumar a tela jogando, fazer um scrollview horizontal para todos os mascotes
+
+Criar tela de mostrar todos os mascotes que existem no jogo, bloqueados para o usuário
+
+Arrumar a simulação dos mascotes para usar o qrcode, assim como a balança
+
+Card jogos com a descrição shake it off, pegar do bd
+

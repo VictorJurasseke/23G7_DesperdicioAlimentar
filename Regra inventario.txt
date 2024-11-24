@@ -14,9 +14,9 @@ Muito Desperdício(Maior que 200g): Peso ≥ 200g
 
 O desperdício é excessivo e está longe do objetivo desejado.
 
-<option class="bg-success" value="Minimo">Menor que 50g</option>
-<option class="bg-warning" value="Moderado">Entre 50g e 200g</option>
-<option class="bg-danger" value="Alto">Maior que 200g</option>
+<option class="bg-success" value="1">Menor que 50g</option>
+<option class="bg-warning" value="2">Entre 50g e 200g</option>
+<option class="bg-danger" value="3">Maior que 200g</option>
 
 
 Se o usuário desperdiçar Menos que 50g então ele consegue a pontuação maxima no jogo, definida no jogo

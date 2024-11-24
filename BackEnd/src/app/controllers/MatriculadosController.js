@@ -39,12 +39,13 @@ rotas.get('/semmatricula', verificarToken, async (req, res) => {
 })
 
 
+// MATRICULAR DA TELADEV
 rotas.post('/', verificarToken, async (req, res) => {
     console.log("REQ EM MATRICULAR USER:", req.body)
     const {ID_jogo, ID_turmas, ID_usuarios} = req.body
     console.log(req.body)
     try {
-        const Matricular = await model.MatricularAlunos(ID_jogo, ID_turmas, ID_usuarios)
+        const Matricular = await model.MatricularAlunos(ID_usuarios, ID_jogo, ID_turmas)
         res.json(Matricular)
     } catch (error) {
         console.log("Erro ao listar os perfis", error)

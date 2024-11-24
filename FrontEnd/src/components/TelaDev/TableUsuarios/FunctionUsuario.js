@@ -28,7 +28,7 @@ export const ModalEditUsuario = (id, atualizar, token, navigate) => {
 
 // Função de Abrir Modal para deletar arquivos
 
-export const ModalDeleteUsuario = (id, atualizar, token, navigate,setUsuarioFiltrado) => {
+export const ModalDeleteUsuario = (id, atualizar, token, navigate,setUsuarioFiltrado,setSelectAcesso) => {
 
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
@@ -40,7 +40,7 @@ export const ModalDeleteUsuario = (id, atualizar, token, navigate,setUsuarioFilt
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deletarUsuario(id, atualizar, token, navigate,setUsuarioFiltrado);
+            deletarUsuario(id, atualizar, token, navigate,setUsuarioFiltrado,setSelectAcesso);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
                 title: "Cancelado",
@@ -79,7 +79,7 @@ export const useImportarDadosUsuario = (token, navigate) => {
     }
 }
 
-export const deletarUsuario = async (id, atualizar, token, navigate,setUsuarioFiltrado) => {
+export const deletarUsuario = async (id, atualizar, token, navigate,setUsuarioFiltrado,setSelectAcesso) => {
     try {
         let resposta = await axios.delete(`${urlUsuario}/${id}`);
         if (!resposta.data.status) {
@@ -92,6 +92,7 @@ export const deletarUsuario = async (id, atualizar, token, navigate,setUsuarioFi
         } else {
             console.log(resposta.data)
             atualizar(setUsuarioFiltrado); // Atualiza a lista após a exclusão
+            setSelectAcesso('5')
             swalWithBootstrapButtons.fire({
                 title: "Deleted!",
                 text: "Seu usuario foi deletado!",

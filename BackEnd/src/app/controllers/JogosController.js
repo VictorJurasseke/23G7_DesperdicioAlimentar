@@ -77,7 +77,7 @@ rotas.delete('/:id', verificarToken, async (req, res) => {
 
 
 
-// ROTA DE PARTICIPAR DO JOGO 
+// ROTA DE PARTICIPAR DO JOGO - puxa o id do usuario atual
 rotas.post('/participar', verificarToken, async (req, res) => {
     // Antes era por req.params, mas foi feita mudanças no banco então muda aqui também
     let {ID_jogos, ID_turmas} = req.body

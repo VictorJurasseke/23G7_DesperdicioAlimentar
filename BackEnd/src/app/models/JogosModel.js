@@ -8,7 +8,7 @@ module.exports.retornarTodosJogos = async () => {
     let conexao;
     try {
         conexao = await db.criarConexao();
-        const [linhas] = await conexao.execute('SELECT j.jo_status, j.ID_jogos, j.jo_nome, j.jo_datai, j.jo_dataf, e.es_nome FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola ORDER BY j.jo_datai;');
+        const [linhas] = await conexao.execute('SELECT j.jo_status, j.ID_jogos, j.jo_nome, j.jo_tema, j.jo_datai, j.jo_dataf, e.es_nome FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola ORDER BY j.jo_datai;');
         return linhas;
     } catch (error) {
         console.error("Erro ao listar todos os jogos", error);
@@ -38,7 +38,7 @@ module.exports.retornarJogosDaEscola = async (ID_escola) => {
     let conexao;
     try {
         conexao = await db.criarConexao();
-        const [linhas] = await conexao.execute('SELECT j.jo_status, j.ID_jogos, j.jo_nome, j.jo_datai, j.jo_dataf, e.es_nome FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola AND j.ID_escola = ? AND j.jo_status = 1 ORDER BY j.jo_datai;', [ID_escola]);
+        const [linhas] = await conexao.execute('SELECT j.jo_status, j.ID_jogos, j.jo_nome, j.jo_datai, j.jo_dataf, e.es_nome, j.jo_tema FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola AND j.ID_escola = ? AND j.jo_status = 1 ORDER BY j.jo_datai;', [ID_escola]);
         return linhas;
     } catch (error) {
         console.error("Erro ao listar jogo especifico da escola", error);

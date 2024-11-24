@@ -13,7 +13,7 @@ module.exports.retornarTodosUsuario = async () => {
 
         //Executa o sql no bd
         const [linhas] = await conexao.execute(
-            'SELECT u.ID_usuarios, u.user_nome, u.user_email, u.user_periodo, u.user_tipo_acesso FROM usuarios u LIMIT 15;')
+            'SELECT u.ID_usuarios, u.user_nome, u.user_email, u.user_periodo, u.user_tipo_acesso FROM usuarios u ORDER BY u.user_tipo_acesso ASC LIMIT 15;')
 
 
 

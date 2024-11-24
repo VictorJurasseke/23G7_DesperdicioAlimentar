@@ -1,10 +1,11 @@
 const db = require('../../db');
+const {sorteioComBaseNoPeso } = require('../pets');
 
 module.exports.retornarTodosMatriculados = async () => {
     let conexao;
     try {
         conexao = await db.criarConexao();
-        const [linhas] = await conexao.execute('SELECT m.pontos_usuario, u.ID_usuarios, j.ID_jogos  , m.rank_usuario, u.user_nome, j.jo_nome, e.es_nome FROM jogos_matricula m, usuarios u, jogos j, escola e WHERE u.ID_usuarios = m.ID_usuarios AND m.ID_jogos = j.ID_jogos AND j.ID_escola = e.ID_escola;');
+        const [linhas] = await conexao.execute('SELECT m.pontos_usuario, u.ID_usuarios, j.ID_jogos, j.jo_tema, m.rank_usuario, u.user_nome, j.jo_nome, e.es_nome FROM jogos_matricula m, usuarios u, jogos j, escola e WHERE u.ID_usuarios = m.ID_usuarios AND m.ID_jogos = j.ID_jogos AND j.ID_escola = e.ID_escola;');
         return linhas;
     } catch (error) {
         console.error("Erro ao listar todas as matriculas", error);
@@ -55,70 +56,77 @@ module.exports.retornarNaoMatriculados = async () => {
 };
 
 //Matriculados pela tela dev - Função em andamento porque tem que arrumar o sorteamento do ovo por aqui tambem, capaz de eu só apagar esta
-module.exports.MatricularAlunos = async (ID_jogo, ID_turmas, ID_usuarios) => {
+module.exports.MatricularAlunos = async (ID_usuarios, ID_jogos, ID_turmas) => {
     let conexao;
     try {
         conexao = await db.criarConexao();
-
-        // Passo 0: Ver se o jogo está ativo (1 = ATIVO, 2 = INATIVO)
+        
+        
+        
+        
+        // Passo 0: Verificar se o jogo está ativo
         const [JogosStatus] = await conexao.execute(
             `SELECT * FROM jogos j WHERE j.ID_jogos = ? AND j.jo_status = 1`,
-            [ID_jogo]
+            [ID_jogos]
         );
-
-     
-
-        // Verifica se o array está vazio (significa que o jogo não está ativo)
         if (JogosStatus.length === 0) {
             return { status: false, message: "O jogo está inativo" };
         }
+        
+        const pets = await conexao.execute('SELECT * FROM pets')
+       
 
+        if(pets.length == 0){
+            return{status:false, message:"Precisa cadastrar pets no sistema"}
+        }
 
-        // Passo 1: Obter todos os pontos dos usuários já matriculados nesse jogo
+        // Passo 1: Obter os usuários matriculados
         const [usuariosMatriculados] = await conexao.execute(
             `SELECT ID_usuarios FROM jogos_matricula WHERE ID_jogos = ?`,
-            [ID_jogo]
+            [ID_jogos]
         );
 
-        // Passo 2: Calcular o rank do novo usuário (sempre no final, considerando que ele tem 0 pontos)
-        const rank_usuario = usuariosMatriculados.length + 1; // O novo usuário vai ter o rank seguinte ao último
+        // Passo 2: Calcular o rank do novo usuário
+        const rank_usuario = usuariosMatriculados.length + 1; // O novo usuário terá o próximo rank
 
-        // Passo 3: Inserir o novo usuário com rank 0 e o rank calculado
+        // Passo 3: Inserir o novo usuário no jogo
         const [linhas] = await conexao.execute(
             `INSERT INTO jogos_matricula (ID_jogos, ID_usuarios, turmas_ID_turmas, pontos_usuario, rank_usuario, peso_acumulativo) VALUES (?, ?, ?, ?, ?, ?)`,
-            [ID_jogo, ID_usuarios, ID_turmas, 0, rank_usuario, 0]
+            [ID_jogos, ID_usuarios, ID_turmas, 0, rank_usuario, 0]
         );
 
-        // Passo 4: Alterar o tipo de acesso do usuario para jogador - 3
+        // Passo 4: Alterar o tipo de acesso para jogador
         const [jogando] = await conexao.execute(
             `UPDATE usuarios SET user_tipo_acesso = 3 WHERE ID_usuarios = ?;`,
             [ID_usuarios]
         );
 
-        const [ovo] = await conexao.execute(
-            'SELECT ID_pet FROM pets WHERE nome_pet = "Egg" AND caminho_pet = "Egg.gif"'
-        )
+
     
 
-     
-        
-        // Passo 6: Criar seu inventario com o pet inicial o Ovo
+        // Passo 5: Sortear um ovo aleatório
+        const ovo = sorteioComBaseNoPeso(pets[0]);  // Função sorteia o ovo com base no peso dos pets
+
+        console.log("PetSorteado",ovo)
+
+        // Passo 6: Criar o inventário do usuário com o ovo sorteado
         const [Inventario] = await conexao.execute(
-            'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data) VALUES(?,?,?,?)',[ID_jogo,ID_usuarios,ovo[0].ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' ')]
-        )
+            'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao) VALUES(?,?,?,?,?,?)',
+            [ID_jogos, ID_usuarios, ovo.ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' '), 0, 1]
+        );
 
-        return { status: true, massage:"jogando!" }
+        return { status: true, message: "Jogando!" };
 
-        return linhas;
     } catch (error) {
-        console.error("Erro ao matricular os usuarios", error)
+        console.error("Erro ao matricular os usuários em jogosModel", error);
         if (error.code == 'ER_DUP_ENTRY') {
-            return { status: false, message: "Entrada de dados dupla" }
+            return { status: false, message: "Entrada de dados dupla" };
         } else {
-            return { status: false, message: "Erro Interno do servidor!" }
+            return { status: false, message: "Erro Interno do servidor!" };
         }
 
     } finally {
         db.liberarConexao(conexao);
     }
-}
+};
+

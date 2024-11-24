@@ -904,7 +904,7 @@ const pets = [
         evolucao: 1
     },
     {
-        nome_pet: "Shrek",
+        nome_pet: "Rabbit Simbol",
         caminho_pet: "SimbolRabbit.gif",
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,

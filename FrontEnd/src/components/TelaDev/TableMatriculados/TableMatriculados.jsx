@@ -6,19 +6,21 @@ import { useNavigate } from 'react-router-dom';
 import { useImportarDadosMatriculados, ModalCriarMatricula } from './FunctionMatriculados';
 import { useImportarDadosJogos } from '../TableJogo/FunctionJogos';
 import { useImportarDadosTurmas } from '../TableTurmas/FunctionTurmas';
+import Fuse from 'fuse.js';
+
 
 const TableMatriculadosComponent = ({ token, navigate }) => {
     const { TodosMatriculados, BuscarTodosMatriculados, NaoMatriculados, BuscarNaoMatriculados } = useImportarDadosMatriculados(token, navigate); // Busca todos os matriculados
-    
+
     // Guarda todas as matriculas
     const [FormMatricula, setFormMatricula] = useState({}); // Guarda todas as matriculas
-    
+
     // Guarda todos os jogos
     const { TodosJogos, BuscarJogos } = useImportarDadosJogos(token, navigate);
-    
+
     // Guarda todas as turmas
     const { TodasTurmas, BuscarTurmas } = useImportarDadosTurmas(token, navigate);
-    
+
     // Quando a tela carregar ele busca todas as informações do banco
     useEffect(() => {
         BuscarTodosMatriculados();
@@ -27,33 +29,58 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
         BuscarNaoMatriculados();
         console.log("TODOS JOGOS", TodosJogos);
     }, []);
-    
+
     // Guarda o filtro selecionado
     const [SelectJogo, setSelectJogo] = useState('');
-    
+
     // Guarda a barra de pesquisa
     const [Pesquisa, setPesquisa] = useState('');
-    
+
     // Guarda os matriculados filtrados
     const [MatriculadoFiltrado, setMatriculadoFiltrado] = useState(TodosMatriculados);
-    
+
+
+
+
     // Função para filtrar os matriculados
     useEffect(() => {
-        const filtered = TodosMatriculados.filter(item => 
-            (item.jo_nome.toLowerCase().includes(SelectJogo.toLowerCase()) || SelectJogo === '') &&
-            (item.user_nome.toLowerCase().includes(Pesquisa.toLowerCase()) || Pesquisa === '')
-        );
-        setMatriculadoFiltrado(filtered);
-    }, [TodosMatriculados, SelectJogo, Pesquisa]);
+        switch (SelectJogo) {
+            case '1':
+                setMatriculadoFiltrado(TodosMatriculados.filter((Jogos) => Jogos.jo_tema === 1));
+                break;
+            case '2':
+                setMatriculadoFiltrado(TodosMatriculados.filter((Jogos) => Jogos.jo_tema === 2));
+                break;
+            case '3':
+                setMatriculadoFiltrado(TodosMatriculados.filter((Jogos) => Jogos.jo_tema === 3));
+                break;
+            case '4':
+                setMatriculadoFiltrado(TodosMatriculados.filter((Jogos) => Jogos.jo_tema === 4));
+                break;
+            default:
+                setMatriculadoFiltrado(TodosMatriculados);
+        }
+        console.log("tema:",SelectJogo)
+        console.log("todos:",TodosMatriculados)
+    }, [SelectJogo, TodosMatriculados]);
+        // // Configurações do Fuse.js
+        // const fuseOptions = {
+        //     keys: ['user_nome', 'user_email'], // Campos que serão pesquisados
+        //     threshold: 0.4, // Sensibilidade da pesquisa
+        // };
+    
+        // Instância do Fuse.js
+        // const fuse = new Fuse(UsuarioFiltrado, fuseOptions);
 
     // Função para carregar os jogos no select
-    const CarregarJogosSelect = (TodosJogos) => {
-        return TodosJogos.map(jogos => (
-            <option key={jogos.ID_jogos} value={jogos.ID_jogos}>
-                {jogos.jo_nome}
-            </option>
-        ));
-    };
+    // const CarregarJogosSelect = (TodosJogos) => {
+    //     return TodosJogos.map(jogos => (
+    //         <option key={jogos.ID_jogos} value={jogos.jo_tema}>
+    //             {jogos.jo_nome}
+    //         </option>
+    //     ));
+    // };
+    // {CarregarJogosSelect(TodosJogos)}
 
     if (!TodosMatriculados || !TodosJogos) {
         return <LoadDev />;
@@ -70,8 +97,11 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
                             className="form-select"
                             aria-label="Default select example"
                         >
-                            <option value="">Selecione um jogo</option>
-                            {CarregarJogosSelect(TodosJogos)}
+                            <option value="">Todos:</option>
+                            <option value="1">Verão</option>
+                            <option value="2">Outono</option>
+                            <option value="3">Inverno</option>
+                            <option value="4">Primavera</option>
                         </select>
                     </form>
                     <form className="d-flex" role="search">
@@ -112,6 +142,7 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
                             token={token}
                             navigate={navigate}
                             BuscarNaoMatriculados={BuscarNaoMatriculados}
+                            setSelectJogo={setSelectJogo}
                         />
                     ))}
                 </tbody>

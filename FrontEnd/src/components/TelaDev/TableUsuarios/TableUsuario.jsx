@@ -124,6 +124,8 @@ const TableUsuario = ({ token, navigate }) => {
                                 setUsuarioFiltrado={setUsuarioFiltrado}
                                 navigate={navigate}
                                 token={token}
+                                setSelectAcesso={setSelectAcesso}
+                                UsuarioFiltrado={UsuarioFiltrado}
                             />
                         ))}
                     </tbody>
