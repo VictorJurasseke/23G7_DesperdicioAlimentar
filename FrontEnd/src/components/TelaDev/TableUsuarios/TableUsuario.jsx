@@ -94,7 +94,6 @@ const TableUsuario = ({ token, navigate }) => {
                             placeholder="Search"
                             aria-label="Search"
                         />
-                        <button className="btn btn-outline-success" type="button">Search</button>
                     </form>
                 </div>
             </div>

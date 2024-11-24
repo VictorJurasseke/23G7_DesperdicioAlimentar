@@ -113,6 +113,7 @@ const renderizarUsuarios = (NaoMatriculados) => {
 
 
 
+
 // ModalCriarMatricula
 export const ModalCriarMatricula = (NaoMatriculados, BuscarNaoMatriculados, navigate, token, TodosJogos, TodasTurmas, BuscarTodosMatriculados) => {
 
