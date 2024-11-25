@@ -28,7 +28,7 @@ export const ModalEditUsuario = (id, atualizar, token, navigate) => {
 
 // Função de Abrir Modal para deletar arquivos
 
-export const ModalDeleteUsuario = (id, atualizar, token, navigate,setUsuarioFiltrado,setSelectAcesso) => {
+export const ModalDeleteUsuario = (id, atualizar, token, navigate) => {
 
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
@@ -40,7 +40,7 @@ export const ModalDeleteUsuario = (id, atualizar, token, navigate,setUsuarioFilt
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deletarUsuario(id, atualizar, token, navigate,setUsuarioFiltrado,setSelectAcesso);
+            deletarUsuario(id, atualizar, token, navigate);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
                 title: "Cancelado",
@@ -54,7 +54,7 @@ export const ModalDeleteUsuario = (id, atualizar, token, navigate,setUsuarioFilt
 export const useImportarDadosUsuario = (token, navigate) => {
     const [TodosUsuarios, setTodosUsuarios] = useState([])
 
-    async function BuscarTodosUsuarios(setUsuarioFiltrado) {
+    async function BuscarTodosUsuarios() {
 
 
         try {
@@ -63,7 +63,6 @@ export const useImportarDadosUsuario = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            setUsuarioFiltrado(resposta.data)
             setTodosUsuarios(resposta.data)
         } catch (error) {
             SwalErroToken(navigate, error)
@@ -79,7 +78,7 @@ export const useImportarDadosUsuario = (token, navigate) => {
     }
 }
 
-export const deletarUsuario = async (id, atualizar, token, navigate,setUsuarioFiltrado,setSelectAcesso) => {
+export const deletarUsuario = async (id, atualizar, token, navigate) => {
     try {
         let resposta = await axios.delete(`${urlUsuario}/${id}`);
         if (!resposta.data.status) {
@@ -90,14 +89,13 @@ export const deletarUsuario = async (id, atualizar, token, navigate,setUsuarioFi
                 icon: "error"
             });
         } else {
-            console.log(resposta.data)
-            atualizar(setUsuarioFiltrado); // Atualiza a lista após a exclusão
-            setSelectAcesso('5')
             swalWithBootstrapButtons.fire({
                 title: "Deleted!",
                 text: "Seu usuario foi deletado!",
                 icon: "success"
             });
+            console.log("Apagou sucesso",resposta.data)
+            atualizar(); // Atualiza a lista após a exclusão
 
         }
     } catch (error) {

@@ -17,7 +17,7 @@ const pets = [
         caminho_pet: "Dourado_black.gif",
         desc_pet: "Um macaco dourado com mistérios ocultos.",
         ponto_pet: 100,
-        raridade_pet: "Lendário",
+        raridade_pet: "Comum",
         peso_pet: 0.05,
         evolucao: 1
     },
@@ -1059,23 +1059,31 @@ const pets = [
 
 ];
 
-const sorteioComBaseNoPeso = (pets) => {
-    
-    
+const sorteioComBaseNoPeso = (pets, ID_pet = null) => {
     const pesoTotal = pets.reduce((acc, pet) => acc + pet.peso_pet, 0);
-    const sorteioAleatorio = Math.random() * pesoTotal;  // Sorteio aleatório entre 0 e o peso total
-    console.log('Sorteio Aleatório:', sorteioAleatorio);
+    let sorteado = null;
 
-    let TodosPetsChance = 0;
+    while (!sorteado || (ID_pet !== null && sorteado.ID_pet === ID_pet)) {
+        const sorteioAleatorio = Math.random() * pesoTotal; // Sorteio aleatório entre 0 e o peso total
+        console.log('Sorteio Aleatório:', sorteioAleatorio);
 
-    for (const pet of pets) {
-        TodosPetsChance += pet.peso_pet;
-        console.log(`Pet: ${pet.nome_pet}, Chance Acumulada: ${TodosPetsChance}`);
-        if (sorteioAleatorio < TodosPetsChance) {
-            return pet;  // Retorna o pet sorteado
+        let TodosPetsChance = 0;
+
+        for (const pet of pets) {
+            TodosPetsChance += pet.peso_pet;
+            console.log(`Pet: ${pet.nome_pet}, Chance Acumulada: ${TodosPetsChance}`);
+            if (sorteioAleatorio < TodosPetsChance) {
+                if (ID_pet === null || pet.ID_pet !== ID_pet) {
+                    sorteado = pet; // Garante que o novo sorteado seja diferente do anterior
+                }
+                break;
+            }
         }
     }
+
+    return sorteado; // Retorna o pet sorteado
 };
+
 
 
 module.exports= {sorteioComBaseNoPeso, pets}

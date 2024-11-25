@@ -12,8 +12,6 @@ import Fuse from 'fuse.js';
 const TableMatriculadosComponent = ({ token, navigate }) => {
     const { TodosMatriculados, BuscarTodosMatriculados, NaoMatriculados, BuscarNaoMatriculados } = useImportarDadosMatriculados(token, navigate); // Busca todos os matriculados
 
-    // Guarda todas as matriculas
-    const [FormMatricula, setFormMatricula] = useState({}); // Guarda todas as matriculas
 
     // Guarda todos os jogos
     const { TodosJogos, BuscarJogos } = useImportarDadosJogos(token, navigate);
@@ -40,10 +38,7 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
     const [MatriculadoFiltrado, setMatriculadoFiltrado] = useState(TodosMatriculados);
 
 
-
-
-    // Função para filtrar os matriculados
-    useEffect(() => {
+    const SelectSwitchJogo = (SelectJogo) => {
         switch (SelectJogo) {
             case '1':
                 setMatriculadoFiltrado(TodosMatriculados.filter((Jogos) => Jogos.jo_tema === 1));
@@ -60,17 +55,40 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
             default:
                 setMatriculadoFiltrado(TodosMatriculados);
         }
-        console.log("tema:",SelectJogo)
-        console.log("todos:",TodosMatriculados)
+    }
+
+    // Função para filtrar os matriculados
+    useEffect(() => {
+        SelectSwitchJogo(SelectJogo)
+        console.log("tema:", SelectJogo)
+        console.log("todos:", TodosMatriculados)
+        setPesquisa('')
     }, [SelectJogo, TodosMatriculados]);
-        // // Configurações do Fuse.js
-        // const fuseOptions = {
-        //     keys: ['user_nome', 'user_email'], // Campos que serão pesquisados
-        //     threshold: 0.4, // Sensibilidade da pesquisa
-        // };
-    
-        // Instância do Fuse.js
-        // const fuse = new Fuse(UsuarioFiltrado, fuseOptions);
+
+
+
+    // // Configurações do Fuse.js
+    const fuseOptions = {
+        keys: ['user_nome'], // Campos que serão pesquisados
+        threshold: 0.4, // Sensibilidade da pesquisa
+    };
+
+    const fuse = new Fuse(MatriculadoFiltrado, fuseOptions);
+
+    const FiltrarBarraPesquisa = () =>{
+        if (Pesquisa.trim() === '') {
+            setMatriculadoFiltrado(TodosMatriculados);
+            SelectSwitchJogo(SelectJogo)
+        } else {
+            const resultados = fuse.search(Pesquisa).map((result) => result.item);
+            setMatriculadoFiltrado(resultados);
+        }
+    }
+
+
+    useEffect(() => {
+        FiltrarBarraPesquisa()
+    }, [Pesquisa, TodosMatriculados]);
 
     // Função para carregar os jogos no select
     // const CarregarJogosSelect = (TodosJogos) => {
@@ -85,7 +103,6 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
     if (!TodosMatriculados || !TodosJogos) {
         return <LoadDev />;
     }
-
     return (
         <>
             <div className='col-12 d-flex justify-content-end border-bottom'>
@@ -116,42 +133,50 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
                     </form>
                 </div>
             </div>
-            <table className="table table-striped table-hover text-center">
-                <thead>
-                    <tr>
-                        <th>Jogo</th>
-                        <th>Usuário</th>
-                        <th>Pontos Usuário</th>
-                        <th>Rank</th>
-                        <th>Escola</th>
-                        <th>Functions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {MatriculadoFiltrado.map((item) => (
-                        <MatriculadosTR
-                            key={item.ID_matricula}
-                            ID_usuarios={item.ID_usuarios}
-                            ID_jogos={item.ID_jogos}
-                            jo_nome={item.jo_nome}
-                            user_nome={item.user_nome}
-                            pontos_usuario={item.pontos_usuario}
-                            rank_usuario={item.rank_usuario}
-                            es_nome={item.es_nome}
-                            BuscarTodosMatriculados={BuscarTodosMatriculados}
-                            token={token}
-                            navigate={navigate}
-                            BuscarNaoMatriculados={BuscarNaoMatriculados}
-                            setSelectJogo={setSelectJogo}
-                        />
-                    ))}
-                </tbody>
-            </table>
+
+            {MatriculadoFiltrado && MatriculadoFiltrado.length > 0 ? (
+                <>
+                    <table className="table table-striped table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th>Jogo</th>
+                                <th>Usuário</th>
+                                <th>Pontos Usuário</th>
+                                <th>Rank</th>
+                                <th>Escola</th>
+                                <th>Functions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {MatriculadoFiltrado.map((item) => (
+                                <MatriculadosTR
+                                    key={item.ID_matricula}
+                                    ID_usuarios={item.ID_usuarios}
+                                    ID_jogos={item.ID_jogos}
+                                    jo_nome={item.jo_nome}
+                                    user_nome={item.user_nome}
+                                    pontos_usuario={item.pontos_usuario}
+                                    rank_usuario={item.rank_usuario}
+                                    es_nome={item.es_nome}
+                                    BuscarTodosMatriculados={BuscarTodosMatriculados}
+                                    token={token}
+                                    navigate={navigate}
+                                    BuscarNaoMatriculados={BuscarNaoMatriculados}
+                                    setSelectJogo={setSelectJogo}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                </>
+            ) : (
+                <p className='text-center mt-4'>Não há resultados para busca...</p>
+            )}
             <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }}>
                 <BiAddToQueue onClick={() => ModalCriarMatricula(NaoMatriculados, BuscarNaoMatriculados, navigate, token, TodosJogos, TodasTurmas, BuscarTodosMatriculados)} />
             </div>
         </>
     );
-};
+}
+
 
 export default TableMatriculadosComponent;

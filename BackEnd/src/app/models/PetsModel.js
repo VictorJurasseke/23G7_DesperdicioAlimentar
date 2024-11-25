@@ -108,7 +108,7 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
 
         // Passo 2: Obter os pets do usuário
         const [Pets] = await conexao.execute(
-            'SELECT p.nome_pet, p.caminho_pet, p.ID_pet, i.pontuacao_pet, p.raridade_pet, i.ID_inv_pets, p.ponto_pet, p.desc_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ? ORDER BY i.ID_inv_pets DESC LIMIT 9;',
+            'SELECT p.nome_pet, p.caminho_pet, p.ID_pet, i.pontuacao_pet, p.raridade_pet, i.ID_inv_pets, i.pet_quantidade, i.pet_principal,p.ponto_pet, p.desc_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ? ORDER BY i.ID_inv_pets DESC LIMIT 9;',
             [ID_usuarios, Jogo[0].ID_jogos]
         );
         console.log("Pets do usuário:", Pets);
@@ -282,17 +282,43 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
 
             console.log("EVOLUTIONb", Mascote[0].evolucao)
 
+
+            //se o usuario tiver o mascote com os pontos maior ou igual o necessario para evoluir:
             if (Mascote.length > 0 && Mascote[0].evolucao == 1) {
+
+                // Primeira evolução do mascote
                 await conexao.execute(
                     'UPDATE inventario_matricula SET evolucao = 2 WHERE ID_inv_pets = ?',
                     [ID_inventario]
                 );
+
+
                 const [pets] = await conexao.execute('SELECT * FROM pets')
+
                 const ovo = sorteioComBaseNoPeso(pets)
+                
+
                 console.log(ovo.ID_pet)
+
                 const DataAtual = new Date().toISOString().split('T')[0];
 
-                await conexao.execute('INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao) VALUES(?,?,?,?,?,?)', [ID_jogo, ID_usuarios, ovo.ID_pet,DataAtual, 0, 1])
+
+                // se tiver algo aqui quer dizer que o mascote sorteado é repetido
+                const [ChecarMascoteRepetido] = await conexao.execute('SELECT * FROM inventario_matricula WHERE ID_pets = ? AND ID_usuarios = ? AND ID_jogos = ?', [ovo.ID_pet, ID_usuarios, ID_jogo])
+
+                console.log(ChecarMascoteRepetido)
+                if (ChecarMascoteRepetido.length > 0) {
+
+                    await conexao.execute('UPDATE inventario_matricula SET pet_quantidade = pet_quantidade + 1 WHERE ID_pets = ? AND ID_usuarios = ? AND ID_jogos = ?', [ovo.ID_pet, ID_usuarios, ID_jogo]);
+                  
+                    const ovoNaoRepetido = sorteioComBaseNoPeso(pets, ovo.ID_pet)
+
+                    await conexao.execute('INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao, pet_quantidade, pet_principal) VALUES(?,?,?,?,?,?,?,?)', [ID_jogo, ID_usuarios, ovoNaoRepetido.ID_pet, DataAtual, 0, 1, 1, 0])
+
+                } else {
+                    await conexao.execute('INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao, pet_quantidade, pet_principal) VALUES(?,?,?,?,?,?,?,?)', [ID_jogo, ID_usuarios, ovo.ID_pet, DataAtual, 0, 1, 1, 0])
+                }
+
 
             }
             // Se a requisição vier com linhas, quer dizer que o mascote evoluiu

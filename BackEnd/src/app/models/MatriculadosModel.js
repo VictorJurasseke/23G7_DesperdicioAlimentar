@@ -45,7 +45,7 @@ module.exports.retornarNaoMatriculados = async () => {
     let conexao;
     try {
         conexao = await db.criarConexao();
-        const [linhas] = await conexao.execute('SELECT u.ID_usuarios, u.user_nome, u.user_email, u.user_periodo, u.user_tipo_acesso FROM usuarios u WHERE u.user_tipo_acesso = 2 LIMIT 15;');
+        const [linhas] = await conexao.execute('SELECT u.ID_usuarios, u.user_nome, u.user_email, u.user_periodo, u.user_tipo_acesso FROM usuarios u WHERE u.user_tipo_acesso = 2;');
         return linhas;
     } catch (error) {
         console.error("Erro ao listar todos os usuarios", error);

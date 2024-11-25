@@ -18,7 +18,7 @@ const TableUsuario = ({ token, navigate }) => {
     // Variável que guarda o filtro selecionado
     const [SelectAcesso, setSelectAcesso] = useState();
 
-    // useState que guarda os usuários filtrados
+    // useState que guarda os usuários filtrados    
     const [UsuarioFiltrado, setUsuarioFiltrado] = useState(TodosUsuarios);
 
     // useState que guarda o texto do input de pesquisa
@@ -33,8 +33,8 @@ const TableUsuario = ({ token, navigate }) => {
     // Instância do Fuse.js
     const fuse = new Fuse(UsuarioFiltrado, fuseOptions);
 
-    // Efeito para filtrar por tipo de acesso
-    useEffect(() => {
+
+    const SelectSwitchAcesso = (SelectAcesso) =>{
         switch (SelectAcesso) {
             case '0':
                 setUsuarioFiltrado(TodosUsuarios.filter((usuario) => usuario.user_tipo_acesso === 0));
@@ -50,22 +50,36 @@ const TableUsuario = ({ token, navigate }) => {
                 break;
             default:
                 setUsuarioFiltrado(TodosUsuarios);
+    
         }
+    }
+
+    // Efeito para filtrar por tipo de acesso
+    useEffect(() => {
+        SelectSwitchAcesso(SelectAcesso)
+        setPesquisa('')
     }, [SelectAcesso, TodosUsuarios]);
 
     // Efeito para buscar todos os usuários ao montar o componente
     useEffect(() => {
         BuscarTodosUsuarios(setUsuarioFiltrado);
+        SelectSwitchAcesso(SelectAcesso)
+        FiltrarBarraPesquisa()
     }, []);
 
     // Função para lidar com a pesquisa
-    useEffect(() => {
+
+    const FiltrarBarraPesquisa = () =>{
         if (Pesquisa.trim() === '') {
             setUsuarioFiltrado(TodosUsuarios);
+            SelectSwitchAcesso(SelectAcesso)
         } else {
             const resultados = fuse.search(Pesquisa).map((result) => result.item);
             setUsuarioFiltrado(resultados);
         }
+    }
+    useEffect(() => {
+        FiltrarBarraPesquisa()
     }, [Pesquisa, TodosUsuarios]);
 
     return (
@@ -131,7 +145,7 @@ const TableUsuario = ({ token, navigate }) => {
                     </tbody>
                 </table>
 
-            ) : (<p className='text-center mt-1'>Não há resultados para busca...</p>)
+            ) : (<p className='text-center mt-4'>Não há resultados para busca...</p>)
             }
 
             <div className="d-flex justify-content-center mt-4">
