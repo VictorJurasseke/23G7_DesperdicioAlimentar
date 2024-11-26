@@ -9,6 +9,7 @@ export const usePetsDados = (token, navigate) => {
 
     const [TodosPetsTemporada, setTodosPetsTemporada] = useState(null);
     const [jo_nome, setjo_nome] = useState(null)
+    const [QuantidadeMascote, setQuantidadeMascote] = useState(0)
 
 
 
@@ -27,6 +28,7 @@ export const usePetsDados = (token, navigate) => {
             console.log(resposta)
             setjo_nome(resposta.data.jo_nome)
             setTodosPetsTemporada(resposta.data.pets);
+            setQuantidadeMascote(resposta.data.mascotesStatus)
 
             console.log(resposta)
         } catch (error) {
@@ -41,7 +43,7 @@ export const usePetsDados = (token, navigate) => {
     //     ProcurarPets();
     // }, []); // Array vazio garante que o efeito será executado apenas uma vez
 
-    return { TodosPetsTemporada, ProcurarPets, jo_nome }; // Retorna o estado
+    return { TodosPetsTemporada, ProcurarPets, jo_nome,QuantidadeMascote }; // Retorna o estado
 };
 
 

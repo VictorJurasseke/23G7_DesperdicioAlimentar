@@ -121,7 +121,7 @@ rotas.get('/progresso/:valorAleatorioDesperdicado/:ID_inventario', verificarToke
     console.log("Requisicão get recebida em api/pets/progresso")
 
     // Variavel que guarda um valor entre 0.800kg e 0.200kg
-    const desperdicio = req.params.valorAleatorioDesperdicado
+    let desperdicio = req.params.valorAleatorioDesperdicado
     const ID_inventario = req.params.ID_inventario
     const ID_usuarios = req.info.ID_usuarios
     try{

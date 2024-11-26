@@ -6,7 +6,7 @@ import './div_pets.css';
 
 
 const NavBarPets = ({ token, navigate }) => {
-    const { TodosPetsTemporada, ProcurarPets, jo_nome } = usePetsDados(token, navigate);
+    const { TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote } = usePetsDados(token, navigate);
 
     useEffect(() => {
         ProcurarPets();
@@ -17,7 +17,7 @@ const NavBarPets = ({ token, navigate }) => {
             <nav className="navbar bg-body-dark p-2">
                 <div className="container-fluid">
                     <a className="navbar-brand text-dark fs-2 fw-bold">
-                        Mascotes da {jo_nome}
+                        Mascotes da {jo_nome}: {QuantidadeMascote}
                     </a>
                     <form className="d-flex" role="search">
                         <input

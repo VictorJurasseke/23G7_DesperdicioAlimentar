@@ -111,8 +111,8 @@ module.exports.MatricularAlunos = async (ID_usuarios, ID_jogos, ID_turmas) => {
 
         // Passo 6: Criar o inventário do usuário com o ovo sorteado
         const [Inventario] = await conexao.execute(
-            'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao) VALUES(?,?,?,?,?,?)',
-            [ID_jogos, ID_usuarios, ovo.ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' '), 0, 1]
+            'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao, pet_principal, pet_quantidade) VALUES(?,?,?,?,?,?,?,?)',
+            [ID_jogos, ID_usuarios, ovo.ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' '), 0, 1, 0, 1]
         );
 
         return { status: true, message: "Jogando!" };
