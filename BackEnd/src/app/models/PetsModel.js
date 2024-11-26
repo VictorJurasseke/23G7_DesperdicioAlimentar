@@ -105,7 +105,7 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
 
         // Passo 2: Obter os pets do usuário
         const [Pets] = await conexao.execute(
-            'SELECT p.nome_pet, p.caminho_pet, p.ID_pet, i.pontuacao_pet, p.raridade_pet, i.ID_inv_pets, i.pet_quantidade, i.pet_principal, p.ponto_pet, p.desc_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ? ORDER BY i.ID_inv_pets DESC LIMIT 9;',
+            'SELECT p.nome_pet, p.caminho_pet, p.ID_pet, i.pontuacao_pet, p.raridade_pet, i.ID_inv_pets, i.pet_quantidade, i.pet_principal, p.ponto_pet, p.desc_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ? ORDER BY i.ID_inv_pets DESC;',
             [ID_usuarios, Jogo[0].ID_jogos]
         );
 

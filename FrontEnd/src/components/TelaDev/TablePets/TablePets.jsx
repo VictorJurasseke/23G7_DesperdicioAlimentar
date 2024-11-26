@@ -28,7 +28,7 @@ const TablePets = ({ token, navigate }) => {
     }, [])
 
 
-    const selectRaridadeSwitch = (SelectRaridade) =>{
+    const selectRaridadeSwitch = (SelectRaridade) => {
         switch (SelectRaridade) {
             case '1':
                 setPetsFiltrado(TodosPets.filter((pets) => pets.raridade_pet === "Comum"));
@@ -46,7 +46,7 @@ const TablePets = ({ token, navigate }) => {
                 setPetsFiltrado(TodosPets);
         }
     }
-    // Função para filtrar os matriculados
+    // Função para filtrar os mascotes
     useEffect(() => {
         selectRaridadeSwitch(SelectRaridade)
         console.log("tema:", SelectRaridade)

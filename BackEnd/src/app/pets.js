@@ -40,15 +40,6 @@ const pets = [
         evolucao: 1
     },
     {
-        nome_pet: "Happy Rainbow Monkey",
-        caminho_pet: "Animadinha.gif",
-        desc_pet: "Um macaco alegre com um arco-íris.",
-        ponto_pet: 100,
-        raridade_pet: "Comum",
-        peso_pet: 0.5,
-        evolucao: 1
-    },
-    {
         nome_pet: "Avatar Monkey",
         caminho_pet: "Avatar.gif",
         desc_pet: "Um macaco que controla os elementos.",

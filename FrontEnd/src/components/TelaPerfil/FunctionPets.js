@@ -7,14 +7,14 @@ const UrlDadosPets = "http://localhost:3025/api/pets";
 
 export const usePetsDados = (token, navigate) => {
 
-    const [TodosPetsTemporada, setTodosPetsTemporada] = useState(null);
-    const [jo_nome, setjo_nome] = useState(null)
+    const [TodosPetsTemporada, setTodosPetsTemporada] = useState([]);
+    const [jo_nome, setjo_nome] = useState([])
     const [QuantidadeMascote, setQuantidadeMascote] = useState(0)
 
 
 
     // Função para procurar todos os pets do usuario no jogo especifico e mandar as info dele
-    const ProcurarPets = async () => {
+    const ProcurarPets = async (setMascotes,quantidadeExibida) => {
         if (!token) {
             SwalErroToken(navigate) // Redireciona para login se não existir token
             return;
@@ -26,8 +26,13 @@ export const usePetsDados = (token, navigate) => {
                 }
             });
             console.log(resposta)
+            const Pets = resposta.data.pets
+            console.log(resposta)
             setjo_nome(resposta.data.jo_nome)
-            setTodosPetsTemporada(resposta.data.pets);
+            console.log("Function chamada qtdEX:", quantidadeExibida)
+            setTodosPetsTemporada(Pets);
+            setMascotes(Pets.slice(0,quantidadeExibida))
+            console.log("Mascotes mostrando:",Pets.slice(0, quantidadeExibida))
             setQuantidadeMascote(resposta.data.mascotesStatus)
 
             console.log(resposta)
@@ -142,4 +147,5 @@ const SimularProgressoBalanca = async (desperdicio, ID_inventario, token, naviga
         SwalErroToken(navigate, error);
     }
 };
+
 

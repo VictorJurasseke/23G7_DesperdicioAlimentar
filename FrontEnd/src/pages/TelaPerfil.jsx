@@ -23,6 +23,8 @@ const TelaPerfil = () => {
     // console.log("Carregada")
 
 
+
+
     useEffect(() => {
         verificarUsuario();
     }, []);
@@ -65,7 +67,7 @@ const TelaPerfil = () => {
                     </div>
                 </>
             ) : (
-                <LoadingComponent /> // Mensagem de carregamento enquanto verifica se o usuário está logado
+               console.log("Carregando") // <LoadingComponent /> // Mensagem de carregamento enquanto verifica se o usuário está logado
             )}
         </>
     );
