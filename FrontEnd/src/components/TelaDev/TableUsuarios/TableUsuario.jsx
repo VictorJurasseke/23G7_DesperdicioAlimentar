@@ -85,7 +85,7 @@ const TableUsuario = ({ token, navigate }) => {
     return (
         <>
             <div className='col-12 d-flex justify-content-end'>
-                <div className='align-items-center text-center d-flex flex-row gap-3 position-absolute' style={{ top: '27px' }}>
+                <div className='align-items-center text-center d-flex flex-row gap-3 position-absolute' style={{ top: '200px', zIndex:20 }}>
                     <form className="d-flex" role="search">
                         <select
                             onChange={(e) => setSelectAcesso(e.target.value)}

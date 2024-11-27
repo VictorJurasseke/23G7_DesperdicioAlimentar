@@ -76,14 +76,14 @@ export const MudarFundoraridade = (tipo) => {
       cor = "#007BFF";  // Azul
       break;
     case "Raro":
-      cor = "#FFA500";  // Laranja
+      cor = "#FFB347";  // Laranja
       break;
     case "Épico":
       cor = "#800080";  // Roxo
       break;
     case "Lendário":
       cor = "#FFD700";  // Dourado
-      break;
+      break;  
     default:
       cor = "#000000";  // Cor padrao (caso o tipo nao seja reconhecido)
   }

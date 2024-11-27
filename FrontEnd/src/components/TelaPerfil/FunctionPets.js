@@ -224,7 +224,7 @@ export const obterEstiloTema = (jo_tema) => {
                 color: "#E91E63",
                 padding: "15px",
                 borderRadius: "20px",
-                border: "5px solid #E91E63",
+                border: "1px solid #E91E63",
                 boxSizing: "border-box",
             };
         case 2:
@@ -233,7 +233,7 @@ export const obterEstiloTema = (jo_tema) => {
                 color: "#ff8a36",
                 padding: "15px",
                 borderRadius: "20px",
-                border: "5px solid #ff8a36",
+                border: "1px solid #ff8a36",
                 boxSizing: "border-box",
 
 
@@ -245,7 +245,7 @@ export const obterEstiloTema = (jo_tema) => {
                 color: "#4200ff",
                 padding: "15px",
                 borderRadius: "20px",
-                border: "5px solid #4200ff",
+                border: "1px solid #4200ff",
                 boxSizing: "border-box",
             };
         case 4:
@@ -254,7 +254,7 @@ export const obterEstiloTema = (jo_tema) => {
                 color: "#8705b0",
                 padding: "15px",
                 borderRadius: "20px",
-                border: "5px solid #8705b0",
+                border: "1px solid #8705b0",
                 boxSizing: "border-box",
             };
         default:

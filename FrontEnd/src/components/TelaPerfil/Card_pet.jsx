@@ -92,8 +92,8 @@ const Card_pet = ({
                 {nome}
               </h5>
               <div className="h-100 align-items-end justify-content-end d-flex flex-column column">
-                <p className='text-light fs-5'>{desc_pet}</p>
-                <p className='text-light'>Raridade: {raridade}</p>
+                <p className='text-light fs-5 text-start'>{desc_pet}</p>
+                <p className='text-light'>{raridade}</p>
               </div>
             </motion.div>
           )}
