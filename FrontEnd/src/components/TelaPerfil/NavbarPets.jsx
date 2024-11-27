@@ -7,8 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaCircleChevronRight } from "react-icons/fa6";
 import { FaCircleChevronLeft } from "react-icons/fa6";
 
-const NavBarPets = ({ token, navigate }) => {
-    const { TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema } = usePetsDados(token, navigate);
+const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema }) => {
+  
 
 
     // Guarda o filtro selecionado
@@ -160,7 +160,7 @@ const NavBarPets = ({ token, navigate }) => {
         
             <nav className="navbar bg-body-dark">
                 <motion.div
-                    className="d-flex flex-row col-12 justify-content-between align-items-center border"
+                    className="d-flex flex-row col-12 justify-content-between align-items-center"
                     initial={{ x: "-100vw", opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1, type: "spring", stiffness: 20 }}
@@ -169,7 +169,7 @@ const NavBarPets = ({ token, navigate }) => {
 
 
                     {/* Alinhar o h6 à esquerda */}
-                    <h6 className='fs-2 fw-bold'>{`Mascotes da ${jo_nome}: ${QuantidadeMascote}`}</h6>
+                    <h6 className='fs-2 fw-bold'>{`MASCOTES CONQUISTADOS: ${QuantidadeMascote}`}</h6>
 
                     {/* Formulários à direita */}
                     <form className="d-flex"role="search">
@@ -193,7 +193,7 @@ const NavBarPets = ({ token, navigate }) => {
             </nav>
 
             <motion.div
-                className="pets-container "
+                className="pets-container p-2"
                 ref={petsContainerRef}
                 initial={{ x: "-100vw" }}
                 animate={{ x: 0 }}

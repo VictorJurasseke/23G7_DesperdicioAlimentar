@@ -14,6 +14,13 @@ export const usePetsDados = (token, navigate) => {
 
     const [jo_tema, setjo_tema] = useState([])
 
+    const [jo_rank, setjo_rank] = useState([])
+
+
+    const [pontos, set_pontos] = useState([])
+
+
+
     // Função para procurar todos os pets do usuario no jogo especifico e mandar as info dele
     const ProcurarPets = async () => {
         if (!token) {
@@ -31,7 +38,9 @@ export const usePetsDados = (token, navigate) => {
             console.log(resposta)
             setjo_nome(resposta.data.jo_nome)
             setTodosPetsTemporada(Pets);
-            setjo_tema(resposta.data.jo_tema)
+            setjo_tema(resposta.data?.jo_tema)
+            setjo_rank(resposta.data?.RankJogoAtual)
+            set_pontos(resposta.data?.PontosUsuario)
 
             // Mostra em mascotes apenas a quantidade exibida por padrão
             setQuantidadeMascote(resposta.data.mascotesStatus)
@@ -50,7 +59,7 @@ export const usePetsDados = (token, navigate) => {
     //     ProcurarPets();
     // }, []); // Array vazio garante que o efeito será executado apenas uma vez
 
-    return { TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema }; // Retorna o estado
+    return { TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema, pontos, jo_rank }; // Retorna o estado
 };
 
 
@@ -213,37 +222,41 @@ export const obterEstiloTema = (jo_tema) => {
             return {
                 backgroundColor: "#ffd600", // Temporada de verao
                 color: "#E91E63",
-                padding:"15px",
-                borderRadius:"20px",
-                borderColor:"#E91E63"
+                padding: "15px",
+                borderRadius: "20px",
+                borderColor: "#E91E63"
             };
         case 2:
             return {
                 backgroundColor: "#a72300", // Temporada de outono
                 color: "#ff8a36",
-                padding:"15px",
-                borderRadius:"20px",
-                borderColor:"#ff8a36"
+                padding: "15px",
+                borderRadius: "20px",
+                border: "5px solid #ff8a36",
+                boxSizing: "border-box",
+
+
+
             };
         case 3:
             return {
                 backgroundColor: "#a1c9ff", // Temporada de inverno
                 color: "#4200ff",
-                padding:"15px",
-                borderRadius:"20px",
-                borderColor:"#4200ff"
+                padding: "15px",
+                borderRadius: "20px",
+                borderColor: "#4200ff"
             };
         case 4:
             return {
                 backgroundColor: "#f2abc5", // Temporada de primavera
                 color: "#8705b0",
-                padding:"15px",
-                borderRadius:"20px",
-                borderColor:" #8705b0"
+                padding: "15px",
+                borderRadius: "20px",
+                borderColor: " #8705b0"
             };
         default:
             return {
-                display:"none"
+                display: "none"
             };
     }
 };

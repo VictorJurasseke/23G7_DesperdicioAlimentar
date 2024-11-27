@@ -40,7 +40,7 @@ const Card_pet = ({
     <>
 
       <motion.div
-        className="card shadow text-dark card-pet d-flex flex-row "
+        className="card text-dark card-pet d-flex flex-row "
         style={{
           backgroundColor: corFundo,
           zIndex: AbrirDesc ? '5' : '1',
@@ -92,7 +92,7 @@ const Card_pet = ({
                 {nome}
               </h5>
               <div className="h-100 align-items-end justify-content-end d-flex flex-column column">
-                <p className='text-light'>{desc_pet}</p>
+                <p className='text-light fs-5'>{desc_pet}</p>
                 <p className='text-light'>Raridade: {raridade}</p>
               </div>
             </motion.div>

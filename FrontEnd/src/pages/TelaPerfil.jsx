@@ -43,9 +43,9 @@ const TelaPerfil = () => {
         <>
             {Dados_usuario ? ( // Verifica se Dados_usuario não é null e se o token está correto
                 <>
-                    <div className="col-12 d-flex flex-column overflow-hidden text-dark min-vh-100 position-relative z-2">
+                    <div className="col-12 d-flex flex-column  text-dark min-vh-100 position-relative z-2 ">
                         <Header Dados_usuario={Dados_usuario}/>
-                        <div className="col-12 text-dark vh-100 ImagemFundo">
+                        <div className="col-12 text-dark vh-100 ">
                             <CardPerfil
                                 nome={Dados_usuario.user_nome}
                                 periodo={Dados_usuario.user_periodo}
@@ -55,7 +55,7 @@ const TelaPerfil = () => {
                                 nivel_acesso={Dados_usuario.user_tipo_acesso}
                             />
 
-                            <div className="text-dark vh-100 ">
+                            <div className="text-dark col-12">
                                 {/* Se for aluno, ele mostrara os jogos disponiveis para ele participar 1 == aluno, 2 == usuario, 3 == jogador  0 == DEV  */}
                                 {Dados_usuario.user_tipo_acesso === 0 && (<Menu_Administrador Dados_usuario={Dados_usuario}></Menu_Administrador>)}
                                 {Dados_usuario.user_tipo_acesso == 1 && (<Menu_Aluno Dados_usuario={Dados_usuario} token={token} navigate={navigate} />)}
