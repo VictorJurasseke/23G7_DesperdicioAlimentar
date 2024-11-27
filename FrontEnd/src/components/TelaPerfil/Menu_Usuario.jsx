@@ -2,8 +2,7 @@ import React, {useEffect} from 'react';
 import {formatarData, useImportarDadosJogos } from '../TelaDev/TableJogo/FunctionJogos';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CardJogos from './CardJogos';
-
-
+import { motion } from 'framer-motion';
 
 const Menu_Usuario = ({Dados_usuario, token, navigate}) => {
 
@@ -27,7 +26,7 @@ const Menu_Usuario = ({Dados_usuario, token, navigate}) => {
     return (
         <>
            
-                <div className="text-center p-3 position-relative" style={{ zIndex: 2 }}>
+                <motion.div className="text-center p-3 position-relative d-flex align-items-center" initial={{y:"-100vh", opacity:0}} transition={{duration:"1", type:"spring", stiffness:20}} animate={{y:70, opacity:1}}>
                     {TodosJogosAtivos.length === 0 ? (
                         <>Não há nenhum jogo disponivel em sua escola!</>
                     ) : (
@@ -44,6 +43,7 @@ const Menu_Usuario = ({Dados_usuario, token, navigate}) => {
                                         jo_datai={formatarData(item.jo_datai)}
                                         jo_dataf={formatarData(item.jo_dataf)}
                                         jo_nome={item.jo_nome}
+                                        jo_desc={item.jo_desc}
                                         jo_status={item.jo_status}
                                         ID_jogos={item.ID_jogos}
                                         ID_usuarios={Dados_usuario.ID_usuarios}
@@ -56,7 +56,7 @@ const Menu_Usuario = ({Dados_usuario, token, navigate}) => {
                             </div>
                         </>
                     )}
-                </div>
+                </motion.div>
             
 
 

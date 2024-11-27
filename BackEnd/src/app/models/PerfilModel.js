@@ -30,7 +30,7 @@ module.exports.verificarDev = async () => {
 
         // verifica se há algum usuario na tabela, se não houver retorna false, e mostra a tela de criar a conta dev
         const [qtd_usuario] = await conexao.execute(
-            'select count(*) AS usuarios from usuarios'
+            'select count(*) AS usuarios from usuarios WHERE user_tipo_acesso = 0'
         )
         return qtd_usuario
 

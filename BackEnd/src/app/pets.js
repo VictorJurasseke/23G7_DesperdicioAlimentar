@@ -40,15 +40,6 @@ const pets = [
         evolucao: 1
     },
     {
-        nome_pet: "Happy Rainbow Monkey",
-        caminho_pet: "Animadinha.gif",
-        desc_pet: "Um macaco alegre com um arco-íris.",
-        ponto_pet: 100,
-        raridade_pet: "Comum",
-        peso_pet: 0.5,
-        evolucao: 1
-    },
-    {
         nome_pet: "Avatar Monkey",
         caminho_pet: "Avatar.gif",
         desc_pet: "Um macaco que controla os elementos.",
@@ -1063,26 +1054,34 @@ const sorteioComBaseNoPeso = (pets, ID_pet = null) => {
     const pesoTotal = pets.reduce((acc, pet) => acc + pet.peso_pet, 0);
     let sorteado = null;
 
-    while (!sorteado || (ID_pet !== null && sorteado.ID_pet === ID_pet)) {
+    while (!sorteado) {
         const sorteioAleatorio = Math.random() * pesoTotal; // Sorteio aleatório entre 0 e o peso total
         console.log('Sorteio Aleatório:', sorteioAleatorio);
 
-        let TodosPetsChance = 0;
+        let chanceAcumulada = 0;
 
         for (const pet of pets) {
-            TodosPetsChance += pet.peso_pet;
-            console.log(`Pet: ${pet.nome_pet}, Chance Acumulada: ${TodosPetsChance}`);
-            if (sorteioAleatorio < TodosPetsChance) {
+            chanceAcumulada += pet.peso_pet;
+            console.log(`Pet: ${pet.nome_pet}, Chance Acumulada: ${chanceAcumulada}`);
+
+            // Verifica se o sorteio caiu no intervalo de chances do pet atual
+            if (sorteioAleatorio < chanceAcumulada) {
                 if (ID_pet === null || pet.ID_pet !== ID_pet) {
-                    sorteado = pet; // Garante que o novo sorteado seja diferente do anterior
+                    sorteado = pet; // Sorteia um pet diferente, caso não seja o pet atual
                 }
                 break;
             }
+        }
+
+        // Se o sorteio ainda não encontrou um pet válido (diferente do anterior), tenta novamente
+        if (sorteado && ID_pet !== null && sorteado.ID_pet === ID_pet) {
+            sorteado = null; // Força nova tentativa se o pet sorteado for o mesmo do anterior
         }
     }
 
     return sorteado; // Retorna o pet sorteado
 };
+
 
 
 

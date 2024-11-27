@@ -3,9 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 
 
 import './CardOutono.css'
+import { formatarData } from './FunctionParticiparJogo';
 
-const CardOutono = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nome, token, navigate, Participar, TodasTurmas }) => {
+const CardOutono = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nome, token, navigate, Participar, TodasTurmas,jo_desc }) => {
 
+    console.log("Data formatada bb",formatarData(jo_datai))
     console.log(jo_datai)
 
 
@@ -15,13 +17,11 @@ const CardOutono = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nom
             <div className='position-absolute col-10 p-4  back-Autumn'>aaa</div>
             <div className="Autumn-card p-4 d-flex row">
                 <div className='text-start flex-column col-4 d-flex  p-4'>
-                    <h1 className="title-outono ">TEMPORADA DE OUTONO</h1>
+                    <h1 className="title-outono ">{jo_nome.toUpperCase()}</h1>
                     <p className="lyrics-outono">
-                        'Cause the players gonna play, play, play, play, play<br />
-                        And the haters gonna hate, hate, hate, hate, hate<br />
-                        Baby, I'm just gonna shake, shake, shake, shake, shake
+                        {jo_desc}
                     </p>
-                    <p className="dates text-light fw-bold fs-6">Data Início: 01/01/2024<br />Data Fim: 20/03/2024</p>
+                    <p className="dates text-light fw-bold fs-6">Data Início: {jo_datai}<br />Data Fim: {jo_dataf}</p>
                 </div>
                 <div className=' col-8 align-self-center h-100 d-flex flex-column justify-content-end '>
                     <img

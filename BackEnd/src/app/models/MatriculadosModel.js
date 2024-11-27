@@ -5,7 +5,7 @@ module.exports.retornarTodosMatriculados = async () => {
     let conexao;
     try {
         conexao = await db.criarConexao();
-        const [linhas] = await conexao.execute('SELECT m.pontos_usuario, u.ID_usuarios, j.ID_jogos, j.jo_tema, m.rank_usuario, u.user_nome, j.jo_nome, e.es_nome FROM jogos_matricula m, usuarios u, jogos j, escola e WHERE u.ID_usuarios = m.ID_usuarios AND m.ID_jogos = j.ID_jogos AND j.ID_escola = e.ID_escola;');
+        const [linhas] = await conexao.execute('SELECT m.pontos_usuario, u.ID_usuarios, j.ID_jogos, j.jo_tema, m.rank_usuario, u.user_nome, j.jo_nome, e.es_nome FROM jogos_matricula m, usuarios u, jogos j, escola e WHERE u.ID_usuarios = m.ID_usuarios AND m.ID_jogos = j.ID_jogos AND j.ID_escola = e.ID_escola ORDER BY m.rank_usuario;');
         return linhas;
     } catch (error) {
         console.error("Erro ao listar todas as matriculas", error);
@@ -60,10 +60,7 @@ module.exports.MatricularAlunos = async (ID_usuarios, ID_jogos, ID_turmas) => {
     let conexao;
     try {
         conexao = await db.criarConexao();
-        
-        
-        
-        
+
         // Passo 0: Verificar se o jogo está ativo
         const [JogosStatus] = await conexao.execute(
             `SELECT * FROM jogos j WHERE j.ID_jogos = ? AND j.jo_status = 1`,
@@ -71,13 +68,6 @@ module.exports.MatricularAlunos = async (ID_usuarios, ID_jogos, ID_turmas) => {
         );
         if (JogosStatus.length === 0) {
             return { status: false, message: "O jogo está inativo" };
-        }
-        
-        const pets = await conexao.execute('SELECT * FROM pets')
-       
-
-        if(pets.length == 0){
-            return{status:false, message:"Precisa cadastrar pets no sistema"}
         }
 
         // Passo 1: Obter os usuários matriculados
@@ -101,6 +91,7 @@ module.exports.MatricularAlunos = async (ID_usuarios, ID_jogos, ID_turmas) => {
             [ID_usuarios]
         );
 
+        const pets = await conexao.execute('SELECT * FROM pets')
 
     
 
@@ -111,8 +102,8 @@ module.exports.MatricularAlunos = async (ID_usuarios, ID_jogos, ID_turmas) => {
 
         // Passo 6: Criar o inventário do usuário com o ovo sorteado
         const [Inventario] = await conexao.execute(
-            'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao) VALUES(?,?,?,?,?,?)',
-            [ID_jogos, ID_usuarios, ovo.ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' '), 0, 1]
+            'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao, pet_principal, pet_quantidade) VALUES(?,?,?,?,?,?, ?,?)',
+            [ID_jogos, ID_usuarios, ovo.ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' '), 0, 1, 0, 1]
         );
 
         return { status: true, message: "Jogando!" };

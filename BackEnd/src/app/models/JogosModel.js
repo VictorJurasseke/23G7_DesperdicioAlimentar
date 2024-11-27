@@ -23,7 +23,7 @@ module.exports.retornarTodosJogosAtivos = async () => {
     let conexao;
     try {
         conexao = await db.criarConexao();
-        const [linhas] = await conexao.execute('SELECT j.jo_status, j.ID_jogos, j.jo_nome, j.jo_datai, j.jo_dataf, e.es_nome, j.jo_tema FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola AND j.jo_status = 1 ORDER BY j.jo_datai;');
+        const [linhas] = await conexao.execute('SELECT j.*, e.es_nome FROM jogos j, escola e WHERE j.ID_escola = e.ID_escola AND j.jo_status = 1 ORDER BY j.jo_datai;');
         return linhas;
     } catch (error) {
         console.error("Erro ao listar todos os jogos ATIVOS", error);
@@ -190,7 +190,7 @@ module.exports.atualizarRankingJogo = async (ID_jogos) => {
 };
 
 
-module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato) => {
+module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato,jo_desc) => {
     let conexao;
 
     try {
@@ -237,9 +237,10 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
                 jo_dataf,
                 ID_jogos_config,
                 jo_status,
-                jo_tema
-            ) VALUES (?, ?, ?, ?, ?, ?,?)`,
-            [unidade, jo_nome, jo_datai_formatada, jo_dataf_formatada, ID_jogos_config, jo_status, jo_tema,]
+                jo_tema,
+                jo_desc
+            ) VALUES (?, ?, ?, ?, ?, ?,?,?)`,
+            [unidade, jo_nome, jo_datai_formatada, jo_dataf_formatada, ID_jogos_config, jo_status, jo_tema,jo_desc]
         );
         if (jogoCriado && configCriada) {
             return { status: true };

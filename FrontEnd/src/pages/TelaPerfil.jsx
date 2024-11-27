@@ -11,6 +11,7 @@ import Menu_Aluno from '../components/TelaPerfil/Menu_Aluno';
 import Menu_Administrador from '../components/TelaPerfil/Menu_Administrador';
 import Menu_Usuario from '../components/TelaPerfil/Menu_Usuario';
 import Menu_Jogador from '../components/TelaPerfil/Menu_Jogador';
+import '../components/TelaPerfil/TelaPerfil.css'
 
 
 
@@ -21,6 +22,8 @@ const TelaPerfil = () => {
     // console.log(Dados_usuario)
     // console.log("Token no tela perfil", token)
     // console.log("Carregada")
+
+
 
 
     useEffect(() => {
@@ -40,9 +43,9 @@ const TelaPerfil = () => {
         <>
             {Dados_usuario ? ( // Verifica se Dados_usuario não é null e se o token está correto
                 <>
-                    <div className="col-12 d-flex flex-column overflow-hidden text-dark min-vh-100 position-relative z-2">
+                    <div className="col-12 d-flex flex-column  text-dark min-vh-100 position-relative z-2 ">
                         <Header Dados_usuario={Dados_usuario}/>
-                        <div className="col-12 mt-5 text-dark position-relative">
+                        <div className="col-12 text-dark vh-100 ">
                             <CardPerfil
                                 nome={Dados_usuario.user_nome}
                                 periodo={Dados_usuario.user_periodo}
@@ -52,9 +55,8 @@ const TelaPerfil = () => {
                                 nivel_acesso={Dados_usuario.user_tipo_acesso}
                             />
 
-                            <div className="text-dark position-relative">
+                            <div className="text-dark col-12">
                                 {/* Se for aluno, ele mostrara os jogos disponiveis para ele participar 1 == aluno, 2 == usuario, 3 == jogador  0 == DEV  */}
-
                                 {Dados_usuario.user_tipo_acesso === 0 && (<Menu_Administrador Dados_usuario={Dados_usuario}></Menu_Administrador>)}
                                 {Dados_usuario.user_tipo_acesso == 1 && (<Menu_Aluno Dados_usuario={Dados_usuario} token={token} navigate={navigate} />)}
                                 {Dados_usuario.user_tipo_acesso === 2 && (<Menu_Usuario Dados_usuario={Dados_usuario} token={token} navigate={navigate} />)}
@@ -65,7 +67,7 @@ const TelaPerfil = () => {
                     </div>
                 </>
             ) : (
-                <LoadingComponent /> // Mensagem de carregamento enquanto verifica se o usuário está logado
+               console.log("Carregando") // <LoadingComponent /> // Mensagem de carregamento enquanto verifica se o usuário está logado
             )}
         </>
     );

@@ -12,19 +12,20 @@ import { BiAddToQueue } from "react-icons/bi";
 
 
 
-const TableTurmas = ({token,navigate}) => {
+const TableTurmas = ({ token, navigate }) => {
 
-    const {  TodasTurmas, BuscarTurmas } = useImportarDadosTurmas(token,navigate)
+    const { TodasTurmas, BuscarTurmas } = useImportarDadosTurmas(token, navigate)
 
-    useEffect(()=>{
+    useEffect(() => {
         BuscarTurmas()
     }, [])
 
     return (
         <>
-          
-          
-                <>
+
+
+            <>
+                {TodasTurmas.length > 0 ? (
                     <table className="table table-striped  table-hover text-center">
                         <thead >
                             <tr>
@@ -46,10 +47,12 @@ const TableTurmas = ({token,navigate}) => {
                             ))}
                         </tbody>
                     </table>
-                    <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
-                        <BiAddToQueue onClick={()=>{ModalCriarTurma(token, navigate, BuscarTurmas)}}/>
-                    </div>
-                </>
+                ) : (<p className='text-center mt-4'>Não há resultados para busca...</p>)}
+
+                <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
+                    <BiAddToQueue onClick={() => { ModalCriarTurma(token, navigate, BuscarTurmas) }} />
+                </div>
+            </>
         </>
     );
 };

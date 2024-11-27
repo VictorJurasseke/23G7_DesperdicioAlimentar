@@ -1,12 +1,13 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
+import { motion } from 'framer-motion';
 
 import InfoPerfil from './InfoPerfil';
 
 const CardPerfil = ({ nome, img, periodo, token, navigate, nivel_acesso }) => {
 
   return (
-    <div className="col-12 text-dark mt-3 p-3 shadow-sm card-perfil">
+    <motion.div className="col-12 text-dark mt-3 p-3 shadow-sm card-perfil bg-light" style={{zIndex:2000}}  initial={{y:"-100vh", opacity:0}} transition={{duration:"1", type:"spring", stiffness:20}} animate={{y:10, opacity:1}}>
       <div className="row d-flex mt-4 align-items-center">
         <div className="col-auto text-center">
           <img
@@ -20,7 +21,7 @@ const CardPerfil = ({ nome, img, periodo, token, navigate, nivel_acesso }) => {
           <InfoPerfil nome={nome} periodo={periodo} nivel_acesso={nivel_acesso} />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { FaTrophy } from 'react-icons/fa';
 import InfoPerfil from './InfoPerfil';
-import Grafico from './Grafico';
+
 import Spinner from 'react-bootstrap/Spinner';
 
 

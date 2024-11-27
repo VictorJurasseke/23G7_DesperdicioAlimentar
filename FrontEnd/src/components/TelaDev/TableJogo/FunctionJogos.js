@@ -90,6 +90,10 @@ export const ModalCriarJogo = (atualizar, navigate, token, TodasUnidade, setForm
         <label for="jo_nome" class="form-label">Nome do Jogo</label>
         <input type="text" id="jo_nome" class="form-control" placeholder="Temporada de Verão">
     </div>
+     <div class="mb-3 text-start">
+                <label for="jo_desc" class="form-label">Descrição do Jogo:</label>
+                <textarea id="jo_desc" class="form-control" placeholder="Descrição do Jogo" rows="3"></textarea>
+            </div>
     <div class="mb-3 text-start">
         <label for="jo_datai" class="form-label">Data de Início</label>
         <input type="date" id="jo_datai" class="form-control" readonly>
@@ -177,6 +181,7 @@ export const ModalCriarJogo = (atualizar, navigate, token, TodasUnidade, setForm
             const tara_prato = document.getElementById("tara_prato").value;
             const jo_tema = document.getElementById("jo_tema").value
             const jogos_data_mudanca = new Date();
+            const jo_desc = document.getElementById("jo_desc").value
 
             let dataMudada = formatarDataParaBanco(jogos_data_mudanca);
             const jo_datai_formatada = formatarDataParaBanco(jo_datai);
@@ -204,6 +209,7 @@ export const ModalCriarJogo = (atualizar, navigate, token, TodasUnidade, setForm
                 valor_pontos,
                 tara_prato,
                 dataMudada,
+                jo_desc
             };
 
             setForm(novoForm);
@@ -240,14 +246,14 @@ export const atualizarDatas = () => {
     const valor_grama = document.getElementById("valor_grama");
     const valor_pontos = document.getElementById("valor_pontos");
     const tara_prato = document.getElementById("tara_prato");
-   
+    const jo_desc = document.getElementById("jo_desc")
 
     // Definindo as temporadas em um objeto para simplificar a atribuição
     const temporadas = {
-        "1": { inicio: `${anoAtual}-01-30`, fim: `${anoAtual}-03-20`, nome: "Temporada de Verão", jogos_pts_segunda:1, jogos_pts_terca:1, jogos_pts_quarta:1, jogos_pts_quinta:1, jogos_pts_sexta:1, jogos_pts_sabado:1, jogos_pts_domingo:1, valor_grama:0.800, valor_pontos:10, tara_prato:0.150 },
-        "2": { inicio: `${anoAtual}-03-21`, fim: `${anoAtual}-06-21`, nome: "Temporada de Outono", jogos_pts_segunda:1, jogos_pts_terca:1, jogos_pts_quarta:1, jogos_pts_quinta:1, jogos_pts_sexta:1, jogos_pts_sabado:1, jogos_pts_domingo:1, valor_grama:0.800, valor_pontos:10, tara_prato:0.150  },
-        "3": { inicio: `${anoAtual}-06-22`, fim: `${anoAtual}-09-22`, nome: "Temporada de Inverno", jogos_pts_segunda:1, jogos_pts_terca:1, jogos_pts_quarta:1, jogos_pts_quinta:1, jogos_pts_sexta:1, jogos_pts_sabado:1, jogos_pts_domingo:1, valor_grama:0.800, valor_pontos:10, tara_prato:0.150 },
-        "4": { inicio: `${anoAtual}-09-23`, fim: `${anoAtual}-12-10`, nome: "Temporada de Primavera", jogos_pts_segunda:1, jogos_pts_terca:1, jogos_pts_quarta:1, jogos_pts_quinta:1, jogos_pts_sexta:1, jogos_pts_sabado:1, jogos_pts_domingo:1, valor_grama:0.800, valor_pontos:10, tara_prato:0.150 }
+        "1": { inicio: `${anoAtual}-01-30`, fim: `${anoAtual}-03-20`, nome: "Temporada de Verão", jogos_pts_segunda: 1, jogos_pts_terca: 1, jogos_pts_quarta: 1, jogos_pts_quinta: 1, jogos_pts_sexta: 1, jogos_pts_sabado: 1, jogos_pts_domingo: 1, valor_grama: 0.800, valor_pontos: 10, tara_prato: 0.150, jo_desc: "Mergulhe na diversão! Mostre suas habilidades, suba no rank e conquiste o topo da competição!" },
+        "2": { inicio: `${anoAtual}-03-21`, fim: `${anoAtual}-06-21`, nome: "Temporada de Outono", jogos_pts_segunda: 1, jogos_pts_terca: 1, jogos_pts_quarta: 1, jogos_pts_quinta: 1, jogos_pts_sexta: 1, jogos_pts_sabado: 1, jogos_pts_domingo: 1, valor_grama: 0.800, valor_pontos: 10, tara_prato: 0.150, jo_desc: "Prepare-se para explorar! Evite o desperdício de alimentos e conquiste o topo do rank com estilo" },
+        "3": { inicio: `${anoAtual}-06-22`, fim: `${anoAtual}-09-22`, nome: "Temporada de Inverno", jogos_pts_segunda: 1, jogos_pts_terca: 1, jogos_pts_quarta: 1, jogos_pts_quinta: 1, jogos_pts_sexta: 1, jogos_pts_sabado: 1, jogos_pts_domingo: 1, valor_grama: 0.800, valor_pontos: 10, tara_prato: 0.150, jo_desc: "O desafio esfria, mas a competição aquece! Prove suas habilidades e conquiste os pets mais raros." },
+        "4": { inicio: `${anoAtual}-09-23`, fim: `${anoAtual}-12-10`, nome: "Temporada de Primavera", jogos_pts_segunda: 1, jogos_pts_terca: 1, jogos_pts_quarta: 1, jogos_pts_quinta: 1, jogos_pts_sexta: 1, jogos_pts_sabado: 1, jogos_pts_domingo: 1, valor_grama: 0.800, valor_pontos: 10, tara_prato: 0.150, jo_desc: "Celebre a renovação! Alcance o maior rank enquanto aproveita a beleza da estação e desbloqueia novos pets." }
     };
 
     // Se o tema for válido, define as datas e o nome
@@ -266,10 +272,12 @@ export const atualizarDatas = () => {
         valor_grama.value = temporada.valor_grama
         valor_pontos.value = temporada.valor_pontos
         tara_prato.value = temporada.tara_prato
+        jo_desc.value = temporada.jo_desc
     } else {
         jo_datai.value = "";
         jo_dataf.value = "";
         jo_nome.value = "";
+        jo_desc.value = ""
     }
 
     // Normalizando as datas
@@ -284,7 +292,7 @@ export const atualizarDatas = () => {
     const jogos_data_mudanca = new Date();  // Data atual
     const novoStatus = (jogos_data_mudanca >= dataInicioObj && jogos_data_mudanca <= dataFimObj) ? "1" : "2";
 
-    
+
 
     // Atualizando o valor do select
     jo_status.value = novoStatus;  // Isso vai definir o valor selecionado do select
@@ -302,7 +310,7 @@ export const useImportarDadosJogos = (token, navigate) => {
 
     const [TodosJogosAtivos, setTodosJogosAtivos] = useState([])
 
-    // FUNCAO QUE BUSCA TODOS OS JOGOS NO BANCO
+    // FUNCAO QUE BUSCA TODOS OS JOGOS NO BANCO ATIVOS
     async function BuscarJogos() {
         try {
             let resposta = await axios.get(urlJogos, {
@@ -314,7 +322,7 @@ export const useImportarDadosJogos = (token, navigate) => {
 
             setTodosJogos(resposta.data)
         } catch (error) {
-            SwalErroToken(navigate, error) 
+            SwalErroToken(navigate, error)
 
         }
     }
@@ -329,7 +337,7 @@ export const useImportarDadosJogos = (token, navigate) => {
 
             setTodosJogosAtivos(resposta.data)
         } catch (error) {
-            SwalErroToken(navigate, error) 
+            SwalErroToken(navigate, error)
 
         }
     }
@@ -410,7 +418,7 @@ export const deletarJogos = async (id, atualizar, navigate, token) => {
             console.log("Excluído");
         }
     } catch (error) {
-        SwalErroToken(navigate, error) 
+        SwalErroToken(navigate, error)
     }
 };
 
@@ -444,18 +452,18 @@ export const CriarJogo = async (atualizar, navigate, token, novoForm) => {
             console.log("Jogo criado sucesso");
         }
     } catch (error) {
-         SwalErroToken(navigate, error) 
-        
+        SwalErroToken(navigate, error)
+
     }
 };
 
 
-export const MudarStatus = async (id, atualizar, navigate, token, status)=>{
+export const MudarStatus = async (id, atualizar, navigate, token, status) => {
 
 
-    let statusReal 
+    let statusReal
     console.log(status)
-    switch(status){
+    switch (status) {
         case "bg-success":
             statusReal = 2
             break;
@@ -488,8 +496,8 @@ export const MudarStatus = async (id, atualizar, navigate, token, status)=>{
             console.log("Jogo criado sucesso");
         }
     } catch (error) {
-         SwalErroToken(navigate, error) 
-        
+        SwalErroToken(navigate, error)
+
     }
 
 }

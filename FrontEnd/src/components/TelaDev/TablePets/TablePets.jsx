@@ -28,7 +28,7 @@ const TablePets = ({ token, navigate }) => {
     }, [])
 
 
-    const selectRaridadeSwitch = (SelectRaridade) =>{
+    const selectRaridadeSwitch = (SelectRaridade) => {
         switch (SelectRaridade) {
             case '1':
                 setPetsFiltrado(TodosPets.filter((pets) => pets.raridade_pet === "Comum"));
@@ -46,7 +46,7 @@ const TablePets = ({ token, navigate }) => {
                 setPetsFiltrado(TodosPets);
         }
     }
-    // Função para filtrar os matriculados
+    // Função para filtrar os mascotes
     useEffect(() => {
         selectRaridadeSwitch(SelectRaridade)
         console.log("tema:", SelectRaridade)
@@ -75,8 +75,7 @@ const TablePets = ({ token, navigate }) => {
 
     return (
         <>
-
-            <div className='col-12 d-flex justify-content-end border-bottom'>
+            <div className='col-12 d-flex justify-content-end'>
                 <div className='align-items-center text-center d-flex flex-row gap-3 position-absolute' style={{ top: '27px' }}>
                     <form className="d-flex" role="search">
                         <select
@@ -105,45 +104,49 @@ const TablePets = ({ token, navigate }) => {
                 </div>
             </div>
 
-            <table className="table table-striped  table-hover  text-center">
-                <thead className="thead-dark">
-                    <tr>
-                        <th>ID Pet</th>
-                        <th>Nome</th>
-                        <th>Caminho</th>
-                        <th>Descrição</th>
-                        <th>Min.Ponto</th>
-                        <th>Raridade</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
+            {TodosPets.length > 0 ?
+                (
+                    <table className="table table-striped  table-hover  text-center">
+                        <thead className="thead-dark">
+                            <tr>
+                                <th>ID Pet</th>
+                                <th>Nome</th>
+                                <th>Caminho</th>
+                                <th>Descrição</th>
+                                <th>Min.Ponto</th>
+                                <th>Raridade</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                    {PetsFiltrado.map((item) => (
-                        <PetsTR
-                            key={item.ID_pet}
-                            ID_pet={item.ID_pet}
-                            nome_pet={item.nome_pet}
-                            caminho_pet={item.caminho_pet}
-                            desc_pet={item.desc_pet}
-                            ponto_pet={item.ponto_pet}
-                            raridade_pet={item.raridade_pet}
-                            atualizar={BuscarTodosPets}
-                            navigate={navigate}
-                            token={token}
-                        />
-                    ))}
-                </tbody>
-            </table>
+                            {PetsFiltrado.map((item) => (
+                                <PetsTR
+                                    key={item.ID_pet}
+                                    ID_pet={item.ID_pet}
+                                    nome_pet={item.nome_pet}
+                                    caminho_pet={item.caminho_pet}
+                                    desc_pet={item.desc_pet}
+                                    ponto_pet={item.ponto_pet}
+                                    raridade_pet={item.raridade_pet}
+                                    atualizar={BuscarTodosPets}
+                                    navigate={navigate}
+                                    token={token}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
 
-            <div className="d-flex justify-content-center mt-4">
-                <div className='d-flex align-items-center'>
+                ) : (
+                    <p className='text-center mt-4'>Não há resultados para busca...</p>
+                )}
+
+            <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
                     <BiAddToQueue
                         className='text-success'
                         onClick={() => { ModalCriarPet(token, navigate, TodosPets, BuscarTodosPets) }}
-                        style={{ fontSize: '40px', marginRight: '15px', cursor: 'pointer' }}
                     />
-                </div>
+               
             </div>
         </>
     );

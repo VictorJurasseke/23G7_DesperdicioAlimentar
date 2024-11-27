@@ -12,7 +12,7 @@ const pool = mysql.createPool({
     database: "Banco_Projeto_Senai_Hatch",
     port:3306,
 })
-// em casa ele aponta que precisa de senha :1234
+// em casa ele aponta que precisa de senha :12345678
 
 function criarConexao() {
     return pool.getConnection()

@@ -1,32 +1,57 @@
 .pets-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* Espaçamento entre os cards */
-    transition: all 0.5s ease-in-out; /* Suaviza o movimento dos cards */
+    gap: 12px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    padding: 10px 0;
+    cursor: grab;
+    -webkit-overflow-scrolling: touch;
+    user-select: none; /* Impede a seleção de texto ou imagem */
 }
 
+  
 .card-pet {
-    transition: transform 0.3s ease-in-out;
-    margin: 0px;
-    padding: 0px;
-    margin-bottom: 0px;
+  flex-shrink: 0;
+  max-width: 200px; /* Ajuste para permitir que o flex-grow influencie */
+  transition: transform 0.3s ease-in-out, flex-grow 0.3s ease;
+}
+
+  
+  /* .card-pet:hover {
+    /* transform: scale(1.0);        Efeito de zoom no card ao passar o mouse */
+    
+
+  
+  .img-ajustada {
+    /* width: 100%;                   Faz a imagem preencher o card */
+    height: 200px;                 /* Define a altura dos cards */
+    object-fit: contain;           /* Mantém a proporção da imagem */
+    border-radius: 5px;            /* Borda arredondada */
+  }
+  
+  .card-title {
+    font-size: 1.2rem;             /* Tamanho do título */
+    font-weight: bold;
+    margin-bottom: 0px;            /* Margem inferior reduzida */
+    text-align: center;
+  }
+  
+
+  .btn-mais-15 {
+    background-color: #28a745;  /* Cor de fundo verde */
+    color: white;                /* Cor do texto */
+    border: none;                /* Remover borda */
+    padding: 10px 10px;          /* Adiciona espaçamento ao redor do texto */
+    border-radius: 25px;         /* Cantos arredondados */
+    font-size: 16px;             /* Tamanho da fonte */
    
 }
 
-.card-pet:hover {
-    transform: scale(1.1); /* Faz o card crescer ao passar o mouse */
+.btn-mais-15:hover {
+    background-color: #218838;  /* Cor de fundo verde mais escuro ao passar o mouse */
+    cursor: pointer;            /* Cursor de ponteiro */
 }
 
-.img-ajustada {
-    width: 100%;         /* Ajusta a largura ao tamanho do card */
-    height: 200px;       /* Define uma altura fixa */
-    object-fit:contain;   /* Faz com que a imagem "corte" para preencher o espaço */
-    border-radius: 5px;  /* Opcional: arredonda as bordas */
-  }
-
-  .card-title {
-    font-size: 1.2rem; /* Ajuste conforme necessário */
-    font-weight: bold;
-    margin-bottom: 0px; /* Reduza a margem inferior */
-    text-align: center;
+.btn-mais-15:focus {
+    outline: none;               /* Remove o contorno ao focar */
 }

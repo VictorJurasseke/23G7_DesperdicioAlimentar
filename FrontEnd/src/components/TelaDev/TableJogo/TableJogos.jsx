@@ -37,6 +37,9 @@ const TableJogos = ({ token, navigate }) => {
         <>
 
             <>
+            {TodosJogos.length > 0 ? 
+            (
+
                 <table className="table table-striped  table-hover text-center">
                     <thead>
                         <tr>
@@ -69,6 +72,9 @@ const TableJogos = ({ token, navigate }) => {
                         ))}
                     </tbody>
                 </table>
+            ) : (
+                <p className='text-center mt-4'>Não há resultados para busca...</p>
+             )}
             </>
             <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
                 <BiAddToQueue onClick={() => ModalCriarJogo(BuscarJogos, navigate, token, TodasUnidade, setForm, Form)} />
