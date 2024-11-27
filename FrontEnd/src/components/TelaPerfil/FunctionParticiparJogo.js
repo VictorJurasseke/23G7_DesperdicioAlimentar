@@ -40,7 +40,7 @@ export const ModalParticiparJogos = (ID_jogos, jo_nome, es_nome, token, navigate
     SwalModal.fire({
         title: "Participar?",
         html: `
-            <p>Quer participar do ${jo_nome} da escola ${es_nome}?</p>
+            <p>Quer participar da ${jo_nome} da escola ${es_nome}?</p>
             <div class="mb-3 text-start">
                     <label for="tipo_acesso" class="form-label">Escolha sua turma:</label>
                     <select id="turmas" class="form-select" aria-label="Default select example">
@@ -94,7 +94,7 @@ const ParticiparJogo = async (ID_jogos, jo_nome, es_nome, ID_turmas, token, navi
         } else if (resposta.data.status == true) {
             SwalModal.fire({
                 title: `Sucesso!`,
-                text: `Meus parabéns, você está jogando ${jo_nome} da escola ${es_nome}, bom jogo!!`,
+                text: `Você agora esta participando, Bom Jogo!`,
                 icon: "success",
                 confirmButtonText: "Ok",  // Você pode personalizar o texto do botão, se quiser
             }).then((result) => {

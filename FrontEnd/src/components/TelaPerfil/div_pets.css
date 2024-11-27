@@ -7,22 +7,23 @@
     cursor: grab;
     -webkit-overflow-scrolling: touch;
     user-select: none; /* Impede a seleção de texto ou imagem */
-  }
+}
+
   
-  .card-pet {
-    flex-shrink: 0;
-    width: 200px;
-    transition: transform 0.3s ease-in-out;
-    user-select: none; /* Impede a seleção de texto ou imagem */
-  }
+.card-pet {
+  flex-shrink: 0;
+  max-width: 200px; /* Ajuste para permitir que o flex-grow influencie */
+  transition: transform 0.3s ease-in-out, flex-grow 0.3s ease;
+}
+
   
-  
-  .card-pet:hover {
-    transform: scale(1.05);        /* Efeito de zoom no card ao passar o mouse */
-  }
+  /* .card-pet:hover {
+    /* transform: scale(1.0);        Efeito de zoom no card ao passar o mouse */
+    
+
   
   .img-ajustada {
-    width: 100%;                   /* Faz a imagem preencher o card */
+    /* width: 100%;                   Faz a imagem preencher o card */
     height: 200px;                 /* Define a altura dos cards */
     object-fit: contain;           /* Mantém a proporção da imagem */
     border-radius: 5px;            /* Borda arredondada */

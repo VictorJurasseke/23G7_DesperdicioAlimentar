@@ -13,7 +13,7 @@ const TelasTroca = ({FuncaoAlvo}) => {
 
   return (
     <>
-      <div className=' col-12 d-flex p-4 justify-content-between '>
+      <div className=' col-12 d-flex p-4 justify-content-between border-bottom '>
         <div className='d-flex flex-row gap-2'>
 
           <input type="radio" className="btn-check" name="options" id="option1" autoComplete="off" defaultChecked onChange={PassarInfo}/>

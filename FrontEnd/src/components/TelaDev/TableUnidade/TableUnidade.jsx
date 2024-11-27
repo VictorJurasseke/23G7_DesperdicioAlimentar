@@ -13,9 +13,9 @@ import { useNavigate } from 'react-router-dom';
 
 const TableUnidade = ({ token, navigate }) => {
 
-    const { TodasUnidade, BuscarUnidades} = useImportarDadosUnidade(token, navigate)
+    const { TodasUnidade, BuscarUnidades } = useImportarDadosUnidade(token, navigate)
 
- 
+
 
     // Chama a função de pegar os dados da unidade
     useEffect(() => {
@@ -24,9 +24,10 @@ const TableUnidade = ({ token, navigate }) => {
 
     return (
         <>
-            
-           
-                <>
+
+
+            <>
+                {TodasUnidade.length > 0 ? (
                     <table className="table table-striped  table-hover text-center">
                         <thead>
                             <tr >
@@ -48,10 +49,16 @@ const TableUnidade = ({ token, navigate }) => {
                             ))}
                         </tbody>
                     </table>
-                    <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
-                        <BiAddToQueue onClick={()=>{ModalCriarUnidade(token, navigate, BuscarUnidades)}}/>
-                    </div>
-                </>
+
+                ) : (<p className='text-center mt-4'>Não há resultados para busca...</p>)}
+                <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }}>
+
+                    <BiAddToQueue onClick={() => { ModalCriarUnidade(token, navigate, BuscarUnidades) }} />
+
+
+                </div>
+
+            </>
         </>
     );
 };

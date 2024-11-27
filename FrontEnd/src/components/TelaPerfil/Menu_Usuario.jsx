@@ -3,8 +3,6 @@ import {formatarData, useImportarDadosJogos } from '../TelaDev/TableJogo/Functio
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CardJogos from './CardJogos';
 
-
-
 const Menu_Usuario = ({Dados_usuario, token, navigate}) => {
 
     
@@ -44,6 +42,7 @@ const Menu_Usuario = ({Dados_usuario, token, navigate}) => {
                                         jo_datai={formatarData(item.jo_datai)}
                                         jo_dataf={formatarData(item.jo_dataf)}
                                         jo_nome={item.jo_nome}
+                                        jo_desc={item.jo_desc}
                                         jo_status={item.jo_status}
                                         ID_jogos={item.ID_jogos}
                                         ID_usuarios={Dados_usuario.ID_usuarios}

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SwalErroToken } from './SwalError';
+import { BiBorderRadius } from 'react-icons/bi';
 const UrlDadosPets = "http://localhost:3025/api/pets";
 
 export const usePetsDados = (token, navigate) => {
@@ -11,10 +12,10 @@ export const usePetsDados = (token, navigate) => {
     const [jo_nome, setjo_nome] = useState([])
     const [QuantidadeMascote, setQuantidadeMascote] = useState(0)
 
-
+    const [jo_tema, setjo_tema] = useState([])
 
     // Função para procurar todos os pets do usuario no jogo especifico e mandar as info dele
-    const ProcurarPets = async (setMascotes,quantidadeExibida) => {
+    const ProcurarPets = async () => {
         if (!token) {
             SwalErroToken(navigate) // Redireciona para login se não existir token
             return;
@@ -29,14 +30,15 @@ export const usePetsDados = (token, navigate) => {
             const Pets = resposta.data.pets
             console.log(resposta)
             setjo_nome(resposta.data.jo_nome)
-            console.log("Function chamada qtdEX:", quantidadeExibida)
             setTodosPetsTemporada(Pets);
-            setMascotes(Pets.slice(0,quantidadeExibida))
-            console.log("Mascotes mostrando:",Pets.slice(0, quantidadeExibida))
+            setjo_tema(resposta.data.jo_tema)
+
+            // Mostra em mascotes apenas a quantidade exibida por padrão
             setQuantidadeMascote(resposta.data.mascotesStatus)
 
             console.log(resposta)
         } catch (error) {
+            console.log("ERRO:", error)
             SwalErroToken(navigate, error)
 
 
@@ -48,12 +50,12 @@ export const usePetsDados = (token, navigate) => {
     //     ProcurarPets();
     // }, []); // Array vazio garante que o efeito será executado apenas uma vez
 
-    return { TodosPetsTemporada, ProcurarPets, jo_nome,QuantidadeMascote }; // Retorna o estado
+    return { TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema }; // Retorna o estado
 };
 
 
 
-export const ModalPetProgresso = async (evolucao, ID_inventario, token, navigate, ponto_evo, ProcurarPets) => {
+export const ModalPetProgresso = async (evolucao, ID_inventario, token, navigate, ponto_evo, ProcurarPets, nome_pet) => {
     if (evolucao == 1) {
 
         Swal.fire({
@@ -94,11 +96,11 @@ export const ModalPetProgresso = async (evolucao, ID_inventario, token, navigate
         });
     } else {
         console.log("Mascote já evoluido")
+        console.log(nome_pet)
     }
 };
 
 export const MostrarOvo = (raridade) => {
-    console.log(raridade)
     const ovos = {
         Comum: "EggComum.gif",  // Azul
         Raro: "EggRaro.gif",     // Laranja
@@ -148,4 +150,100 @@ const SimularProgressoBalanca = async (desperdicio, ID_inventario, token, naviga
     }
 };
 
+// {jo_tema === 1 && (
+//     <CardVerao TodasTurmas={TodasTurmas} jo_nome={jo_nome} jo_datai={jo_datai} jo_dataf={jo_dataf} ID_jogos={ID_jogos} ID_usuarios={ID_usuarios} es_nome={es_nome} token={token} navigate={navigate} Participar={ModalParticiparJogos} />
+//   )}
 
+//   {jo_tema === 2 && (
+//     <CardOutono TodasTurmas={TodasTurmas} jo_nome={jo_nome} jo_datai={jo_datai} jo_dataf={jo_dataf} ID_jogos={ID_jogos} ID_usuarios={ID_usuarios} es_nome={es_nome} token={token} navigate={navigate} Participar={ModalParticiparJogos} />
+//   )}
+//   {jo_tema === 3 && (
+//     <CardInverno TodasTurmas={TodasTurmas} jo_nome={jo_nome} jo_datai={jo_datai} jo_dataf={jo_dataf} ID_jogos={ID_jogos} ID_usuarios={ID_usuarios} es_nome={es_nome} token={token} navigate={navigate} Participar={ModalParticiparJogos} />
+//   )}
+//   {jo_tema === 4 && (
+//     <CardPrimavera TodasTurmas={TodasTurmas} jo_nome={jo_nome} jo_datai={jo_datai} jo_dataf={jo_dataf} ID_jogos={ID_jogos} ID_usuarios={ID_usuarios} es_nome={es_nome} token={token} navigate={navigate} Participar={ModalParticiparJogos} />
+//   )}
+
+// summer:
+// background-color: #ffd600;
+//     color: #E91E63;
+//     position: relative;
+//     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+//     width: 1200px;
+//     border-radius: 90px;
+
+// .Autumn-card {
+//     background-color: #a72300;
+//     color: #ff8a36;
+//     position: relative;
+//     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+//     width: 80%;
+//     border-radius: 90px;
+
+// .winter-card {
+//     background-color: #a1c9ff;
+//     color: #4200ff;
+//     position: relative;
+//     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+//     width: 80%;
+//     border-radius: 90px;
+
+
+// }
+
+
+
+// }
+
+// .spring-card {
+//     background-color: #f2abc5;
+//     color: #8705b0;
+//     position: relative;
+//     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+//     width: 1200px;
+//     border-radius: 90px;
+
+
+// }
+
+// mudar o estilo dependendo do tema do jogo: 
+export const obterEstiloTema = (jo_tema) => {
+    switch (jo_tema) {
+        case 1:
+            return {
+                backgroundColor: "#ffd600", // Temporada de verao
+                color: "#E91E63",
+                padding:"15px",
+                borderRadius:"20px",
+                borderColor:"#E91E63"
+            };
+        case 2:
+            return {
+                backgroundColor: "#a72300", // Temporada de outono
+                color: "#ff8a36",
+                padding:"15px",
+                borderRadius:"20px",
+                borderColor:"#ff8a36"
+            };
+        case 3:
+            return {
+                backgroundColor: "#a1c9ff", // Temporada de inverno
+                color: "#4200ff",
+                padding:"15px",
+                borderRadius:"20px",
+                borderColor:"#4200ff"
+            };
+        case 4:
+            return {
+                backgroundColor: "#f2abc5", // Temporada de primavera
+                color: "#8705b0",
+                padding:"15px",
+                borderRadius:"20px",
+                borderColor:" #8705b0"
+            };
+        default:
+            return {
+                display:"none"
+            };
+    }
+};

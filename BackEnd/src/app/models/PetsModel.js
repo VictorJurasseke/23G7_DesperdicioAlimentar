@@ -95,11 +95,15 @@ module.exports.CriarPetPadrao = async () => {
 module.exports.ProcurarPetJogo = async (ID_usuarios) => {
     let conexao;
     try {
+
+
+
+
         conexao = await db.criarConexao();
 
         // Passo 1: Obter o jogo em que o usuário está participando
         const [Jogo] = await conexao.execute(
-            'SELECT j.ID_jogos, j.jo_nome FROM jogos j, jogos_matricula m WHERE m.ID_usuarios = ? AND m.ID_jogos = j.ID_jogos AND j.jo_status = 1',
+            'SELECT j.ID_jogos, j.jo_nome, j.jo_tema FROM jogos j, jogos_matricula m WHERE m.ID_usuarios = ? AND m.ID_jogos = j.ID_jogos AND j.jo_status = 1',
             [ID_usuarios]
         );
 
@@ -123,6 +127,13 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             [ID_usuarios, Jogo[0].ID_jogos]
         );
 
+        // Passo 4: Contar o número de mascotes que o usuário possui no jogo
+        const [RankJogoAtual] = await conexao.execute(
+            'SELECT j.rank_usuario, j.pontos_usuario FROM jogos_matricula j WHERE j.ID_usuarios = ? AND j.ID_jogos = ?;',
+            [ID_usuarios, Jogo[0].ID_jogos]
+        );
+        
+        console.log("RANK DO USUÁRIO:",RankJogoAtual[0].rank_usuario)
         // Retorna a quantidade de mascotes coletados e o total de mascotes
         const mascotesStatus = `${MascotesColetados[0].mascotes_coletados}/${TotalMascotes[0].total_mascotes}`;
 
@@ -132,7 +143,10 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             message: "Pets selecionados com sucesso!",
             pets: Pets,
             jo_nome: Jogo[0].jo_nome,
+            jo_tema: Jogo[0].jo_tema,
             mascotesStatus: mascotesStatus, // Exemplo: "150/200"
+            RankJogoAtual:RankJogoAtual[0].rank_usuario,
+            PontosUsuario:RankJogoAtual[0].pontos_usuario
         };
 
     } catch (error) {
