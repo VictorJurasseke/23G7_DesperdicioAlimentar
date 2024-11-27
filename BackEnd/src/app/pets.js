@@ -1,4 +1,7 @@
-
+// COMUM = 0.5
+// RARO = 0.3
+// ÉPICO = 0.08
+// LENDARIO = 0.05
 
 
 
