@@ -37,3 +37,7 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3025/api/jogos
+
+### 
+
+GET http://localhost:3025/api/pets/buscarpet

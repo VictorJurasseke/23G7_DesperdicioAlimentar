@@ -11,13 +11,11 @@ import CardInverno from './CardInverno';
 import CardPrimavera from './CardPrimavera';
 
 
-const CardJogos = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nome, token, navigate, jo_status, jo_tema,jo_desc }) => {
+const CardJogos = ({ jo_nome, jo_datai, jo_dataf, ID_jogos, ID_usuarios, es_nome, token, navigate, jo_status, jo_tema,jo_desc,TodasTurmas }) => {
 
-  const { TodasTurmas, BuscarTurmas } = useImportarDadosTurmas(token, navigate)
+ 
 
-  useEffect(()=>{
-    BuscarTurmas()
-  }, [])
+  
 
   console.log(jo_tema)
 

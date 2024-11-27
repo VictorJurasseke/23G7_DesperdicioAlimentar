@@ -1,30 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Card_pet from '../TelaPerfil/Card_pet';
-import { obterEstiloTema, usePetsDados } from './FunctionPets';
+import { usePetsDados } from './FunctionPets';
 import './div_pets.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaCircleChevronRight } from "react-icons/fa6";
 import { FaCircleChevronLeft } from "react-icons/fa6";
 
-const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema }) => {
-  
-
+const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema, EstiloDesempenho }) => {
 
     // Guarda o filtro selecionado
     const [SelectRaridade, setSelectRaridade] = useState('');
-
-
-
-
     const petsContainerRef = useRef(null); // Referência para o contêiner de cards
     const [isMouseDown, setIsMouseDown] = useState(false); // Controle do estado do mouse
     const [startX, setStartX] = useState(0); // Posição inicial do mouse
     const [scrollLeft, setScrollLeft] = useState(0); // Posição inicial do scroll
-
     const [quantidadeExibida, setQuantidadeExibida] = useState(7);  // Começa com 5
-
-    const [Estilo, setEstilo] = useState({})
 
     const [Mascotes, setMascotes] = useState([]);
     const [MaximoSeta, setMaximoSeta] = useState(2);  // Flag para saber se atingiu o máximo - 1 = Diminuir 2; = Aumentar; 3 = Não mostrar seta
@@ -73,13 +64,6 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
     //     ProcurarPets();
     //     setMascotes(TodosPetsTemporada.slice(0,5))
     // }, []);
-    
-    let estilo 
-    useEffect(() => {
-        ProcurarPets()
-        setEstilo(obterEstiloTema(jo_tema))
-
-    }, [])
 
     useEffect(() => {
 
@@ -90,7 +74,6 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
 
         //Roda a função de select e coloca implementa os mascotes selecionados pelo cliente
         selectRaridadeSwitch(SelectRaridade, MascotesCortados)
-        setEstilo(obterEstiloTema(jo_tema))
     }, [TodosPetsTemporada, SelectRaridade])
 
 
@@ -116,10 +99,10 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                 break;
             default:
                 // Passa o valor padrão da seta para aumentar e tambem coloca os mascotes cortados
-                if(TodosPetsTemporada.length <= 7 ){
+                if (TodosPetsTemporada.length <= 7) {
                     console.log('ALOO SETA3 SOME')
                     setMaximoSeta(3)
-                }else if (quantidadeExibida >= TodosPetsTemporada.length) {
+                } else if (quantidadeExibida >= TodosPetsTemporada.length) {
                     console.log('ALOO SETA1 DIMINUIR')
                     setMaximoSeta(1);  // Alcançou o limite, não há mais o que carregar
                 } else {
@@ -136,10 +119,10 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
         console.log("Valor de qtd", quantidadeExibida)
         setMascotes(TodosPetsTemporada.slice(0, quantidadeExibida))
         console.log(Mascotes)
-        if(TodosPetsTemporada.length <= 7 ){
+        if (TodosPetsTemporada.length <= 7) {
             console.log('ALOO SETA3 SOME')
             setMaximoSeta(3)
-        }else if (quantidadeExibida >= TodosPetsTemporada.length) {
+        } else if (quantidadeExibida >= TodosPetsTemporada.length) {
             console.log('ALOO SETA1 DIMINUIR')
             setMaximoSeta(1);  // Alcançou o limite, não há mais o que carregar
         } else {
@@ -150,21 +133,19 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
         console.log("tema:", jo_tema)
         console.log("todos:", TodosPetsTemporada)
     }, [quantidadeExibida]);
-    
+
 
 
 
 
     return (
         <>
-        
+
             <nav className="navbar bg-body-dark">
                 <motion.div
                     className="d-flex flex-row col-12 justify-content-between align-items-center"
-                    initial={{ x: "-100vw", opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1, type: "spring", stiffness: 20 }}
-                    style={Estilo}>
+                    style={EstiloDesempenho}>
 
 
 
@@ -172,9 +153,9 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                     <h6 className='fs-2 fw-bold'>{`MASCOTES CONQUISTADOS: ${QuantidadeMascote}`}</h6>
 
                     {/* Formulários à direita */}
-                    <form className="d-flex"role="search">
-                        <select 
-                            style={Estilo}
+                    <form className="d-flex" role="search">
+                        <select
+                            style={EstiloDesempenho}
                             value={SelectRaridade}
                             onChange={(e) => setSelectRaridade(e.target.value)}
                             className="form-select me-2" // Adicionado 'me-2' para margem à direita
@@ -193,9 +174,10 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
             </nav>
 
             <motion.div
-                className="pets-container p-2"
+                className="pets-container p-3 bg-warning"
+                style={{alignItems:"flex-start", justifyContent:"space-between"}}
                 ref={petsContainerRef}
-                initial={{ x: "-100vw" }}
+                initial={{}}
                 animate={{ x: 0 }}
                 transition={{ duration: 1, type: "spring", stiffness: 20 }}
                 onMouseDown={handleMouseDown} // Ativa o arraste quando o mouse é pressionado
@@ -238,8 +220,8 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                             )}
                             {MaximoSeta == 2 && (
                                 <button
-                                className="btn-mais-15"
-                                onClick={
+                                    className="btn-mais-15"
+                                    onClick={
                                         () => {
                                             setQuantidadeExibida((prevQuantidade) => prevQuantidade + 15);
                                         }}

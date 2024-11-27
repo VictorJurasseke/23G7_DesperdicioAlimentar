@@ -263,3 +263,46 @@ export const obterEstiloTema = (jo_tema) => {
             };
     }
 };
+
+
+export const MudarPrincipal = async (token, navigate, ID_inventario) =>{
+
+    console.log("Mudar para este ser o principal")
+    
+    try {
+        let resposta = await axios.get(
+            `${UrlDadosPets}/principal/${ID_inventario}`,
+            {
+                headers: { 'Authorization': `Bearer ${token}` }
+            }
+        );
+        // Atualiza a barra de progresso com o valor correto
+        
+        console.log(resposta)
+
+    } catch (error) {
+        SwalErroToken(navigate, error);
+    }
+}
+
+
+export const BuscarPetPrincipal = async (token, navigate, setPetPrincipal) =>{
+
+    console.log("Buscando pet principal do usuario")
+    
+    try {
+        let resposta = await axios.get(
+            `${UrlDadosPets}/buscarpet`,
+            {
+                headers: { 'Authorization': `Bearer ${token}` }
+            }
+        );
+        // Atualiza a barra de progresso com o valor correto
+        console.log(resposta)
+        setPetPrincipal(resposta.data.pet)
+        console.log("Data buscar",resposta.data)
+
+    } catch (error) {
+        SwalErroToken(navigate, error);
+    }
+}

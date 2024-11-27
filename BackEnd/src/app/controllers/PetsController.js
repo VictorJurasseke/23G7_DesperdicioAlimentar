@@ -136,6 +136,41 @@ rotas.get('/progresso/:valorAleatorioDesperdicado/:ID_inventario', verificarToke
 
 
 
+// Ativa o pet principal escolhido pelo usuário, Usado na tela jogador
+rotas.get('/principal/:ID_inventario', verificarToken, async (req,res) =>{
+    console.log("Requisicão get recebida em api/pets/progresso")
+
+    const ID_inventario = req.params.ID_inventario
+    const ID_usuarios = req.info.ID_usuarios
+    try{
+        const pets = await model.MudarPrincipal(ID_inventario,ID_usuarios)
+        res.json(pets)
+    } catch (error){
+        console.log("Erro ao mudar o pet principal", error);
+        res.status(500).json({error:"Erro interno do servidor :p"})
+    }
+})
+
+
+rotas.get('/buscarpet', verificarToken, async (req,res)=>{
+    console.log("Requisicão get recebida em api/pets/buscarpet")
+
+    // ID do usuário que fez a requisição
+    const ID_usuarios = req.info.ID_usuarios
+    
+    try{
+        const pets = await model.BuscarMascotePrincipalUsuario(ID_usuarios)
+        res.json(pets)
+    } catch (error){
+        console.log("Erro ao simular progresso", error);
+        res.status(500).json({error:"Erro interno do servidor :p"})
+    }
+})
+
+
+
+
+
 module.exports = rotas;
 
 

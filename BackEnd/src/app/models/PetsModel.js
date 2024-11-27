@@ -132,8 +132,8 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             'SELECT j.rank_usuario, j.pontos_usuario FROM jogos_matricula j WHERE j.ID_usuarios = ? AND j.ID_jogos = ?;',
             [ID_usuarios, Jogo[0].ID_jogos]
         );
-        
-        console.log("RANK DO USUÁRIO:",RankJogoAtual[0].rank_usuario)
+
+        console.log("RANK DO USUÁRIO:", RankJogoAtual[0].rank_usuario)
         // Retorna a quantidade de mascotes coletados e o total de mascotes
         const mascotesStatus = `${MascotesColetados[0].mascotes_coletados}/${TotalMascotes[0].total_mascotes}`;
 
@@ -145,8 +145,8 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             jo_nome: Jogo[0].jo_nome,
             jo_tema: Jogo[0].jo_tema,
             mascotesStatus: mascotesStatus, // Exemplo: "150/200"
-            RankJogoAtual:RankJogoAtual[0].rank_usuario,
-            PontosUsuario:RankJogoAtual[0].pontos_usuario
+            RankJogoAtual: RankJogoAtual[0].rank_usuario,
+            PontosUsuario: RankJogoAtual[0].pontos_usuario
         };
 
     } catch (error) {
@@ -319,3 +319,61 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
 
 
 
+
+
+
+module.exports.MudarPrincipal = async (ID_inventario,ID_usuarios) => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+
+
+        const [TirarAntigoPrincipal] = await conexao.execute(`
+            UPDATE inventario_matricula SET pet_principal = 0 WHERE ID_inv_pets != ? AND ID_usuarios = ?`
+            , [ID_inventario, ID_usuarios])
+
+        const [UpdateInventario] = await conexao.execute(
+            `UPDATE inventario_matricula SET pet_principal = 1 WHERE ID_inv_pets = ?`,
+            [ID_inventario]
+        );
+
+        console.log(TirarAntigoPrincipal)
+
+        console.log(UpdateInventario)
+
+        if (TirarAntigoPrincipal && UpdateInventario) {
+            return { status: true, message: "Mascote selecionado como principal com sucesso!" };
+
+        }else{
+            return {status: false, message:"Algo deu errado!"}
+        }
+    } catch (error) {
+        console.error("Erro ao inserir os pets", error);
+        return { status: false, error: error.message };
+    } finally {
+        db.liberarConexao(conexao);
+    }
+};
+
+
+module.exports.BuscarMascotePrincipalUsuario = async (ID_usuarios) => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+
+        // Toda vez que alguem sair de algum jogo, ou seja se o campo user_tipo_Acesso mudar preciso colocar todos os campos de pet principal para 0, resetando o pet principal escolhido pelo usuario?
+       const [Principal] = await conexao.execute('SELECT i.* FROM inventario_matricula i WHERE pet_principal = 1 AND ID_usuarios = ?',[ID_usuarios])
+
+       console.log("Buscado")
+        if (Principal.length > 0) {
+            return { status: true, message: "A busca do pet foi concluida com sucesso!", pet:Principal[0] };
+        } else{
+            return {staus: false, message: "O usuário não tem um mascote principal definido"}
+        }
+    } catch (error) {
+        console.error("Erro ao inserir os pets", error);
+        return { status: false, error: error.message };
+    } finally {
+        db.liberarConexao(conexao);
+    }
+};

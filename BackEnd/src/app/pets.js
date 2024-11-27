@@ -3,331 +3,313 @@
 // ÉPICO = 0.08
 // LENDARIO = 0.05
 
-
+0.05
 
 const pets = [
     {
-        nome_pet: "Gentle Bunny",
+        nome_pet: "Cookie",
         caminho_pet: "GentleBunny.gif",
-        desc_pet: "Um coelhinho elegante e charmoso.",
+        desc_pet: "Um coelhinho elegante e charmoso!",
         ponto_pet: 100,
         raridade_pet: "Comum",
         peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Golden Monkey",
+        nome_pet: "Golden",
         caminho_pet: "Dourado_black.gif",
-        desc_pet: "Um macaco dourado com mistérios ocultos.",
+        desc_pet: "Um macaco com mistérios ocultos!",
         ponto_pet: 100,
         raridade_pet: "Comum",
         peso_pet: 0.05,
         evolucao: 1
     },
     {
-        nome_pet: "PowerPink Monkey",
+        nome_pet: "Power Pink",
         caminho_pet: "Power_Pink.gif",
-        desc_pet: "Um macaco rosa cheio de energia.",
+        desc_pet: "Um macaco rosa cheio de energia!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "Cute Purple Monkey",
+        nome_pet: "Trufa",
         caminho_pet: "Roxinho.gif",
-        desc_pet: "Um adorável macaco roxo.",
+        desc_pet: "Um adorável amiguinho roxo!",
         ponto_pet: 100,
         raridade_pet: "Raro",  // Alterado para "Raro"
         peso_pet: 0.3,
         evolucao: 1
     },
     {
-        nome_pet: "Avatar Monkey",
+        nome_pet: "Avatar",
         caminho_pet: "Avatar.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um macaco que controla os elementos!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "Blood Rabbit",
+        nome_pet: "Apple",
         caminho_pet: "BloodRabbit.gif",
-        desc_pet: "Um coelho que adora maças.",
+        desc_pet: "Maçã é sua fruta favorita!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Dark Rabbit",
+        nome_pet: "Cherry Blossom",
         caminho_pet: "BlackWhiteRabbit.gif",
-        desc_pet: "Um coelho que vive nas sombras.",
+        desc_pet: "A coelhinha que ama brincar!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "Black Red Bunny",
+        nome_pet: "Meia-Noite",
         caminho_pet: "BlackRedRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelhinho que adora dormir!",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
-        nome_pet: "Owl Black",
-        caminho_pet: "BlackOwl.gif",
-        desc_pet: "Um macaco que controla os elementos.",
-        ponto_pet: 100,
-        raridade_pet: "Raro",
-        peso_pet: 0.08,
-        evolucao: 1
-    },
-    {
-        nome_pet: "Porcupine Orange Black Monkey",
+        nome_pet: "Lucca",
         caminho_pet: "BlackOrangePorcupine.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um porco-espinho radical!",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
         nome_pet: "Ben-10",
         caminho_pet: "Ben10.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Ele pode se transformar no que quiser!",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
-        nome_pet: "Dark Monkey",
-        caminho_pet: "BlackMonkey.gif",
-        desc_pet: "Um macaco que controla os elementos.",
-        ponto_pet: 100,
-        raridade_pet: "Comum",
-        peso_pet: 0.08,
-        evolucao: 1
-    },
-    {
-        nome_pet: "Batman",
+        nome_pet: "BatMacaco",
         caminho_pet: "Batman.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "O macaquinho que protege a cidade de Gotham City!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "Owl Angel",
+        nome_pet: "Anjinho",
         caminho_pet: "AngelOwl.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "",
         ponto_pet: 100,
-        raridade_pet: "Comum",
-        peso_pet: 0.08,
+        raridade_pet: "Uma corujinha que ama voar!",
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Legna Tibbar ",
+        nome_pet: "Dante",
         caminho_pet: "AngelDemonRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelhinho muito inteligente!",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
-        nome_pet: "Green Rabbit",
+        nome_pet: "Bambu",
         caminho_pet: "AllGreenRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Sua comida favorita é alface!.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Rabbit Brown",
+        nome_pet: "Jack",
         caminho_pet: "BrownRabbitJacket.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelhinho que ama dançar!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Captain America",
+        nome_pet: "Capitão Coelho",
         caminho_pet: "CapitaoAmericaRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "O coelhinho que ajuda a salvar o mundo!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "Catarina Owl",
+        nome_pet: "Catarina",
         caminho_pet: "CatarinaOwl.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Uma corujinha muito amigável!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
         nome_pet: "Chapolin",
         caminho_pet: "ChapolinRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um macaquinho muito engraçado!",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
         nome_pet: "Chaves",
         caminho_pet: "ChavesRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um macaco muito divertido!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Coringa Rabbit",
+        nome_pet: "Coringa",
         caminho_pet: "CoringaRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "O coelhinho que amedronta a cidade de Gotham City!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "Cowboy Rabbit",
+        nome_pet: "Cowboy",
         caminho_pet: "CowboyRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelhinho que adora andar a cavalo!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "CR7 Rabbit",
+        nome_pet: "CR7",
         caminho_pet: "CR7Rabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "O coelhinho craque no futebol!",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
-        nome_pet: "Cupid Monkey",
+        nome_pet: "Cupido",
         caminho_pet: "CupidMonkey.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um macaquinho que espalha amor!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Blue Owl",
+        nome_pet: "Zuzu",
         caminho_pet: "DarkBlueOwl.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "O melhor amigo da Coruja Catarina!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "DeadPool Rabbit",
+        nome_pet: "DeadPool",
         caminho_pet: "DeadPoolRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Apesar de bagunceiro, tem um bom coração!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "Degrade Rabbit",
+        nome_pet: "Pixie",
         caminho_pet: "DegradeRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho mágico nas cores!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "DickVigarista Rabbit",
+        nome_pet: "Dick Vigarista",
         caminho_pet: "DickVigaristaRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um vilão cômico!",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
-        nome_pet: "Dragon Rabbit",
+        nome_pet: "Dragão",
         caminho_pet: "DragonRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho poderoso e feroz!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Drake Rabbit",
+        nome_pet: "Coelho Mandrake",
         caminho_pet: "DrakeRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho com o estilo brasileiro!.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
-        nome_pet: "ET Monkey",
+        nome_pet: "Macaco ET",
         caminho_pet: "ETMonkey.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um macaquinho de outro planeta!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Fairy Rabbit",
+        nome_pet: "Coelha Fada",
         caminho_pet: "FairyRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Uma coelhinha um tanto quanto mágica!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Finn Rabbit",
+        nome_pet: "Coelho Finn",
         caminho_pet: "FinnRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Ele adora se aventurar com seu amigo Jake!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Fire Rabbit",
+        nome_pet: "Coelho de Fogo",
         caminho_pet: "FireRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Ele irá aquecer seu coração!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "FlashRabbit",
+        nome_pet: "Coelho Flash",
         caminho_pet: "FlashRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "O coelhinho mais rápido de todos!",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -336,7 +318,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -345,7 +327,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -354,7 +336,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -363,7 +345,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -372,7 +354,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -381,7 +363,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -390,7 +372,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -399,7 +381,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -408,7 +390,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -417,7 +399,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -453,7 +435,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -462,7 +444,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -471,7 +453,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -480,7 +462,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -489,7 +471,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -498,7 +480,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -507,7 +489,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -516,7 +498,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -525,7 +507,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -534,7 +516,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -543,7 +525,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -552,7 +534,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -561,7 +543,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -570,7 +552,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -579,7 +561,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -588,7 +570,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -606,7 +588,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -615,7 +597,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -633,7 +615,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -642,7 +624,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -651,7 +633,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -660,7 +642,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -669,7 +651,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -678,7 +660,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -687,7 +669,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -696,7 +678,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -705,7 +687,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -714,7 +696,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -723,7 +705,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendario",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -732,7 +714,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -741,7 +723,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -750,7 +732,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -759,7 +741,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -768,7 +750,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -777,7 +759,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -786,7 +768,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -804,7 +786,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -840,7 +822,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
@@ -858,7 +840,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -867,7 +849,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -876,7 +858,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -894,7 +876,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Lendário",
-        peso_pet: 0.08,
+        peso_pet: 0.05,
         evolucao: 1
     },
     {
@@ -912,7 +894,7 @@ const pets = [
         desc_pet: "Um macaco que controla os elementos.",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
@@ -927,127 +909,127 @@ const pets = [
     {
         nome_pet: "Sonic",
         caminho_pet: "SonicRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho muito veloz!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "SpiderMonkey",
+        nome_pet: "Macaco Aranha",
         caminho_pet: "SpiderMonkey.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um macaco com os poderes de teia!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "SpongeBob Rabbit",
+        nome_pet: "BobEsponja",
         caminho_pet: "SpongeBobRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "O coelho da fenda do biquini!",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
-        nome_pet: "SupermanRabbit",
+        nome_pet: "Superman",
         caminho_pet: "SupermanRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho herói, protetor da cidade dos coelhos!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "TigraoMonkey",
+        nome_pet: "Tigrao",
         caminho_pet: "TigraoMonkey.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um macaco que pode ser um tigre!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "TV Rabbit",
+        nome_pet: "TV",
         caminho_pet: "TVRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho que teleporta, assim como mudar de canal!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Vegeta Rabbit",
+        nome_pet: "Vegeta",
         caminho_pet: "VegetaRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho sério com poderes extraordinarios!",
         ponto_pet: 100,
         raridade_pet: "Épico",
         peso_pet: 0.08,
         evolucao: 1
     },
     {
-        nome_pet: "VovoRabbit",
+        nome_pet: "Wolverine",
         caminho_pet: "Wolverine.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho poderoso com garras afiadas!",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
     {
-        nome_pet: "WaterRabbit",
+        nome_pet: "Mares",
         caminho_pet: "WaterRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho que tem o poder de controlar a água!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "White Green Rabbit",
+        nome_pet: "Palmeirense",
         caminho_pet: "WhiteGreenRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho torcedor com as cores do time Palmeiras!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "White Rabit  Rabbit",
+        nome_pet: "Nuvem",
         caminho_pet: "WhiteRabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um Coelhinho fofo como as nuvens!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Witer Rabbit",
+        nome_pet: "Anti-Inverno",
         caminho_pet: "Winter1Rabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho que odeia frio!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Winter Rabbit Nike",
+        nome_pet: "Friento",
         caminho_pet: "Winter2Rabbit.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um coelho que fica estiloso no frio!",
         ponto_pet: 100,
         raridade_pet: "Comum",
-        peso_pet: 0.08,
+        peso_pet: 0.5,
         evolucao: 1
     },
     {
-        nome_pet: "Yellow Man Monkey",
+        nome_pet: "Preguiçoso",
         caminho_pet: "YellowManMonkey.gif",
-        desc_pet: "Um macaco que controla os elementos.",
+        desc_pet: "Um macaco que vive cansado!",
         ponto_pet: 100,
         raridade_pet: "Raro",
-        peso_pet: 0.08,
+        peso_pet: 0.3,
         evolucao: 1
     },
 

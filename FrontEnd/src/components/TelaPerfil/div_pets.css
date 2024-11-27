@@ -1,6 +1,8 @@
 .pets-container {
     display: flex;
-    gap: 12px;
+
+    flex-wrap: wrap;
+    gap: 40px;
     overflow-x: hidden;
     overflow-y: hidden;
     padding: 10px 0;
@@ -12,7 +14,6 @@
   
 .card-pet {
   flex-shrink: 0;
-  max-width: 200px; /* Ajuste para permitir que o flex-grow influencie */
   transition: transform 0.3s ease-in-out, flex-grow 0.3s ease;
 }
 
