@@ -8,8 +8,11 @@ import Biblioteca_Usuarios from './pages/TelaListarUsuario' // TelaListarUsuario
 import TelaDev from './pages/TelaDev'
 import TelaParticiparJogo from './pages/TelaParticiparJogo'
 import TelaRank from './pages/Rank'
+import PerfilJogador from './pages/TelaPerfilJogador'
+
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 
 export default function App() {
   return (
@@ -25,6 +28,7 @@ export default function App() {
       <Route path="/devs" element={<TelaDev/>}/>
       <Route path="/games" element={<TelaParticiparJogo/>}/>
       <Route path="/rank" element={<TelaRank/>}/>
+      <Route path="/player" element={<PerfilJogador/>}/>
 
     </Routes>
   </Router>

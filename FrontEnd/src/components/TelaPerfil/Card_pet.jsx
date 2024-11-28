@@ -46,8 +46,8 @@ const Card_pet = ({
         className="card text-dark card-pet d-flex flex-row "
         style={{
           backgroundColor: corFundo,
-          zIndex: AbrirDesc ? '3' : '1',
-          maxWidth: AbrirDesc ? '800px' : "200px",
+          zIndex: AbrirDesc ? '2' : '1',
+          maxWidth: AbrirDesc ? '400px' : "150px",
           transition: 'flex-grow 0.3s ease', // Suaviza a mudança no flex-grow
           position: 'relative', // Certifica que a barra de progresso será posicionada abaixo
         }}

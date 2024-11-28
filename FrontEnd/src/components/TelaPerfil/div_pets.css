@@ -1,58 +1,84 @@
 .pets-container {
-    display: flex;
-
-    flex-wrap: wrap;
-    gap: 40px;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    padding: 10px 0;
-    cursor: grab;
-    -webkit-overflow-scrolling: touch;
-    user-select: none; /* Impede a seleção de texto ou imagem */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 10px;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+  user-select: none;
+  /* Impede a seleção de texto ou imagem */
+  justify-content:stretch;
+  /* Alinha os itens ao início horizontalmente */
+  align-content: flex-start;
+  /* Garante o alinhamento superior nas linhas subsequentes */
 }
 
-  
+
+
+
 .card-pet {
-  flex-shrink: 0;
+  flex:content;
+  /* Controla o crescimento, encolhimento e largura inicial */
+  /* max-width: 300px; */
+  /* Limita o crescimento */
+  margin: 0;
+  /* Evita deslocamentos desnecessários */
   transition: transform 0.3s ease-in-out, flex-grow 0.3s ease;
 }
 
-  
-  /* .card-pet:hover {
+
+/* .card-pet:hover {
     /* transform: scale(1.0);        Efeito de zoom no card ao passar o mouse */
-    
 
-  
-  .img-ajustada {
-    /* width: 100%;                   Faz a imagem preencher o card */
-    height: 200px;                 /* Define a altura dos cards */
-    object-fit: contain;           /* Mantém a proporção da imagem */
-    border-radius: 5px;            /* Borda arredondada */
-  }
-  
-  .card-title {
-    font-size: 1.2rem;             /* Tamanho do título */
-    font-weight: bold;
-    margin-bottom: 0px;            /* Margem inferior reduzida */
-    text-align: center;
-  }
-  
 
-  .btn-mais-15 {
-    background-color: #28a745;  /* Cor de fundo verde */
-    color: white;                /* Cor do texto */
-    border: none;                /* Remover borda */
-    padding: 10px 10px;          /* Adiciona espaçamento ao redor do texto */
-    border-radius: 25px;         /* Cantos arredondados */
-    font-size: 16px;             /* Tamanho da fonte */
-   
+
+.img-ajustada {
+  /* width: 100%;                   Faz a imagem preencher o card */
+  height: 200px;
+  /* Define a altura dos cards */
+  object-fit: contain;
+  /* Mantém a proporção da imagem */
+  border-radius: 5px;
+  /* Borda arredondada */
+}
+
+.card-title {
+  font-size: 1.2rem;
+  /* Tamanho do título */
+  font-weight: bold;
+  margin-bottom: 0px;
+  /* Margem inferior reduzida */
+  text-align: center;
+}
+
+
+.btn-mais-15 {
+  background-color: #28a745;
+  /* Cor de fundo verde */
+  color: white;
+  /* Cor do texto */
+  border: none;
+  /* Remover borda */
+  padding: 10px 10px;
+  /* Adiciona espaçamento ao redor do texto */
+  border-radius: 25px;
+  /* Cantos arredondados */
+  font-size: 16px;
+  /* Tamanho da fonte */
+
 }
 
 .btn-mais-15:hover {
-    background-color: #218838;  /* Cor de fundo verde mais escuro ao passar o mouse */
-    cursor: pointer;            /* Cursor de ponteiro */
+  background-color: #218838;
+  /* Cor de fundo verde mais escuro ao passar o mouse */
+  cursor: pointer;
+  /* Cursor de ponteiro */
 }
 
 .btn-mais-15:focus {
-    outline: none;               /* Remove o contorno ao focar */
+  outline: none;
+  /* Remove o contorno ao focar */
 }

@@ -45,9 +45,9 @@ function Header({ Dados_usuario }) {
   return (
     <motion.div initial={{y:"-200px"}} animate={{y:0}} transition={{type:"spring", duration:0.1, stiffness:20, delay:0.5}} style={{zIndex:1}}>
 
-      <Navbar className="justify-content-between position-absolute col-12 bg-light" dark expand="lg">
+      <Navbar className="justify-content-between position-absolute col-12" dark expand="lg">
         <NavbarBrand className="text-dark d-flex" href="/">
-          <img src="../../../public/img/SENAI.jpg" style={{ width: "150px" }} alt="logo" />
+          H A T C H
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>

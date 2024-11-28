@@ -3,6 +3,7 @@ import { formatarData, useImportarDadosJogos } from '../TelaDev/TableJogo/Functi
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CardJogos from './CardJogos';
 import { motion } from 'framer-motion';
+import { useImportarDadosTurmas } from '../TelaDev/TableTurmas/FunctionTurmas';
 
 const Menu_Usuario = ({ Dados_usuario, token, navigate }) => {
 

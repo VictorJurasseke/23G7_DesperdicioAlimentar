@@ -174,8 +174,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
             </nav>
 
             <motion.div
-                className="pets-container p-3 bg-warning"
-                style={{alignItems:"flex-start", justifyContent:"space-between"}}
+                className="pets-container p-3 bg-warning "
                 ref={petsContainerRef}
                 initial={{}}
                 animate={{ x: 0 }}
