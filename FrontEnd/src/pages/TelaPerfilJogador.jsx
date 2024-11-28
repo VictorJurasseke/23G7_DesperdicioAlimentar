@@ -31,27 +31,30 @@ const PerfilJogador = () => {
                     <div className="col-12 p-3 d-flex vh-100 justify-content-center align-items-center bg-light">
 
                         {/* Card principal */}
-                        <div className="col-12 col-md-6 col-lg-8 rounded shadow vh-100" style={{ backgroundColor: "#F3E8D1" }}>
+                        <div className="col-12 col-md-6 col-lg-8 rounded shadow " style={{ backgroundColor: "#F3E8D1", marginTop:'100px' }}>
                             <HeaderCardJogador jo_nome={"Temporada Primavera"} QuantidadeMascote={"26/114"} />
 
                             {/* Card Informações do usuario */}
-                            <div className='bg-warning  d-flex flex-row flex-wrap '>
-                                <div className='bg-danger col-8 col-md-3  d-flex justify-content-center'>
+                            <div className=' d-flex flex-row flex-wrap' style={{ height: '200px' }}>
+                                <div className=' col-8 col-md-3  d-flex justify-content-center align-items-center '>
                                     <img
                                         src={ImagemPerfil}
                                         className="img-fluid rounded-circle"
                                         alt="User"
-                                        style={{ objectFit: 'cover', height:'150px' }} // Circular e ajuste de imagem
+                                        style={{ objectFit: 'cover', height: "200px" }} // Circular e ajuste de imagem
                                     />
                                 </div>
-                                <div className='col-4 bg-primary col-md-3 p-3'>
-                                    <h1 className='jaroFont'>Victor</h1>
-                                    <h5 className='jaroFont'>Jogador</h5>
+                                <div style={{color:"#243447"}} className='col-4  col-md-3 p-3 align-items-start justify-content-center d-flex flex-column'>
+                                    <h1 className='jaroFont'>Victor Sales</h1>
+                                    <h5 className='jaroFont'>Jogador do 3 EM</h5>
+                                    <h5 className='jaroFont'>Matutino</h5>
+                                    <h5 className='jaroFont'>143º Lugar no ranking</h5>
+
                                 </div>
-                                <div className='col-4 bg-danger col-md-3 p-3'>
+                                <div className='col-6 col-md-3 p-3'>
                                     Desempenho
                                 </div>
-                                <div className='col-4 bg-primary col-md-3 p-3'>
+                                <div className='col-6  col-md-3 p-3'>
                                     Desempenho
                                 </div>
                             </div>

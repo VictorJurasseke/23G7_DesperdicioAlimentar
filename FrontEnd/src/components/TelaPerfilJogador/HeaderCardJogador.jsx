@@ -6,13 +6,13 @@ import { motion } from 'framer-motion';
 
 const HeaderCardJogador = ({ jo_nome, QuantidadeMascote }) => {
   return (
-    // Header do card
-    <div className="d-flex jaroFont text-light fs-4  col-12 align-items-center justify-content-between gap-3 rounded-top shadow" style={{ height: '45px', backgroundColor: "#5A6A75" }}>
+    // Header do   card
+    <div className="d-flex jaroFont text-light fs-4  col-12 align-items-center justify-content-between gap-3 rounded-top shadow" style={{ height: '45px', backgroundColor: "#243447" }}>
 
       {/* Inventário */}
       <div className="d-flex col-3 align-items-center justify-content-evenly rounded h-100">
         <FaBookOpen />
-        <p className="m-0 text-end jaroFont ">{jo_nome}</p>
+        <p className="m-0 text-end jaroFont" style={{whiteSpace:"nowrap"}}>{jo_nome}</p>
       </div>
 
       {/* Pontos - Se for necessário futuramente, descomente a seção abaixo */}
