@@ -25,6 +25,7 @@ import { FaBookOpen } from "react-icons/fa";
 import { BiSolidTrophy } from "react-icons/bi";
 import { RiCopperCoinFill } from "react-icons/ri";
 import { FaGem } from "react-icons/fa";
+import CardInfoJogador from '../components/TelaPerfilJogador/CardInfoJogador';
 
 const PerfilJogador = () => {
     const token = localStorage.getItem("token");
@@ -53,54 +54,7 @@ const PerfilJogador = () => {
 
                             {/* Header que guarda o jogo atual e os coletados */}
                             <HeaderCardJogador jo_nome={"Temporada Primavera"} QuantidadeMascote={"26/114"} />
-
-
-                            {/* Card Informações do usuario */}
-                            <div className=' d-flex flex-row flex-wrap' style={{ minHeight: '200px' }}>
-
-
-                                {/* Div de imagem do usuário */}
-                                <div className=' col-12 col-md-4 col-lg-2   d-flex justify-content-center align-items-center '>
-                                    <img
-                                        src={ImagemPerfil}
-                                        className="rounded-circle"
-                                        alt="User"
-                                        style={{ objectFit: 'cover', maxHeight: "200px" }} // Circular e ajuste de imagem
-                                    />
-                                </div>
-
-                                <div style={{ color: "#243447" }} className='col-12  col-md-6 col-lg-2 p-3 text-md-center text-lg-start align-items-center  d-flex flex-column h-100'>
-                                    <h1 className='jaroFont mt-2 m-0'>Victor Sales</h1>
-                                    <h5 className='jaroFont m-0'>Jogador do 3 EM</h5>
-                                    <h5 className='jaroFont'>Pontos: <RiCopperCoinFill />300</h5>
-                                </div>
-
-
-                                {/* Mascote principal */}
-                                <div className='col-6 col-md-12 col-lg-4 p-3 d-flex flex-column align-items-center justify-content-center h-100'>
-                                    <img
-                                        src={PetPrincipal}
-                                        className=""
-                                        alt="PetPrincipal"
-                                        style={{ objectFit: 'contain', height: "150px" }} // Circular e ajuste de imagem
-                                    />
-                                    <p className='text-warning fs-4 jaroFont m-0'>Neylho</p>
-                                </div>
-
-                                {/* Status no jogo atual */}
-                                <div className='col-6 d-flex align-items-center flex-column  col-md-12 col-lg-4 jaroFont' style={{ color: "#243447" }}>
-
-                                    <h2 className='m-0 h-50 d-flex justify-content-end align-items-end fs-1'><BiSolidTrophy />143º</h2>
-
-
-                                    <div className='h-50 w-100 p-2 d-flex justify-content-end flex-row align-items-end'>
-
-                                        <h2 className='m-0 d-flex align-items-center'>20/117</h2>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* CARD FIM DA TELA */}
-
+                            <CardInfoJogador nome={Dados_usuario.nome} />
                         </div>
                     </div>
                 </>
