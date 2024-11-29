@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaCircleChevronRight } from "react-icons/fa6";
 import { FaCircleChevronLeft } from "react-icons/fa6";
 
-const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema, EstiloDesempenho }) => {
+const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema }) => {
 
     // Guarda o filtro selecionado
     const [SelectRaridade, setSelectRaridade] = useState('');
@@ -17,7 +17,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
     const [scrollLeft, setScrollLeft] = useState(0); // Posição inicial do scroll
     const [quantidadeExibida, setQuantidadeExibida] = useState(7);  // Começa com 5
 
-    const [Mascotes, setMascotes] = useState([]);
+    const [Mascotes, setMascotes] = useState();
     const [MaximoSeta, setMaximoSeta] = useState(2);  // Flag para saber se atingiu o máximo - 1 = Diminuir 2; = Aumentar; 3 = Não mostrar seta
 
     // Função para ativar o efeito de "arraste" quando o mouse é pressionado
@@ -141,7 +141,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
     return (
         <>
             <motion.div
-                className="pets-container p-3 bg-warning "
+                className="pets-container p-3"
                 ref={petsContainerRef}
                 initial={{}}
                 animate={{ x: 0 }}

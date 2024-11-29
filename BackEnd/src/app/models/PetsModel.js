@@ -101,13 +101,13 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
 
         conexao = await db.criarConexao();
 
-        // Passo 1: Obter o jogo em que o usuário está participando
+        // Passo 1: Obter o jogo em que o usuário está participando e atualmente ativo
         const [Jogo] = await conexao.execute(
             'SELECT j.ID_jogos, j.jo_nome, j.jo_tema FROM jogos j, jogos_matricula m WHERE m.ID_usuarios = ? AND m.ID_jogos = j.ID_jogos AND j.jo_status = 1',
             [ID_usuarios]
         );
 
-        // Passo 2: Obter os pets do usuário
+        // Passo 2: Obter os pets do usuário e ordenar pelo ultimo 
         const [Pets] = await conexao.execute(
             'SELECT p.nome_pet, p.caminho_pet, p.ID_pet, i.pontuacao_pet, p.raridade_pet, i.ID_inv_pets, i.pet_quantidade, i.pet_principal, p.ponto_pet, p.desc_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ? ORDER BY i.ID_inv_pets DESC;',
             [ID_usuarios, Jogo[0].ID_jogos]
@@ -127,14 +127,31 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             [ID_usuarios, Jogo[0].ID_jogos]
         );
 
-        // Passo 4: Contar o número de mascotes que o usuário possui no jogo
+        // Passo 5: Verificiar qual o rank atual do usuário com seu id de usuário e id_jogo atual
         const [RankJogoAtual] = await conexao.execute(
-            'SELECT j.rank_usuario, j.pontos_usuario FROM jogos_matricula j WHERE j.ID_usuarios = ? AND j.ID_jogos = ?;',
+            'SELECT m.rank_usuario, m.pontos_usuario, m.turmas_ID_turmas FROM jogos_matricula m WHERE m.ID_usuarios = ? AND m.ID_jogos = ?;',
             [ID_usuarios, Jogo[0].ID_jogos]
         );
 
+        // Passo 6: Busca o rank do usuário
+        const [TurmasJogador] = await conexao.execute(
+            `SELECT tur_nome FROM turmas WHERE ID_turmas = ?`, [RankJogoAtual[0].turmas_ID_turmas]
+        )
+
+        //Passo 7: Seleciona o pet principal do usuário neste jogo
+        const [ID_Pet] = await conexao.execute('SELECT i.ID_pets FROM inventario_matricula i, jogos j WHERE pet_principal = 1 AND i.ID_usuarios = ? AND j.ID_jogos = i.ID_jogos AND j.ID_jogos = ?', [ID_usuarios, Jogo[0].ID_jogos])
+
+        console.log("Objeto ID_Pet:", ID_Pet)
+
+        console.log("id do pet:", ID_Pet[0].ID_pets)
+
+        const [info_pet] = await conexao.execute('SELECT * FROM pets WHERE ID_pet = ?', [ID_Pet[0]?.ID_pets])
+
+        console.log("Mostrar informação do pet principal",info_pet)
+
         console.log("RANK DO USUÁRIO:", RankJogoAtual[0].rank_usuario)
-        // Retorna a quantidade de mascotes coletados e o total de mascotes
+
+        // Retorna a quantidade de mascotes coletados e o total de mascotes 1/114
         const mascotesStatus = `${MascotesColetados[0].mascotes_coletados}/${TotalMascotes[0].total_mascotes}`;
 
         // Retorna o resultado com a quantidade de mascotes coletados
@@ -146,9 +163,11 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             jo_tema: Jogo[0].jo_tema,
             mascotesStatus: mascotesStatus, // Exemplo: "150/200"
             RankJogoAtual: RankJogoAtual[0].rank_usuario,
-            PontosUsuario: RankJogoAtual[0].pontos_usuario
+            PontosUsuario: RankJogoAtual[0].pontos_usuario,
+            TurmasUsuario: TurmasJogador[0].tur_nome,
+            ID_Jogos: Jogo[0].ID_jogos,
+            PetPrincipal:info_pet[0]
         };
-
     } catch (error) {
         console.error("Erro ao procurar pets:", error);
         return { status: false, error: error };
@@ -322,7 +341,8 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
 
 
 
-module.exports.MudarPrincipal = async (ID_inventario,ID_usuarios) => {
+module.exports.MudarPrincipal = async (ID_inventario, ID_usuarios) => {
+
     let conexao;
     try {
         conexao = await db.criarConexao();
@@ -344,8 +364,8 @@ module.exports.MudarPrincipal = async (ID_inventario,ID_usuarios) => {
         if (TirarAntigoPrincipal && UpdateInventario) {
             return { status: true, message: "Mascote selecionado como principal com sucesso!" };
 
-        }else{
-            return {status: false, message:"Algo deu errado!"}
+        } else {
+            return { status: false, message: "Algo deu errado!" }
         }
     } catch (error) {
         console.error("Erro ao inserir os pets", error);
@@ -356,19 +376,29 @@ module.exports.MudarPrincipal = async (ID_inventario,ID_usuarios) => {
 };
 
 
-module.exports.BuscarMascotePrincipalUsuario = async (ID_usuarios) => {
+module.exports.BuscarMascotePrincipalUsuario = async (ID_usuarios, ID_jogo) => {
     let conexao;
     try {
         conexao = await db.criarConexao();
 
-        // Toda vez que alguem sair de algum jogo, ou seja se o campo user_tipo_Acesso mudar preciso colocar todos os campos de pet principal para 0, resetando o pet principal escolhido pelo usuario?
-       const [Principal] = await conexao.execute('SELECT i.* FROM inventario_matricula i WHERE pet_principal = 1 AND ID_usuarios = ?',[ID_usuarios])
+        console.log("Informação dos parametros:", ID_usuarios, ID_jogo)
 
-       console.log("Buscado")
-        if (Principal.length > 0) {
-            return { status: true, message: "A busca do pet foi concluida com sucesso!", pet:Principal[0] };
-        } else{
-            return {staus: false, message: "O usuário não tem um mascote principal definido"}
+        // Toda vez que alguem sair de algum jogo, ou seja se o campo user_tipo_Acesso mudar preciso colocar todos os campos de pet principal para 0, resetando o pet principal escolhido pelo usuario, assim não necessario um filtro maior?
+        const [ID_Pet] = await conexao.execute('SELECT i.ID_pets FROM inventario_matricula i, jogos j WHERE pet_principal = 1 AND i.ID_usuarios = ? AND j.ID_jogos = i.ID_jogos AND j.ID_jogos = ?', [ID_usuarios, ID_jogo])
+
+        console.log("ID:", ID_Pet)
+
+        console.log("id do pet:", ID_Pet[0].ID_pets)
+
+        const [info_pet] = await conexao.execute('SELECT * FROM pets WHERE ID_pet = ?', [ID_Pet[0]?.ID_pets])
+
+
+
+        console.log("Buscando")
+        if (info_pet.length > 0) {
+            return { status: true, message: "A busca do pet foi concluida com sucesso!", pet: info_pet };
+        } else {
+            return { staus: false, message: "O usuário não tem um mascote principal definido" }
         }
     } catch (error) {
         console.error("Erro ao inserir os pets", error);

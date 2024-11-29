@@ -7,12 +7,15 @@ import { BiSolidTrophy } from "react-icons/bi";
 
 const CardInfoJogador = ({token, navigate,  nome, img, pontos_usuario, rank_usuario, turma, nome_pet, caminho_pet, QuantidadeMascote}) => {
 
+    const ImagemIP = "http://localhost:3025/Pets/"
+
+    console.log("Card perfil foi carregado caminho:",caminho_pet)
 
     return (
         // Card Informações do usuario
         < div className=' d-flex flex-row flex-wrap' style={{ minHeight: '200px' }}>
             {/* Div de imagem do usuário */}
-            < div className=' col-12 col-md-4 col-lg-2   d-flex justify-content-center align-items-center ' >
+            < div className=' col-12 col-md-4 col-lg-2 d-flex justify-content-center align-items-center ' >
                 <img
                     src={`http://localhost:3025/public/${img}`}
                     className="rounded-circle"
@@ -21,17 +24,17 @@ const CardInfoJogador = ({token, navigate,  nome, img, pontos_usuario, rank_usua
                 />
             </div >
 
-            <div style={{ color: "#243447" }} className='col-12  col-md-6 col-lg-2 p-3 text-md-center text-lg-start align-items-center  d-flex flex-column h-100'>
+            <div style={{ color: "#243447" }} className='col-12 lh-lg TextoSemQuebra  col-md-6 col-lg-2 text-md-center text-lg-start  d-flex flex-column h-100'>
                 <h1 className='jaroFont mt-2 m-0'>{nome}</h1>
                 <h5 className='jaroFont m-0'>Jogador do {turma}</h5>
-                <h5 className='jaroFont'>Pontos: <RiCopperCoinFill />{pontos_usuario}</h5>
+                <h5 className='jaroFont '>Pontos: <RiCopperCoinFill />{pontos_usuario}</h5>
             </div>
 
 
             {/* Mascote principal */}
-            <div className='col-6 col-md-12 col-lg-4 p-3 d-flex flex-column align-items-center justify-content-center h-100'>
+            <div className='col-6 col-md-12 col-lg-4 d-flex flex-column align-items-center justify-content-center h-100'>
                 <img
-                    src={caminho_pet}
+                    src={ImagemIP+caminho_pet}
                     className=""
                     alt="PetPrincipal"
                     style={{ objectFit: 'contain', height: "150px" }} // Circular e ajuste de imagem
@@ -45,7 +48,7 @@ const CardInfoJogador = ({token, navigate,  nome, img, pontos_usuario, rank_usua
                 <h2 className='m-0 h-50 d-flex justify-content-end align-items-end fs-1'><BiSolidTrophy />{rank_usuario}º</h2>
 
 
-                <div className='h-50 w-100 p-2 d-flex justify-content-end flex-row align-items-end'>
+                <div className='h-50 w-100 d-flex justify-content-end flex-row align-items-end'>
 
                     <h2 className='m-0 d-flex align-items-center'>{QuantidadeMascote}</h2>
                 </div>

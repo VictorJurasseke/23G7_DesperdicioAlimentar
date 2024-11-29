@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SwalErroToken } from './SwalError';
+import { SwalErroToken } from '../TelaPerfil/SwalError';
 import { BiBorderRadius } from 'react-icons/bi';
 const UrlDadosPets = "http://localhost:3025/api/pets";
 

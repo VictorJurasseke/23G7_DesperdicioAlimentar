@@ -1,6 +1,6 @@
 
 export const SwalErroToken = (navigate, error) => {
-    console.log("swal",error)
+    console.log("Erro:",error)
     console.log("Ocorreu o seguinte erro:", error.response.status)
     if (error.response.status = 403 || error.response.status == 501 || error.response.status == 401) {
 

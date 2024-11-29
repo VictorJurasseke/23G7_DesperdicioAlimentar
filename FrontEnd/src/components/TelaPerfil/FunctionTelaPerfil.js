@@ -23,9 +23,11 @@ export const usePerfilDados = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            
             console.log("Carregando dados do USUARIO", resposta.data)
             setDados_usuario(resposta.data[0]);
         } catch (error) {
+            console.log("Deu erro no function perfil")
             SwalErroToken(navigate, error)
 
           

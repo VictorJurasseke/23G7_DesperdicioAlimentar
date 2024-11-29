@@ -98,13 +98,10 @@ rotas.post('/criarPets', verificarToken, async (req, res) => {
 
 
 
-//Procura todos os pets do usuario na temporada atual que ele participa
+//Procura todos os pets do usuario na temporada atual que ele participa, 
 rotas.get('/temporada', verificarToken, async (req, res) => {
     console.log(`Requisição get recebida em /api/pets/temporadaAtual`)
 
-
-
-    
     try {
         const pets = await model.ProcurarPetJogo(req.info.ID_usuarios);
         res.json(pets);
@@ -151,15 +148,17 @@ rotas.get('/principal/:ID_inventario', verificarToken, async (req,res) =>{
     }
 })
 
-
-rotas.get('/buscarpet', verificarToken, async (req,res)=>{
+// Busca o mascote principal do usuario logado
+rotas.get('/buscarpet/:ID_jogo', verificarToken, async (req,res)=>{
     console.log("Requisicão get recebida em api/pets/buscarpet")
 
     // ID do usuário que fez a requisição
     const ID_usuarios = req.info.ID_usuarios
+    const id = req.params.ID_jogo
+    console.log("ID DO JOGOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",id)
     
     try{
-        const pets = await model.BuscarMascotePrincipalUsuario(ID_usuarios)
+        const pets = await model.BuscarMascotePrincipalUsuario(ID_usuarios,id)
         res.json(pets)
     } catch (error){
         console.log("Erro ao simular progresso", error);

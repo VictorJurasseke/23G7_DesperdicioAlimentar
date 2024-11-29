@@ -11,5 +11,13 @@
     font-style: normal;
     font-optical-sizing: auto;
   }
+
+  /* style={{whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}} */
+.TextoSemQuebra {
+    white-space: nowrap;
+    overflow:visible;
+    /* text-overflow: "elipsis"; */
+    
+}
   
 
