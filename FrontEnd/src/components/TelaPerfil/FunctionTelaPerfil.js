@@ -23,7 +23,7 @@ export const usePerfilDados = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            console.log("Carregando dados do USUARIO")
+            console.log("Carregando dados do USUARIO", resposta.data)
             setDados_usuario(resposta.data[0]);
         } catch (error) {
             SwalErroToken(navigate, error)

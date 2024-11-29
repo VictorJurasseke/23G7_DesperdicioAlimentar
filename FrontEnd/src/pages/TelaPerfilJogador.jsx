@@ -21,11 +21,11 @@ import PetPrincipal from '../../public/img/CoelhoNeymar.gif'
 
 
 // Ícones
-import { FaBookOpen } from "react-icons/fa";
-import { BiSolidTrophy } from "react-icons/bi";
-import { RiCopperCoinFill } from "react-icons/ri";
-import { FaGem } from "react-icons/fa";
+
+
+
 import CardInfoJogador from '../components/TelaPerfilJogador/CardInfoJogador';
+import { usePetsDados } from '../components/TelaPerfil/FunctionPets';
 
 const PerfilJogador = () => {
     const token = localStorage.getItem("token");
@@ -34,34 +34,46 @@ const PerfilJogador = () => {
     // Pega os dados do usuário e função de verificação
     const { Dados_usuario, verificarUsuario } = usePerfilDados(token, navigate);
 
+    const { TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema, pontos, jo_rank } = usePetsDados(token, navigate);
+
+
+    // Verifica as informações do usuario e tals, e procura os pets e os jogos em ProcurarPets
     useEffect(() => {
         verificarUsuario();
+        ProcurarPets()
     }, []);
 
-    const leaves = Array.from({ length: 10 });
 
     return (
         <>
             {Dados_usuario ? (
-                <>
-                    <Header Dados_usuario={Dados_usuario} />
+        
+                    Dados_usuario.user_tipo_acesso === 3 ? (
+                        <>
 
-                    {/* Tela principal */}
-                    <div className="col-12 p-3 d-flex vh-100 justify-content-center align-items-center bg-light">
+                            <Header Dados_usuario={Dados_usuario} />
 
-                        {/* Card principal */}
-                        <div className="col-12 col-md-10 col-lg-10 rounded shadow " style={{ backgroundColor: "#F3E8D1", marginTop: '100px' }}>
+                            {/* Tela principal */}
+                            <div className="col-12 p-3 d-flex vh-100 justify-content-center align-items-center bg-light">
 
-                            {/* Header que guarda o jogo atual e os coletados */}
-                            <HeaderCardJogador jo_nome={"Temporada Primavera"} QuantidadeMascote={"26/114"} />
-                            <CardInfoJogador nome={Dados_usuario.nome} />
-                        </div>
-                    </div>
-                </>
+                                {/* Card principal */}
+                                <div className="col-12 col-md-10 col-lg-10 rounded shadow " style={{ backgroundColor: "#F3E8D1", marginTop: '100px' }}>
+
+                                    {/* Header que guarda o jogo atual e os coletados */}
+                                    <HeaderCardJogador jo_nome={jo_nome} QuantidadeMascote={QuantidadeMascote} />
+                                    <CardInfoJogador turma={"3 EM"} QuantidadeMascote={QuantidadeMascote} img={Dados_usuario.user_img_caminho} nome={Dados_usuario.user_nome} rank_usuario={jo_rank} pontos_usuario={pontos}  />
+                                </div>
+                            </div>
+
+                        </>
+                    ) : (<p>Você não devia estar aqui</p>)
+
             ) : (
-                <h1>Carregando...</h1>
-            )}
+                <h1>Carregando</h1>
+            )
+            }
         </>
+
     );
 };
 

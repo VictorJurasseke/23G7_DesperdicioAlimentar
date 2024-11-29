@@ -11,12 +11,8 @@ export const usePetsDados = (token, navigate) => {
     const [TodosPetsTemporada, setTodosPetsTemporada] = useState([]);
     const [jo_nome, setjo_nome] = useState([])
     const [QuantidadeMascote, setQuantidadeMascote] = useState(0)
-
     const [jo_tema, setjo_tema] = useState([])
-
     const [jo_rank, setjo_rank] = useState([])
-
-
     const [pontos, set_pontos] = useState([])
 
 

@@ -3,24 +3,27 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 import { FaBookOpen } from 'react-icons/fa'; // Importando ícone
 import { RiCopperCoinFill } from 'react-icons/ri'; // Importando ícone
 import { motion } from 'framer-motion';
+import { BiSolidTrophy } from "react-icons/bi";
 
-const CardInfoJogador = ({token, navigate,  nome, img, pontos_usuario, rank_usuario, turma}) => {
+const CardInfoJogador = ({token, navigate,  nome, img, pontos_usuario, rank_usuario, turma, nome_pet, caminho_pet, QuantidadeMascote}) => {
+
+
     return (
         // Card Informações do usuario
         < div className=' d-flex flex-row flex-wrap' style={{ minHeight: '200px' }}>
             {/* Div de imagem do usuário */}
             < div className=' col-12 col-md-4 col-lg-2   d-flex justify-content-center align-items-center ' >
                 <img
-                    src={ImagemPerfil}
+                    src={`http://localhost:3025/public/${img}`}
                     className="rounded-circle"
                     alt="User"
-                    style={{ objectFit: 'cover', maxHeight: "200px" }} // Circular e ajuste de imagem
+                    style={{ objectFit: 'cover', maxHeight: "200px", maxWidth:"150px" }} // Circular e ajuste de imagem
                 />
             </div >
 
             <div style={{ color: "#243447" }} className='col-12  col-md-6 col-lg-2 p-3 text-md-center text-lg-start align-items-center  d-flex flex-column h-100'>
                 <h1 className='jaroFont mt-2 m-0'>{nome}</h1>
-                <h5 className='jaroFont m-0'>{turma}</h5>
+                <h5 className='jaroFont m-0'>Jogador do {turma}</h5>
                 <h5 className='jaroFont'>Pontos: <RiCopperCoinFill />{pontos_usuario}</h5>
             </div>
 
@@ -44,7 +47,7 @@ const CardInfoJogador = ({token, navigate,  nome, img, pontos_usuario, rank_usua
 
                 <div className='h-50 w-100 p-2 d-flex justify-content-end flex-row align-items-end'>
 
-                    <h2 className='m-0 d-flex align-items-center'>20/117</h2>
+                    <h2 className='m-0 d-flex align-items-center'>{QuantidadeMascote}</h2>
                 </div>
             </div>
         </div >
