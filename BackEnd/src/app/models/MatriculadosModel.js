@@ -1,5 +1,5 @@
 const db = require('../../db');
-const {sorteioComBaseNoPeso } = require('../pets');
+const { sorteioComBaseNoPeso } = require('../pets');
 
 module.exports.retornarTodosMatriculados = async () => {
     let conexao;
@@ -16,13 +16,13 @@ module.exports.retornarTodosMatriculados = async () => {
 };
 
 module.exports.ApagarMatriculas = async (ID_usuarios) => {
-    
+
 
     // Passo 4: Alterar o tipo de acesso do jogador para usuario - 2
     let conexao;
     try {
         conexao = await db.criarConexao();
-        
+
         const [usuarios] = await conexao.execute(
             `UPDATE usuarios SET user_tipo_acesso = 2 WHERE ID_usuarios = ?;`,
             [ID_usuarios]
@@ -70,14 +70,14 @@ module.exports.MatricularAlunos = async (ID_usuarios, ID_jogos, ID_turmas) => {
             return { status: false, message: "O jogo está inativo" };
         }
 
-        // Passo 1: Obter os usuários matriculados
+        // Passo 1: Obter os usuários matriculados para saber qual o rank que o novo usuário tera
         const [usuariosMatriculados] = await conexao.execute(
             `SELECT ID_usuarios FROM jogos_matricula WHERE ID_jogos = ?`,
             [ID_jogos]
         );
 
         // Passo 2: Calcular o rank do novo usuário
-        const rank_usuario = usuariosMatriculados.length + 1; // O novo usuário terá o próximo rank
+        const rank_usuario = usuariosMatriculados.length + 1; // O novo usuário terá o rank do ultimo na tabela +1 
 
         // Passo 3: Inserir o novo usuário no jogo
         const [linhas] = await conexao.execute(
@@ -85,28 +85,41 @@ module.exports.MatricularAlunos = async (ID_usuarios, ID_jogos, ID_turmas) => {
             [ID_jogos, ID_usuarios, ID_turmas, 0, rank_usuario, 0]
         );
 
+        if(!linhas){
+            return {status:false, message:"O usuário não foi cadastrado corretamente!"}
+        }
+
         // Passo 4: Alterar o tipo de acesso para jogador
         const [jogando] = await conexao.execute(
             `UPDATE usuarios SET user_tipo_acesso = 3 WHERE ID_usuarios = ?;`,
             [ID_usuarios]
         );
 
+        if(jogando.affectedRows == 0){
+            return {status:false, message:"O usuario não teve seu tipo de acesso trocado corretamente"}
+
+        }
+
         const pets = await conexao.execute('SELECT * FROM pets')
 
-    
+
 
         // Passo 5: Sortear um ovo aleatório
         const ovo = sorteioComBaseNoPeso(pets[0]);  // Função sorteia o ovo com base no peso dos pets
 
-        console.log("PetSorteado",ovo)
+        console.log("PetSorteado", ovo)
 
         // Passo 6: Criar o inventário do usuário com o ovo sorteado
         const [Inventario] = await conexao.execute(
             'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao, pet_principal, pet_quantidade) VALUES(?,?,?,?,?,?, ?,?)',
-            [ID_jogos, ID_usuarios, ovo.ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' '), 0, 1, 0, 1]
+            [ID_jogos, ID_usuarios, ovo.ID_pet, new Date().toISOString().slice(0, 19).replace('T', ' '), 0, 1, 1, 1]
         );
 
+        if(!Inventario){
+            return {statu:false, message:"O usuario não foi inserido no banco corretamente"}
+        }
         return { status: true, message: "Jogando!" };
+
 
     } catch (error) {
         console.error("Erro ao matricular os usuários em jogosModel", error);

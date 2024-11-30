@@ -68,7 +68,7 @@ const PerfilJogador = () => {
                         <Header Dados_usuario={Dados_usuario} />
 
                         {/* Tela principal */}
-                        <div className="col-12 p-3 d-flex vh-100 justify-content-center align-items-center bg-light">
+                        <div className="col-12 p-3 d-flex vh-100 justify-content-center align-items-center bg-dark">
 
                             {/* Card principal */}
                             <div className="col-12 col-md-10 col-lg-10 rounded shadow " style={{ backgroundColor: "#F3E8D1" }}>

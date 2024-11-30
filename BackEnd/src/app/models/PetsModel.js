@@ -96,7 +96,7 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
     let conexao;
     try {
 
-
+        console.log("ID DO USUARIO",ID_usuarios)
 
 
         conexao = await db.criarConexao();
@@ -107,15 +107,23 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             [ID_usuarios]
         );
 
+        console.log("Informações do jogo do usuário:", Jogo[0])
+
         // Passo 2: Obter os pets do usuário e ordenar pelo ultimo 
         const [Pets] = await conexao.execute(
             'SELECT p.nome_pet, p.caminho_pet, p.ID_pet, i.pontuacao_pet, p.raridade_pet, i.ID_inv_pets, i.pet_quantidade, i.pet_principal, p.ponto_pet, p.desc_pet, i.evolucao FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.ID_usuarios = ? AND i.ID_jogos = ? ORDER BY i.ID_inv_pets DESC;',
             [ID_usuarios, Jogo[0].ID_jogos]
         );
 
+        if(Pets.length == 0){
+            return{status:false, message:`O usuário de ID:${ID_usuarios}, não possui nenhum mascote a ser procurado`,  }
+        }
+
+        
+
         console.log("Pets do usuário:", Pets);
 
-        // Passo 3: Contar o total de mascotes disponíveis
+        // Passo 3: Contar o total de mascotes disponíveis na tabela pets
         const [TotalMascotes] = await conexao.execute(
             'SELECT COUNT(*) AS total_mascotes FROM pets',
             []
@@ -175,43 +183,6 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
         db.liberarConexao(conexao);
     }
 };
-
-// Função que verifica a raridade do mascote para trocar a cor do ovo:
-
-
-// for (let pet of Pets) {
-//     const [PontoEvoPet] = await conexao.execute(
-//         'SELECT ponto_pet FROM pets WHERE ID_pet = ?',
-//         [pet.ID_pet]
-//     );
-
-//     //Ponto para evoluir o mascote
-//     const pontoEvolucao = PontoEvoPet[0].ponto_pet;
-
-//     if (pet.pontuacao_pet >= pontoEvolucao) {
-//         if (pet.evolucao === 1) {
-//             console.log("O mascote acabou de evoluir!!!");
-//             pet.evolucao = 2;
-//         } else if (pet.evolucao === 2) {
-//             console.log("O mascote já passou por uma evolução!");
-//             pet.evolucao = 3; // Pet evolui para o nível 3
-//         }
-
-//         await conexao.execute(
-//             'UPDATE inventario_matricula SET evolucao = ? WHERE ID_usuarios = ? AND ID_pets = ?',
-//             [pet.evolucao, ID_usuarios, pet.ID_pet]
-//         );
-//     } else {
-//         pet.evolucao = 1;
-//         pet.caminho_pet = TrocarOvo(pet.raridade_pet);
-//         pet.nome_pet = 'Egg';
-//         await conexao.execute(
-//             'UPDATE inventario_matricula SET evolucao = 1 WHERE ID_usuarios = ? AND ID_pets = ?',
-//             [ID_usuarios, pet.ID_pet]
-//         );
-//     }
-// }
-
 
 
 
@@ -405,5 +376,29 @@ module.exports.BuscarMascotePrincipalUsuario = async (ID_usuarios, ID_jogo) => {
         return { status: false, error: error.message };
     } finally {
         db.liberarConexao(conexao);
+    }
+};
+
+
+
+// Função que apaga todos os pets cadastrado no sistema
+module.exports.ApagarTodosPets = async () => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+
+        const [inventario_matricula] = await conexao.execute('SELECT * FROM inventario_matricula')
+        if(inventario_matricula.length > 0){
+            return {status:false, message:'Você não pode deletar todos os pets caso eles estejam sendo usados'}
+        }
+
+        const [linhas] = await conexao.execute('DELETE FROM pets');
+        return { status: true, message: "Todos os pets foram deletado com sucesso!" }
+    } catch (error) {
+        return { status: false, error: error }
+        throw error // Repassa para a controller
+    } finally {
+        db.liberarConexao(conexao)
+
     }
 };

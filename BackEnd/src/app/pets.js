@@ -108,10 +108,10 @@ const pets = [
     {
         nome_pet: "Anjinho",
         caminho_pet: "AngelOwl.gif",
-        desc_pet: "",
+        desc_pet: "Uma corujinha que ama voar!",
         ponto_pet: 100,
-        raridade_pet: "Uma corujinha que ama voar!",
-        peso_pet: 0.5,
+        raridade_pet: "Épico",
+        peso_pet: 0.08,
         evolucao: 1
     },
     {
@@ -695,7 +695,7 @@ const pets = [
         caminho_pet: "PossuidoRabbit.gif",
         desc_pet: "Um coelho das trevas!",
         ponto_pet: 100,
-        raridade_pet: "Lendario",
+        raridade_pet: "Lendário",
         peso_pet: 0.05,
         evolucao: 1
     },

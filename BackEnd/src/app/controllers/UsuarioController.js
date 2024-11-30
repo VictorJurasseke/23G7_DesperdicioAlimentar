@@ -196,15 +196,17 @@ rotas.post('/login', async (req, res) => {
 });
 
 
-rotas.delete('/:id', async (req, res) => {
-    const { id } = req.params
-
-    console.log(`Requisição delete em /api/usuario/${id}`); // Log
+rotas.delete('/:id_deletar', verificarToken, async (req, res) => {
+    const ID_usuarios = req.info.ID_usuarios 
+    const { id_deletar } = req.params
+   
+    console.log(`Requisição delete em /api/usuario/${id_deletar}`); // Log
     try {
-        const usuario = await model.ApagarUsuario(id);
+        const usuario = await model.ApagarUsuario(id_deletar, ID_usuarios);
+        
         res.json(usuario);
     } catch (error) {
-        console.error("Erro ao apagar um jogo", error);
+        console.error("Erro ao apagar um usuário", error);
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });

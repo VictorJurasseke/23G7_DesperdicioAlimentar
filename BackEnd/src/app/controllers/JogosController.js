@@ -77,7 +77,7 @@ rotas.delete('/:id', verificarToken, async (req, res) => {
 
 
 
-// ROTA DE PARTICIPAR DO JOGO - puxa o id do usuario atual
+// ROTA DE PARTICIPAR DO JOGO - puxa o id do usuario atual, usado tela de usuario
 rotas.post('/participar', verificarToken, async (req, res) => {
     // Antes era por req.params, mas foi feita mudanças no banco então muda aqui também
     let {ID_jogos, ID_turmas} = req.body
@@ -91,6 +91,7 @@ rotas.post('/participar', verificarToken, async (req, res) => {
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });
+
 
 // Criar jogo
 rotas.post('/', verificarToken, async (req, res) => {

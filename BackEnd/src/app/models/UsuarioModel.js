@@ -165,15 +165,19 @@ module.exports.retornarLogin = async (email, senha) => {
 
     return { token }; // Retorna o token após o bloco try/catch
 };
-module.exports.ApagarUsuario = async (id) => {
-    let conexao;
+module.exports.ApagarUsuario = async (id_deletar, ID_usuarios) => {
+    console.log(id_deletar, ID_usuarios)
+    let conexao; 
     try {
         conexao = await db.criarConexao();
-
-        // Deletar usuários associados à escola
+        
+        // Verifica se o usuário esta tentando deletar a própria conta
+        if(id_deletar == ID_usuarios){
+            return {status:false, message:"Você não pode deletar sua conta!"}
+        }
 
         // Finalmente, deletar a escola
-        const [linhas] = await conexao.execute('DELETE FROM usuarios WHERE ID_usuarios = ?', [id]);
+        const [linhas] = await conexao.execute('DELETE FROM usuarios WHERE ID_usuarios = ?', [id_deletar]);
         return { status: true }
     } catch (error) {
         return { status: false, error: error }

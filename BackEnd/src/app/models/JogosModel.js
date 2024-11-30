@@ -91,6 +91,8 @@ module.exports.MudarStatus = async (Status, ID_jogo) => {
     }
 };
 
+
+// Participar jogo, usando id do usuario logado, tela usuario
 module.exports.ParticiparJogo = async (ID_usuarios, ID_jogos, ID_turmas) => {
     let conexao;
     try {
@@ -144,7 +146,7 @@ module.exports.ParticiparJogo = async (ID_usuarios, ID_jogos, ID_turmas) => {
         return { status: true, message: "Jogando!" };
 
     } catch (error) {
-        console.error("Erro ao matricular os usuários em jogosModel", error);
+        console.error("Erro ao tentar participar do jogo", error);
         if (error.code == 'ER_DUP_ENTRY') {
             return { status: false, message: "Entrada de dados dupla" };
         } else {

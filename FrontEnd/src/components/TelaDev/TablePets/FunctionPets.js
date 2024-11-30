@@ -21,7 +21,7 @@ export const ModalEditPets = (ID_pet, atualizar, token, navigate) => {
     });
 };
 
-// Função para abrir o Modal para deletar pets
+// Função para abrir o Modal para deletar pet especifico
 export const ModalDeletePet = (ID_pet, atualizar, token, navigate) => {
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
@@ -209,6 +209,57 @@ export const CriarPet = async (token, navigate, formData, BuscarTodosPets) => {
                 title: "Falhou!",
                 html: "Seu pet não foi criado com sucesso!<br> <br> Código do erro: " + (resposta.data.message || 'Erro desconhecido'),
                 icon: "error"
+            });
+        }
+    } catch (error) {
+        SwalErroToken(navigate, error);
+    }
+};
+
+
+// Função para abrir o Modal para deletar todos os pets
+export const ModalDeleteTodosPets = (atualizar, token, navigate) => {
+    swalWithBootstrapButtons.fire({
+        title: "Tem certeza?",
+        text: "Você não poderá reverter isto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sim, deletar!",
+        cancelButtonText: "Não, cancelar!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deletarTodosPet(atualizar, token, navigate);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire({
+                title: "Cancelado",
+                text: "Seu pet está seguro",
+                icon: "error"
+            });
+        }
+    });
+};
+
+
+// // Função para deletar um pet
+const deletarTodosPet = async (atualizar, token, navigate) => {
+    try {
+        const resposta = await axios.delete(`${urlPets}/apagartodos`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        console.log(resposta)
+        if (!resposta.data.status) {
+            swalWithBootstrapButtons.fire({
+                title: "Falhou!",
+                html: `Seus pets não foram deletados!<br> <br> Código do erro: ${resposta.data?.error?.code}`,
+                icon: "error"
+            });
+        } else {
+            atualizar(); // Atualiza a lista após a exclusão
+            swalWithBootstrapButtons.fire({
+                title: "Deletado!",
+                text: "Seu pet foi deletado!",
+                icon: "success"
             });
         }
     } catch (error) {

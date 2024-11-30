@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 import { Button } from 'react-bootstrap';
 import { BiAddToQueue } from "react-icons/bi";
-import { ModalCriarPet, useImportarDadosPets } from './FunctionPets';
+import { ModalCriarPet, ModalDeleteTodosPets, useImportarDadosPets } from './FunctionPets';
 import PetsTR from './PetsTR';
 import Fuse from 'fuse.js';
 
@@ -76,7 +76,13 @@ const TablePets = ({ token, navigate }) => {
     return (
         <>
             <div className='col-12 d-flex justify-content-end'>
-                <div className='align-items-center text-center d-flex flex-row gap-3 position-absolute' style={{ top: '200px', zIndex:20 }}>
+                <div className='align-items-center text-center d-flex flex-row gap-3 position-absolute' style={{ top: '200px', zIndex: 20 }}>
+
+                    <div className=''>
+                        <button onClick={()=>{ModalDeleteTodosPets(BuscarTodosPets, token, navigate)}} className='btn btn-danger'>
+                            Deletar Todos
+                        </button >
+                    </div>
                     <form className="d-flex" role="search">
                         <select
                             value={SelectRaridade}
@@ -142,11 +148,11 @@ const TablePets = ({ token, navigate }) => {
                 )}
 
             <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
-                    <BiAddToQueue
-                        className='text-success'
-                        onClick={() => { ModalCriarPet(token, navigate, TodosPets, BuscarTodosPets) }}
-                    />
-               
+                <BiAddToQueue
+                    className='text-success'
+                    onClick={() => { ModalCriarPet(token, navigate, TodosPets, BuscarTodosPets) }}
+                />
+
             </div>
         </>
     );

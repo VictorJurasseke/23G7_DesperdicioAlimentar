@@ -18,7 +18,7 @@ const swalWithBootstrapButtons = Swal.mixin({
 // Função de abrir a tela de edição de items
 
 export const ModalEditUsuario = (id, atualizar, token, navigate) => {
-
+    
     swalWithBootstrapButtons.fire({
         title: "Edit User",
         text: "Here you can edit user details.",
@@ -29,7 +29,7 @@ export const ModalEditUsuario = (id, atualizar, token, navigate) => {
 // Função de Abrir Modal para deletar arquivos
 
 export const ModalDeleteUsuario = (id, atualizar, token, navigate) => {
-
+    
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
         text: "Você não podera reverter isto!",
@@ -53,10 +53,10 @@ export const ModalDeleteUsuario = (id, atualizar, token, navigate) => {
 
 export const useImportarDadosUsuario = (token, navigate) => {
     const [TodosUsuarios, setTodosUsuarios] = useState([])
-
+    
     async function BuscarTodosUsuarios() {
-
-
+        
+        
         try {
             let resposta = await axios.get(urlUsuario, {
                 headers: {
@@ -66,11 +66,11 @@ export const useImportarDadosUsuario = (token, navigate) => {
             setTodosUsuarios(resposta.data)
         } catch (error) {
             SwalErroToken(navigate, error)
-
+            
         }
-
+        
     }
-
+    
     return {
         TodosUsuarios,
         BuscarTodosUsuarios,
@@ -80,12 +80,17 @@ export const useImportarDadosUsuario = (token, navigate) => {
 
 export const deletarUsuario = async (id, atualizar, token, navigate) => {
     try {
-        let resposta = await axios.delete(`${urlUsuario}/${id}`);
+        let resposta = await axios.delete(`${urlUsuario}/${id}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        console.log(resposta)
         if (!resposta.data.status) {
-
+            
             swalWithBootstrapButtons.fire({
                 title: "Falhou!",
-                html: "Seu usuario não foi deletado!<br> <br> Código do erro: " + resposta.data.error.code,
+                html: "Seu usuario não foi deletado!<br> <br>" + resposta.data.message,
                 icon: "error"
             });
         } else {
@@ -96,11 +101,11 @@ export const deletarUsuario = async (id, atualizar, token, navigate) => {
             });
             console.log("Apagou sucesso",resposta.data)
             atualizar(); // Atualiza a lista após a exclusão
-
+            
         }
     } catch (error) {
         SwalErroToken(navigate, error)
-
+        
     }
 };
 // estou adicionando usuarios com SVC
@@ -110,18 +115,18 @@ export const ModalAdicionarUsuario = (token, navigate, BuscarTodosUsuarios) => {
     swalWithBootstrapButtons.fire({
         title: "Inserir usuários",
         html: `<div className="input-group mb-3">
-                    <input type="file" class="form-control" id="inputGroupFile02">
-                </div >
- `,
+        <input type="file" class="form-control" id="inputGroupFile02">
+        </div >
+        `,
         icon: "info",
         showCancelButton: false,
         confirmButtonColor: "#3085d6",
         confirmButtonText: "Upload"
     }).then((result) => {
         if (result.isConfirmed) {
-
-
-
+            
+            
+            
         }
     });
     console.log("AA")
@@ -135,47 +140,47 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios, se
     Swal.fire({
         title: "Inserir usuários",
         html: `<form id="form-jogo">
-                  <div class="mb-3 text-start">
-                    <label for="user_nome" class="form-label">Nome:</label>
-                    <input type="text" id="user_nome" class="form-control" placeholder="Nome do aluno">
-                  </div>
-                  <div class="mb-3 text-start">
-                    <label for="user_email" class="form-label">Email:</label>
-                    <input type="text" id="user_email" class="form-control" placeholder="Email@gmail.com">
-                  </div>
-                  <div class="mb-3 text-start">
-                    <label for="user_senha" class="form-label">Senha:</label>
-                    <input autoComplete="password" type="password" id="user_senha" class="form-control" placeholder="Sesisp@SeuRM">
-                  </div>
-                  <div class="mb-3 text-start">
-                    <label for="tipo_acesso" class="form-label">Tipo de Acesso:</label>
-                    <select id="tipo_acesso" class="form-select" aria-label="Default select example">
-                      <option disabled selected value="">Tipos de Acesso:</option>
-                      <option value="0">Administrador</option>
-                      <option value="1">Aluno</option>
-                      <option value="2">Usuário</option>
-                    </select>
-                  </div>
-                  <div class="mb-3 text-start">
+        <div class="mb-3 text-start">
+        <label for="user_nome" class="form-label">Nome:</label>
+        <input type="text" id="user_nome" class="form-control" placeholder="Nome do aluno">
+        </div>
+        <div class="mb-3 text-start">
+        <label for="user_email" class="form-label">Email:</label>
+        <input type="text" id="user_email" class="form-control" placeholder="Email@gmail.com">
+        </div>
+        <div class="mb-3 text-start">
+        <label for="user_senha" class="form-label">Senha:</label>
+        <input autoComplete="password" type="password" id="user_senha" class="form-control" placeholder="Sesisp@SeuRM">
+        </div>
+        <div class="mb-3 text-start">
+        <label for="tipo_acesso" class="form-label">Tipo de Acesso:</label>
+        <select id="tipo_acesso" class="form-select" aria-label="Default select example">
+        <option disabled selected value="">Tipos de Acesso:</option>
+        <option value="0">Administrador</option>
+        <option value="1">Aluno</option>
+        <option value="2">Usuário</option>
+        </select>
+        </div>
+        <div class="mb-3 text-start">
                     <label for="periodo" class="form-label">Período:</label>
                     <select id="periodo" class="form-select" aria-label="Default select example">
-                      <option disabled selected value="" >Periodos:</option>
-                      <option value="Matutino">Matutino</option>
-                      <option value="Noturno">Noturno</option>
+                    <option disabled selected value="" >Periodos:</option>
+                    <option value="Matutino">Matutino</option>
+                    <option value="Noturno">Noturno</option>
                     </select>
-                  </div>
-               </form>`,
-        icon: "info",
-        showCancelButton: false,
-        confirmButtonColor: "#198754",
-        confirmButtonText: "Cadastrar",
-        preConfirm: () => {
-
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const Form = {
-                user_nome: document.getElementById('user_nome').value,
+                    </div>
+                    </form>`,
+                    icon: "info",
+                    showCancelButton: false,
+                    confirmButtonColor: "#198754",
+                    confirmButtonText: "Cadastrar",
+                    preConfirm: () => {
+                        
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const Form = {
+                            user_nome: document.getElementById('user_nome').value,
                 user_email: document.getElementById('user_email').value,
                 user_senha: document.getElementById('user_senha').value,
                 user_tipo_acesso: document.getElementById('tipo_acesso').value,
@@ -197,8 +202,8 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios, se
 
 // CriarUsuario
 export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios,setUsuarioFiltrado) => {
-
-
+    
+    
     try {
         const resposta = await axios.post(`${urlUsuario}`, Form, {
             headers: {
@@ -206,16 +211,16 @@ export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios,se
                 'Content-Type': 'application/json'
             }
         });
-
-
+        
+        
         console.log(resposta.data.status);
         console.log("respota", resposta);
-
-
+        
+        
         if (resposta.data.errors || resposta.status == false) {
-
+            
             console.log("Há erros presentes", resposta.data.errors)
-
+            
             ModalErroUsuario(resposta.data.errors, token, navigate, BuscarTodosUsuarios)
         } else {
             BuscarTodosUsuarios(setUsuarioFiltrado); // Atualiza a lista
@@ -234,12 +239,12 @@ export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios,se
 
 
 export const ModalErroUsuario = (errors, token, navigate, BuscarTodosUsuarios) => {
-
-
+    
+    
     const erroFormatado = errors.join('<br>')
-
-
-
+    
+    
+    
     Swal.fire({
         title: 'Erro!',
         html: erroFormatado,

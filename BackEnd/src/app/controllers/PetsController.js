@@ -98,7 +98,7 @@ rotas.post('/criarPets', verificarToken, async (req, res) => {
 
 
 
-//Procura todos os pets do usuario na temporada atual que ele participa, 
+//Procura todos os pets e informações do jogador na temporada atual que ele participa, 
 rotas.get('/temporada', verificarToken, async (req, res) => {
     console.log(`Requisição get recebida em /api/pets/temporadaAtual`)
 
@@ -163,6 +163,19 @@ rotas.get('/buscarpet/:ID_jogo', verificarToken, async (req,res)=>{
     } catch (error){
         console.log("Erro ao simular progresso", error);
         res.status(500).json({error:"Erro interno do servidor :p"})
+    }
+})
+
+
+rotas.delete('/apagartodos', verificarToken, async (req,res)=>{
+    console.log(`Requisição delete recebida em /api/pets/apagartodos`); // Log
+  
+    try {
+        const pets = await model.ApagarTodosPets();
+        res.json(pets);
+    } catch (error) {
+        console.error("Erro ao apagar um pet", error);
+        res.status(500).json({ error: "Erro interno do servidor" });
     }
 })
 
