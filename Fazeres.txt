@@ -1,5 +1,7 @@
-Tela Player, barra de progresso para os pets comums, raros épicos e lendários, passar a quantidade deles no banco e quantidade que o usuário pegou, pet principal mostrar ovo, e data final do jogo na tela jogador, bônus diário na tela caso eles forem diferentes de 1,
-interessante colocar também isto na tela de registrar peso,
+Tela Player, barra de progresso para os pets comums, raros épicos e lendários, passar a quantidade deles do banco e quantidade que o usuário pegou, pet principal mostrar ovo e não mascote se evolução 1, e data final do jogo na tela jogador, bônus diário na tela caso eles forem diferentes de 1, 
+interessante colocar também isto na tela de registrar peso, tela para deixar no refeitório, scanner e peso do usuário
+
+Validar qrcode, mudar foto de perfil
 
 Colocar os outros mascotes do nicolas no array pets
 
@@ -9,13 +11,13 @@ Tela listagem
 
 Tela rank
 
-Colocar opção de mudar a imagem do usuário e escolher seu pet visível para a tela de listagem
+Dev alunos vários de uma vez e svc
 
 Criar tela de mostrar todos os mascotes que existem no jogo, bloqueados para o usuário - opcional
 
-Arrumar a simulação dos mascotes para usar o qrcode, assim como a balança
+Arrumar a simulação dos mascotes para usar o qrcode, assim como a balança e não id do usuário logado
 
-Fazer tela para deixar no refeitório, scanner e peso do usuário
+
 
 Falar com a jaccqueline sobre o refeitório e a balança
 

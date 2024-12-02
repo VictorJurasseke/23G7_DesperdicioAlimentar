@@ -6,34 +6,32 @@ import { motion } from 'framer-motion';
 
 const HeaderCardJogador = ({ jo_nome, QuantidadeMascote }) => {
   return (
-    // Header do   card
-    <div className="d-flex jaroFont text-light fs-4  col-12 align-items-center justify-content-between gap-3 rounded-top shadow" style={{ height: '45px', backgroundColor: "#243447" }}>
-
+    // Header do card
+    <div className="d-flex jaroFont flex-wrap text-light fs-4 col-12 align-items-center justify-content-between rounded-top shadow" style={{ minHeight: '45px', backgroundColor: "#243447" }}>
+      
       {/* Inventário */}
-      <div className="d-flex col-lg-3 col-md-6 align-items-center justify-content-evenly rounded h-100">
-        <FaBookOpen />
-        <p className="m-0 text-end jaroFont" style={{whiteSpace:"nowrap"}}>{jo_nome}</p>
+      <div className="d-flex p-2 col-sm-12 col-lg-4   align-items-center justify-content-center rounded h-100">
+        <FaBookOpen size={20} />
+        <p className="m-0 text-end jaroFont" style={{ whiteSpace: "nowrap" }}>{jo_nome}</p>
       </div>
 
-      {/* Pontos - Se for necessário futuramente, descomente a seção abaixo */}
-      {/* 
-      <div className="d-flex col-3 align-items-center justify-content-center rounded h-100">
-        <div className="col-8 rounded text-center text-light h-100 d-flex align-items-center justify-content-center">
-          <p className="m-0">Pontos</p>
-        </div>
-        <div className="rounded text-center text-light p-1 d-flex align-items-center justify-content-center">
-          <p className="m-0"><RiCopperCoinFill /> 300</p>
-        </div>
-      </div>
-      */}
 
       {/* Coletados */}
-      <div className="d-flex col-3 col-md-6 col-lg-3 align-items-center justify-content-center gap-2 rounded h-100">
-        <div style={{ backgroundColor: "#D84B4B" }} className="col-8 rounded text-center text-light h-100 d-flex align-items-center justify-content-center">
+      <div className="d-flex col-sm-6 col-lg-4 align-items-center justify-content-end gap-2 rounded h-100">
+        <div style={{ backgroundColor: "#D84B4B" }} className="col-4 rounded text-center text-light h-100 d-flex align-items-center justify-content-center">
           <p className="m-0 jaroFont">Coletados</p>
         </div>
-        <div className="col-3 rounded text-center text-light p-1 d-flex align-items-center justify-content-center">
+        <div className="col-4 rounded text-center text-light p-1 d-flex align-items-center justify-content-center">
           <p className="m-0 jaroFont">{QuantidadeMascote}</p>
+        </div>
+      </div>
+      {/* Data Final */}
+      <div className="d-flex col-sm-6 col-lg-4 align-items-center justify-content-start rounded h-100">
+        <div style={{ backgroundColor: "#D84B4B" }} className="col-4 rounded text-center text-light h-100 d-flex align-items-center justify-content-center">
+          <p className="m-0 jaroFont">Data Final</p>
+        </div>
+        <div className="col-4 rounded text-center text-light p-2 d-flex align-items-center justify-content-center">
+          <p className="m-0 jaroFont">20/08/24</p>
         </div>
       </div>
 
