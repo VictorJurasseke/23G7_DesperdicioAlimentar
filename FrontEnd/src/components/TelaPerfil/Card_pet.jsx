@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ModalPetProgresso, MostrarOvo, MudarPrincipal } from './FunctionPets';
 import { MudarFundoraridade } from '../NivelAcesso';
@@ -21,17 +21,30 @@ const Card_pet = ({
   token,
   navigate,
   ProcurarPets,
-  desc_pet
+  desc_pet,
+  pet_principal
 }) => {
 
+
+
   const [AbrirDesc, setAbrirDesc] = useState(false)
+
+  const [BtnPrincipal, setBtnPrincipal] = useState(false)
 
   // Se a evolução for 1, mudamos a imagem e o nome para "Ovo"
   if (evolucao === 1) {
     caminho = MostrarOvo(raridade);
     nome = "Ovo";
     desc_pet = "Ovo misterioso"
+
   }
+
+
+  useEffect(() => {
+    if (pet_principal !== 1) {
+      setBtnPrincipal(true);
+    }
+  }, [pet_principal]);  // Executa a lógica sempre que pet_principal mudar
 
   // Calcula a barra de progresso com base no nível e pontos de evolução
   const BarraProgresso = Math.min(nivel_pet, ponto_evo);
@@ -103,11 +116,13 @@ const Card_pet = ({
                 <p className="text-light px-2 py-1 rounded m-0">
                   {raridade}
                 </p>
-                <div className="d-flex align-items-center justify-content-center p-2 rounded">
-                  <Button onClick={()=>{MudarPrincipal(token, navigate, ID_inventario)}} className="bg-success text-light m-0 d-flex align-items-center justify-content-center">
-                    <p className="m-0">Principal</p>
-                  </Button>
-                </div>
+                {BtnPrincipal && (
+                  <div className="d-flex align-items-center justify-content-center p-2 rounded">
+                    <Button onClick={() => { MudarPrincipal(token, navigate, ID_inventario) }} className="bg-success text-light m-0 d-flex align-items-center justify-content-center">
+                      <p className="m-0">Principal</p>
+                    </Button>
+                  </div>
+                )}
               </div>
 
 

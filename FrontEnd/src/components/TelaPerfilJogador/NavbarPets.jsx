@@ -9,6 +9,7 @@ import { FaCircleChevronLeft } from "react-icons/fa6";
 
 const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema }) => {
 
+
     // Guarda o filtro selecionado
     const [SelectRaridade, setSelectRaridade] = useState('');
     const petsContainerRef = useRef(null); // Referência para o contêiner de cards
@@ -154,6 +155,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                 {Mascotes && (
                     <>
                         {Mascotes.map((item) => (
+                            
                             <Card_pet
                                 key={item.ID_inv_pets} // Use um identificador único
                                 raridade={item.raridade_pet}
@@ -164,6 +166,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                                 ID_inventario={item.ID_inv_pets}
                                 ponto_evo={item.ponto_pet}
                                 nivel_pet={item.pontuacao_pet}
+                                pet_principal={item.pet_principal}
                                 token={token}
                                 navigate={navigate}
                                 ProcurarPets={ProcurarPets}

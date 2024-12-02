@@ -68,25 +68,28 @@ export const ErrosValidarConta = (errors, setErrosVisiveis, errosVisiveis) => {
         break;
     }
   });
-};
+}
 export const MudarFundoraridade = (tipo) => {
   let cor;
   switch (tipo) {
     case "Comum":
-      cor = "#007BFF";  // Azul
+      cor = "#4A90D6";  // Azul claro e suave
       break;
     case "Raro":
-      cor = "#FFB347";  // Laranja
+      cor = "#FFA500";  // Laranja vibrante para o tipo Raro
       break;
     case "Épico":
-      cor = "#800080";  // Roxo
+      cor = "#8E44AD";  // Roxo mais intenso e sofisticado, para um contraste elegante com o azul
       break;
     case "Lendário":
-      cor = "#FFD700";  // Dourado
-      break;  
+      cor = "#FFCC00";  // Amarelo dourado mais vibrante, mais chamativo e destacado
+      break;
     default:
-      cor = "#000000";  // Cor padrao (caso o tipo nao seja reconhecido)
+      cor = "#000000";  // Cor padrão (caso o tipo não seja reconhecido)
   }
   return cor;
 };
+
+
+
 

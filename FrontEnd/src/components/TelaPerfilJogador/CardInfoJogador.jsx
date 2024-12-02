@@ -1,58 +1,90 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
 import { FaBookOpen } from 'react-icons/fa'; // Importando ícone
 import { RiCopperCoinFill } from 'react-icons/ri'; // Importando ícone
 import { motion } from 'framer-motion';
 import { BiSolidTrophy } from "react-icons/bi";
+import { MostrarOvo, MudarCorLetraRaridade } from './FunctionPets';
 
-const CardInfoJogador = ({token, navigate,  nome, img, pontos_usuario, rank_usuario, turma, nome_pet, caminho_pet, QuantidadeMascote}) => {
+const CardInfoJogador = ({ token, navigate, nome, img, pontos_usuario, rank_usuario, turma, nome_pet, caminho_pet, QuantidadeMascote, evolucao, raridade_pet }) => {
 
+
+    const [CorLetra, setCorLetra] =  useState([])
+
+    // Se a evolução for 1, mudamos a imagem e o nome para "Ovo"
+    if (evolucao === 1) {
+        caminho = MostrarOvo(raridade_pet);
+        nome = "Ovo";
+        desc_pet = "Ovo misterioso"
+        setCorLetra()
+    }
+
+    // caminho_pet
+    // : 
+    // "KawaiiRabbit.gif"
+    // desc_pet
+    // : 
+    // "A coelha fofa querida por todos!"
+    // nome_pet
+    // : 
+    // "Kawaii"
+    // peso_pet
+    // : 
+    // 0.07999999821186066
+    // ponto_pet
+    // : 
+    // 100
+    // raridade_pet
+    // : 
+    // "Épico"
     const ImagemIP = "http://localhost:3025/Pets/"
 
-    console.log("Card perfil foi carregado caminho:",caminho_pet)
+    console.log("Card perfil foi carregado caminho:", caminho_pet)
 
     return (
         // Card Informações do usuario
         < div className=' d-flex flex-row flex-wrap' style={{ minHeight: '200px' }}>
             {/* Div de imagem do usuário */}
-            < div className=' col-12 col-md-4 col-lg-2 d-flex justify-content-center align-items-center ' >
+            < div className='col-12 col-sm-12 col-md-4 col-lg-2 d-flex justify-content-center align-items-center ' >
                 <img
                     src={`http://localhost:3025/public/${img}`}
                     className="rounded-circle"
                     alt="User"
-                    style={{ objectFit: 'cover', maxHeight: "200px", maxWidth:"150px" }} // Circular e ajuste de imagem
+                    style={{ objectFit: 'cover', maxHeight: "150px", maxWidth: "150px" }} // Circular e ajuste de imagem
                 />
             </div >
 
-            <div style={{ color: "#243447" }} className='col-12 lh-lg TextoSemQuebra  col-md-6 col-lg-2 text-md-center text-lg-start  d-flex flex-column h-100'>
-                <h1 className='jaroFont mt-2 m-0'>{nome}</h1>
-                <h5 className='jaroFont m-0'>Jogador do {turma}</h5>
-                <h5 className='jaroFont '>Pontos: <RiCopperCoinFill />{pontos_usuario}</h5>
+            <div style={{ color: "#243447" }} className='col-sm-12 lh-lg TextoSemQuebra text-sm-center  col-md-8 col-lg-2 text-md-center text-lg-start p-2  d-flex flex-column h-100'>
+                <h1 className='jaroFont m-0 fs-1'>{nome}</h1>
+                <h4 className='jaroFont m-0 '>Jogador do {turma}</h4>
             </div>
-
-
             {/* Mascote principal */}
-            <div className='col-6 col-md-12 col-lg-4 d-flex flex-column align-items-center justify-content-center h-100'>
+            <div className='col-sm-12 col-md-12 col-lg-2 d-flex flex-column align-items-center justify-content-center h-100'>
                 <img
-                    src={ImagemIP+caminho_pet}
+                    src={ImagemIP + caminho_pet}
                     className=""
                     alt="PetPrincipal"
                     style={{ objectFit: 'contain', height: "150px" }} // Circular e ajuste de imagem
                 />
-                <p className='text-warning fs-4 jaroFont m-0'>{nome_pet}</p>
+                <p className='fs-4 jaroFont m-0' style={{color:MudarCorLetraRaridade(raridade_pet)}}>{nome_pet}</p>
             </div>
 
+            <div className=' d-flex align-items-center justify-content-center flex-column col-6  col-md-6 col-lg-3 jaroFont' style={{ color: "#243447" }}>
+
+                <h4 style={{ fontSize: '50px' }} className='jaroFont m-0  d-flex justify-content-center align-items-center'><RiCopperCoinFill />{pontos_usuario}</h4>
+
+            </div>
             {/* Status no jogo atual */}
-            <div className='col-6 d-flex align-items-center flex-column  col-md-12 col-lg-4 jaroFont' style={{ color: "#243447" }}>
+            <div className=' d-flex align-items-center justify-content-center flex-column col-6  col-md-6 col-lg-3 jaroFont' style={{ color: "#243447" }}>
 
-                <h2 className='m-0 h-50 d-flex justify-content-end align-items-end fs-1'><BiSolidTrophy />{rank_usuario}º</h2>
+                <h2 style={{ fontSize: '50px' }} className='m-0 h-50 d-flex justify-content-center align-items-center'><BiSolidTrophy />{rank_usuario}º</h2>
 
-
-                <div className='h-50 w-100 d-flex justify-content-end flex-row align-items-end'>
-
-                    <h2 className='m-0 d-flex align-items-center'>{QuantidadeMascote}</h2>
-                </div>
             </div>
+
+
+
+
+
         </div >
     );
 };

@@ -117,7 +117,7 @@ const pets = [
     {
         nome_pet: "Dante",
         caminho_pet: "AngelDemonRabbit.gif",
-        desc_pet: "Um coelhinho muito inteligente!",
+        desc_pet: "Um coelhinho suspeito!",
         ponto_pet: 100,
         raridade_pet: "Raro",
         peso_pet: 0.3,

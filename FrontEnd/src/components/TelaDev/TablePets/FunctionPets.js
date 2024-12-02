@@ -251,7 +251,7 @@ const deletarTodosPet = async (atualizar, token, navigate) => {
         if (!resposta.data.status) {
             swalWithBootstrapButtons.fire({
                 title: "Falhou!",
-                html: `Seus pets não foram deletados!<br> <br> Código do erro: ${resposta.data?.error?.code}`,
+                html: `${resposta.data?.message}`,
                 icon: "error"
             });
         } else {

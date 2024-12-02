@@ -123,6 +123,15 @@ export const MostrarOvo = (raridade) => {
     return ovos[raridade] || "Egg.gif";  // CaminhoOvo padrão (caso o tipo não seja reconhecido)
 };
 
+export const MudarCorLetraRaridade = (raridade) => {
+    const cor = {
+        Comum: "#4A90D6",  // Azul
+        Raro: "#FFA500",     // Laranja
+        Épico: "#8E44AD",   // Roxo
+        Lendário: "#FFCC00",  // Dourado
+    };
+    return cor[raridade] || "#000000";  // CaminhoOvo padrão (caso o tipo não seja reconhecido)
+};
 
 
 

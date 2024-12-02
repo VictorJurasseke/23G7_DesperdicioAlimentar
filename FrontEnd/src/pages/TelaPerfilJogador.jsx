@@ -77,13 +77,13 @@ const PerfilJogador = () => {
                                 <HeaderCardJogador jo_nome={jo_nome} QuantidadeMascote={QuantidadeMascote} />
                                 <div className='p-4 '>
                                     {PetPrincipal ? (
-                                        <CardInfoJogador turma={TurmasUsuario} QuantidadeMascote={QuantidadeMascote} caminho_pet={PetPrincipal.caminho_pet} img={Dados_usuario.user_img_caminho} nome={Dados_usuario.user_nome} rank_usuario={jo_rank} pontos_usuario={pontos} />) : (<h1>Não carregou</h1>)}
+                                        <CardInfoJogador turma={TurmasUsuario} nome_pet={PetPrincipal.nome_pet} raridade_pet={PetPrincipal.raridade_pet} evolucao={PetPrincipal.evolucao} QuantidadeMascote={QuantidadeMascote} caminho_pet={PetPrincipal.caminho_pet} img={Dados_usuario.user_img_caminho} nome={Dados_usuario.user_nome} rank_usuario={jo_rank} pontos_usuario={pontos} />) : (<h1>Não carregou</h1>)}
 
                                     <div className='col-12'>
 
                                         {/* Filtro dos pets */}
-                                        <div className='col-12 col-md-12 col-lg-12 border-top h-100 d-flex flex-row'>
-                                            <form role="search" className='col-lg-2 col-md-12'>
+                                        <div className='col-12 border-top h-100 d-flex flex-row'>
+                                            <form role="search" className='col-lg-2 col-md-12 col-sm-12'>
                                                 <select
                                                     value={SelectRaridade}
                                                     onChange={(e) => setSelectRaridade(e.target.value)}
