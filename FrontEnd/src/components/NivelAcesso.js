@@ -82,10 +82,10 @@ export const MudarFundoraridade = (tipo) => {
       cor = "#8E44AD";  // Roxo mais intenso e sofisticado, para um contraste elegante com o azul
       break;
     case "Lendário":
-      cor = "#FFCC00";  // Amarelo dourado mais vibrante, mais chamativo e destacado
+      cor = "#000000";  // Amarelo dourado mais vibrante, mais chamativo e destacado
       break;
     default:
-      cor = "#000000";  // Cor padrão (caso o tipo não seja reconhecido)
+      cor = "#ff00ff";  // Cor padrão (caso o tipo não seja reconhecido)
   }
   return cor;
 };

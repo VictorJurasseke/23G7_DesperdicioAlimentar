@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 
-function Header({ Dados_usuario }) {
+function Header({ Dados_usuario,corLetra }) {
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
 
@@ -45,20 +45,20 @@ function Header({ Dados_usuario }) {
   return (
     <motion.div initial={{y:"-200px"}} animate={{y:0}} transition={{type:"spring", duration:0.1, stiffness:20, delay:0.5}} style={{zIndex:1}}>
 
-      <Navbar className="justify-content-between position-absolute col-12" dark expand="lg">
-        <NavbarBrand className="text-dark d-flex" href="/">
+      <Navbar className="justify-content-between position-absolute col-12"   dark expand="lg">
+        <NavbarBrand style={{color:corLetra}} className=" d-flex" href="/">
           H A T C H
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto d-flex justify-content-end col-12 p-1 gap-4" navbar>
             <NavItem className="d-flex align-items-center">
-              <NavLink className="text-dark fs-6" href="/list">
+              <NavLink style={{color:corLetra}} className=" fs-6" href="/list">
                 Jogadores
               </NavLink>
             </NavItem>
             <NavItem className="d-flex align-items-center">
-              <NavLink className="text-dark fs-6" href="/rank">
+              <NavLink style={{color:corLetra}} className=" fs-6" href="/rank">
                 Rank
               </NavLink>
             </NavItem>

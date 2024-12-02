@@ -19,6 +19,7 @@ import HeaderCardJogador from '../components/TelaPerfilJogador/HeaderCardJogador
 import ImagemPerfil from '../../public/img/Perfilmagem/GarotoCorteAzul.png'
 import PetPrincipal from '../../public/img/CoelhoNeymar.gif'
 import '../components/TelaPerfilJogador/div_pets.css'
+import Coruja from '../../public/img/CorujaPng.png'
 
 
 // Componentes
@@ -65,13 +66,20 @@ const PerfilJogador = () => {
                 Dados_usuario.user_tipo_acesso === 3 ? (
                     <>
 
-                        <Header Dados_usuario={Dados_usuario} />
+
+
+                        <Header Dados_usuario={Dados_usuario} corLetra={"#ffffff"}/>
+
+                        <div className="fundoIMG min-vh-100">
+                            {/* Aqui vai o conteúdo da sua página */}
+                        </div>
 
                         {/* Tela principal */}
-                        <div className="col-12 p-3 d-flex vh-100 justify-content-center align-items-center fundoIMG">
+                        <div className="col-12 p-3 d-flex min-vh-100 justify-content-center z-1">
+
 
                             {/* Card principal */}
-                            <div className="col-12 col-md-10 col-lg-10 rounded shadow " style={{ backgroundColor: "#F3E8D1" }}>
+                            <div className="col-12 col-md-10 col-lg-10 rounded shadow z-2" style={{ backgroundColor: "#F3E8D1", transform: 'scale(0.8, 0.8)' }}>
 
                                 {/* Header que guarda o jogo atual e os coletados */}
                                 <HeaderCardJogador jo_nome={jo_nome} QuantidadeMascote={QuantidadeMascote} />
@@ -79,12 +87,11 @@ const PerfilJogador = () => {
                                     {PetPrincipal ? (
                                         <CardInfoJogador turma={TurmasUsuario} nome_pet={PetPrincipal.nome_pet} raridade_pet={PetPrincipal.raridade_pet} evolucao={PetPrincipal.evolucao} QuantidadeMascote={QuantidadeMascote} caminho_pet={PetPrincipal.caminho_pet} img={Dados_usuario.user_img_caminho} nome={Dados_usuario.user_nome} rank_usuario={jo_rank} pontos_usuario={pontos} />) : (<h1>Não carregou</h1>)}
 
-                                    <div className='col-12'>
+                                    <div className='col-12 d-flex flex-column'>
 
                                         {/* Filtro dos pets */}
 
                                         <NavBarPets token={token} navigate={navigate} TodosPetsTemporada={TodosPetsTemporada} ProcurarPets={ProcurarPets} jo_nome={jo_nome} QuantidadeMascote={QuantidadeMascote} jo_tema={jo_tema} />
-
 
 
                                     </div>

@@ -16,7 +16,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
     const [isMouseDown, setIsMouseDown] = useState(false); // Controle do estado do mouse
     const [startX, setStartX] = useState(0); // Posição inicial do mouse
     const [scrollLeft, setScrollLeft] = useState(0); // Posição inicial do scroll
-    const [quantidadeExibida, setQuantidadeExibida] = useState(7);  // Começa com 5
+    const [quantidadeExibida, setQuantidadeExibida] = useState(20);  // Começa com 5
 
     const [Mascotes, setMascotes] = useState([]);
     const [MaximoSeta, setMaximoSeta] = useState(2);  // Flag para saber se atingiu o máximo - 1 = Diminuir 2; = Aumentar; 3 = Não mostrar seta
@@ -100,7 +100,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                 break;
             default:
                 // Passa o valor padrão da seta para aumentar e tambem coloca os mascotes cortados
-                if (TodosPetsTemporada.length <= 7) {
+                if (TodosPetsTemporada.length <= 20) {
                     console.log('ALOO SETA3 SOME')
                     setMaximoSeta(3)
                 } else if (quantidadeExibida >= TodosPetsTemporada.length) {
@@ -120,7 +120,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
         console.log("Valor de qtd", quantidadeExibida)
         setMascotes(TodosPetsTemporada.slice(0, quantidadeExibida))
         console.log(Mascotes)
-        if (TodosPetsTemporada.length <= 7) {
+        if (TodosPetsTemporada.length <= 20) {
             console.log('ALOO SETA3 SOME')
             setMaximoSeta(3)
         } else if (quantidadeExibida >= TodosPetsTemporada.length) {
@@ -197,7 +197,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                                 <button
                                     className="btn-mais-15"
                                     onClick={() => {
-                                        setQuantidadeExibida(7); // Volta ao padrao
+                                        setQuantidadeExibida(20); // Volta ao padrao
                                     }}
                                 >
                                     <FaCircleChevronLeft />

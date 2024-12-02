@@ -128,9 +128,9 @@ export const MudarCorLetraRaridade = (raridade) => {
         Comum: "#4A90D6",  // Azul
         Raro: "#FFA500",     // Laranja
         Épico: "#8E44AD",   // Roxo
-        Lendário: "#FFCC00",  // Dourado
+        Lendário: "#000000",  // Dourado
     };
-    return cor[raridade] || "#000000";  // CaminhoOvo padrão (caso o tipo não seja reconhecido)
+    return cor[raridade] || "#ff00ff";  // CaminhoOvo padrão (caso o tipo não seja reconhecido)
 };
 
 
