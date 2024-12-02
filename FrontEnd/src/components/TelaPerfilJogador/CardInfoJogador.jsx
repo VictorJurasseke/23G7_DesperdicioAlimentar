@@ -6,17 +6,14 @@ import { motion } from 'framer-motion';
 import { BiSolidTrophy } from "react-icons/bi";
 import { MostrarOvo, MudarCorLetraRaridade } from './FunctionPets';
 
-const CardInfoJogador = ({ token, navigate, nome, img, pontos_usuario, rank_usuario, turma, nome_pet, caminho_pet, QuantidadeMascote, evolucao, raridade_pet }) => {
+const CardInfoJogador = ({ token, navigate, nome, img, pontos_usuario, rank_usuario, turma, nome_pet, caminho_pet, QuantidadeMascote, evolucao, raridade_pet, desc_pet }) => {
 
-
-    const [CorLetra, setCorLetra] =  useState([])
 
     // Se a evolução for 1, mudamos a imagem e o nome para "Ovo"
     if (evolucao === 1) {
-        caminho = MostrarOvo(raridade_pet);
-        nome = "Ovo";
+        caminho_pet = MostrarOvo(raridade_pet);
+        nome_pet = "Ovo";
         desc_pet = "Ovo misterioso"
-        setCorLetra()
     }
 
     // caminho_pet

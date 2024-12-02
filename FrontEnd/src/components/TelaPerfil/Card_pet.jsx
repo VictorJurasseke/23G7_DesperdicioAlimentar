@@ -36,7 +36,6 @@ const Card_pet = ({
     caminho = MostrarOvo(raridade);
     nome = "Ovo";
     desc_pet = "Ovo misterioso"
-
   }
 
 
@@ -87,7 +86,6 @@ const Card_pet = ({
                 ProcurarPets,
                 nome,
                 desc_pet,
-
               );
               setAbrirDesc(!AbrirDesc); // Alterna o estado
             }}
@@ -118,7 +116,7 @@ const Card_pet = ({
                 </p>
                 {BtnPrincipal && (
                   <div className="d-flex align-items-center justify-content-center p-2 rounded">
-                    <Button onClick={() => { MudarPrincipal(token, navigate, ID_inventario) }} className="bg-success text-light m-0 d-flex align-items-center justify-content-center">
+                    <Button onClick={() => { MudarPrincipal(token, navigate, ID_inventario,ProcurarPets) }} className="bg-success text-light m-0 d-flex align-items-center justify-content-center">
                       <p className="m-0">Principal</p>
                     </Button>
                   </div>

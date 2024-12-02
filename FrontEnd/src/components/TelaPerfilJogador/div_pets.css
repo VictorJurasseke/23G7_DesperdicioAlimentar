@@ -10,7 +10,7 @@
   -webkit-overflow-scrolling: touch;
   user-select: none;
   /* Impede a seleção de texto ou imagem */
-  justify-content:stretch;
+  justify-content: stretch;
   /* Alinha os itens ao início horizontalmente */
   align-content: flex-start;
   /* Garante o alinhamento superior nas linhas subsequentes */
@@ -18,7 +18,7 @@
 
 
 .card-pet {
-  flex:content;
+  flex: content;
   /* Controla o crescimento, encolhimento e largura inicial */
   /* max-width: 300px; */
   /* Limita o crescimento */
@@ -79,4 +79,14 @@
 .btn-mais-15:focus {
   outline: none;
   /* Remove o contorno ao focar */
+}
+
+.fundoIMG {
+
+  background-image: url("../../../public/img/FundoPixel.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #fff;
+
 }

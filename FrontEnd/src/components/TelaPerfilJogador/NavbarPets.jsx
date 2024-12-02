@@ -18,7 +18,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
     const [scrollLeft, setScrollLeft] = useState(0); // Posição inicial do scroll
     const [quantidadeExibida, setQuantidadeExibida] = useState(7);  // Começa com 5
 
-    const [Mascotes, setMascotes] = useState();
+    const [Mascotes, setMascotes] = useState([]);
     const [MaximoSeta, setMaximoSeta] = useState(2);  // Flag para saber se atingiu o máximo - 1 = Diminuir 2; = Aumentar; 3 = Não mostrar seta
 
     // Função para ativar o efeito de "arraste" quando o mouse é pressionado
@@ -141,6 +141,22 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
 
     return (
         <>
+            <div className='col-12 border-top h-100 d-flex flex-row'>
+                <form role="search" className='col-lg-2 col-md-12 col-sm-12'>
+                    <select
+                        value={SelectRaridade}
+                        onChange={(e) => setSelectRaridade(e.target.value)}
+                        style={{ border: "2px solid #243447", color: "#243447", backgroundColor: "#d9c89f", borderRadius: '20px' }}
+                        className="form-select form-select-sm jaroFont text-center p-1 fs-4" // Adicionado 'me-2' para margem à direita
+                        aria-label="Default select example">
+                        <option style={{}} value="">Todos:</option>
+                        <option style={{}} value="1">Comum</option>
+                        <option style={{}} value="2">Raro</option>
+                        <option style={{}} value="3">Épico</option>
+                        <option style={{}} value="4">Lendário</option>
+                    </select>
+                </form>
+            </div>
             <motion.div
                 className="pets-container p-3"
                 ref={petsContainerRef}
@@ -152,10 +168,10 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                 onMouseLeave={handleMouseUp} // Desativa o arraste caso o mouse saia do contêiner
                 onMouseMove={handleMouseMove} // Controla o movimento do scroll
             >
-                {Mascotes && (
+                {Mascotes.length > 0 ? (
                     <>
                         {Mascotes.map((item) => (
-                            
+
                             <Card_pet
                                 key={item.ID_inv_pets} // Use um identificador único
                                 raridade={item.raridade_pet}
@@ -202,7 +218,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                             {MaximoSeta == 3 && null}
                         </div>
                     </>
-                )}
+                ) : (<h1>Não tem mascotes</h1>)} 
             </motion.div >
         </>
     );

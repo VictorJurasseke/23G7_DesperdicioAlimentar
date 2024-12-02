@@ -269,7 +269,7 @@ export const obterEstiloTema = (jo_tema) => {
 };
 
 
-export const MudarPrincipal = async (token, navigate, ID_inventario) =>{
+export const MudarPrincipal = async (token, navigate, ID_inventario,ProcurarPets) =>{
 
     console.log("Mudar para este ser o principal")
     
@@ -281,7 +281,7 @@ export const MudarPrincipal = async (token, navigate, ID_inventario) =>{
             }
         );
         // Atualiza a barra de progresso com o valor correto
-        
+        ProcurarPets()
         console.log(resposta)
 
     } catch (error) {

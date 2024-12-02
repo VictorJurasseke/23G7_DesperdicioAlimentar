@@ -9,6 +9,8 @@ import { FaCircleChevronLeft } from "react-icons/fa6";
 
 const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema, EstiloDesempenho }) => {
 
+
+
     // Guarda o filtro selecionado
     const [SelectRaridade, setSelectRaridade] = useState('');
     const petsContainerRef = useRef(null); // Referência para o contêiner de cards

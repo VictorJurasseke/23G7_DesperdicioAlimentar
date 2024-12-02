@@ -18,7 +18,7 @@ import HeaderCardJogador from '../components/TelaPerfilJogador/HeaderCardJogador
 // Imagem de wireframe
 import ImagemPerfil from '../../public/img/Perfilmagem/GarotoCorteAzul.png'
 import PetPrincipal from '../../public/img/CoelhoNeymar.gif'
-
+import '../components/TelaPerfilJogador/div_pets.css'
 
 
 // Componentes
@@ -68,11 +68,11 @@ const PerfilJogador = () => {
                         <Header Dados_usuario={Dados_usuario} />
 
                         {/* Tela principal */}
-                        <div className="col-12 p-3 d-flex vh-100 justify-content-center align-items-center bg-dark">
+                        <div className="col-12 p-3 d-flex vh-100 justify-content-center align-items-center fundoIMG">
 
                             {/* Card principal */}
                             <div className="col-12 col-md-10 col-lg-10 rounded shadow " style={{ backgroundColor: "#F3E8D1" }}>
-                             
+
                                 {/* Header que guarda o jogo atual e os coletados */}
                                 <HeaderCardJogador jo_nome={jo_nome} QuantidadeMascote={QuantidadeMascote} />
                                 <div className='p-4 '>
@@ -82,26 +82,9 @@ const PerfilJogador = () => {
                                     <div className='col-12'>
 
                                         {/* Filtro dos pets */}
-                                        <div className='col-12 border-top h-100 d-flex flex-row'>
-                                            <form role="search" className='col-lg-2 col-md-12 col-sm-12'>
-                                                <select
-                                                    value={SelectRaridade}
-                                                    onChange={(e) => setSelectRaridade(e.target.value)}
-                                                    style={{ border: "2px solid #243447", color: "#243447", backgroundColor: "#d9c89f", borderRadius: '20px' }}
-                                                    className="form-select form-select-sm jaroFont text-center p-1 fs-4" // Adicionado 'me-2' para margem à direita
-                                                    aria-label="Default select example">
-                                                    <option style={{}} value="">Todos:</option>
-                                                    <option style={{}} value="1">Comum</option>
-                                                    <option style={{}} value="2">Raro</option>
-                                                    <option style={{}} value="3">Épico</option>
-                                                    <option style={{}} value="4">Lendário</option>
-                                                </select>
-                                            </form>
-                                        </div>
-                                        <NavBarPets token={token} navigate={navigate} TodosPetsTemporada={TodosPetsTemporada} ProcurarPets={ProcurarPets} jo_nome={jo_nome} QuantidadeMascote={QuantidadeMascote} jo_tema={jo_tema}/>
 
-                                        
-                                        
+                                        <NavBarPets token={token} navigate={navigate} TodosPetsTemporada={TodosPetsTemporada} ProcurarPets={ProcurarPets} jo_nome={jo_nome} QuantidadeMascote={QuantidadeMascote} jo_tema={jo_tema} />
+
 
 
                                     </div>
