@@ -234,10 +234,13 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
 
         pontosAtribuidos *= multiplicadorDia;
 
+        console.log("Valor desperdiçado:",desperdicio)
+    
+
         if (pontosAtribuidos > 0) {
             await conexao.execute(
-                'UPDATE jogos_matricula SET pontos_usuario = pontos_usuario + ? WHERE ID_jogos = ? AND ID_usuarios = ?',
-                [pontosAtribuidos, ID_jogo, ID_usuarios]
+                'UPDATE jogos_matricula SET pontos_usuario = pontos_usuario + ? WHERE ID_jogos = ? AND ID_usuarios = ? AND peso_acumulativo ?',
+                [pontosAtribuidos, ID_jogo, ID_usuarios, desperdicio]
             );
 
             await conexao.execute(
