@@ -4,23 +4,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 //Imagens perfil - 
-import Loira1 from '../../../public/img/Perfilmagem/Loira1.jpg';
-import Morena1 from '../../../public/img/Perfilmagem/Morena1.jpg';
-import Morena2 from '../../../public/img/Perfilmagem/Morena2.jpg';
-import Morena3 from '../../../public/img/Perfilmagem/Morena3.jpg';
-import Morena4 from '../../../public/img/Perfilmagem/Morena4.jpg';
-import Rosa1 from '../../../public/img/Perfilmagem/Rosa1.jpg';
-import Ruiva1 from '../../../public/img/Perfilmagem/Ruiva1.jpg';
-import Azul1 from '../../../public/img/Perfilmagem/Azul1.jpg';
+import Loira1 from '../../../public/img/Perfilmagem/Loira1.png';
+import Morena1 from '../../../public/img/Perfilmagem/Morena1.png';
+import Morena2 from '../../../public/img/Perfilmagem/Morena2.png';
+import Morena3 from '../../../public/img/Perfilmagem/Morena3.png';
+import Morena4 from '../../../public/img/Perfilmagem/Morena4.png';
+import Rosa1 from '../../../public/img/Perfilmagem/Rosa1.png';
+import Ruiva1 from '../../../public/img/Perfilmagem/Ruiva1.png';
+
 import Azul2 from '../../../public/img/Perfilmagem/Azul2.png';
-import Azul3 from '../../../public/img/Perfilmagem/Azul3.jpg';
-import Azul4 from '../../../public/img/Perfilmagem/Azul4.jpg';
-import Moicano1 from '../../../public/img/Perfilmagem/Moicano1.jpg';
-import Branco1 from '../../../public/img/Perfilmagem/Branco1.jpg';
-import Moreno1 from '../../../public/img/Perfilmagem/Moreno1.jpg';
-import Moreno2 from '../../../public/img/Perfilmagem/Moreno2.jpg';
-import Nerd1 from '../../../public/img/Perfilmagem/Nerd1.jpg';
-import Nerd2 from '../../../public/img/Perfilmagem/Nerd2.jpg';
+import Azul3 from '../../../public/img/Perfilmagem/Azul3.png';
+import Azul4 from '../../../public/img/Perfilmagem/Azul4.png';
+import Moicano1 from '../../../public/img/Perfilmagem/Moicano1.png';
+import Branco1 from '../../../public/img/Perfilmagem/Branco1.png';
+import Moreno1 from '../../../public/img/Perfilmagem/Moreno1.png';
+import Nerd1 from '../../../public/img/Perfilmagem/Nerd1.png';
+import Nerd2 from '../../../public/img/Perfilmagem/Nerd2.png';
 
 
 
@@ -44,14 +43,26 @@ const Menu_Aluno = ({ Dados_usuario, token, navigate }) => {
 
     const [ImagemSelecionada, setImagem] = useState(null); // Estado para armazenar a imagem selecionada
     const [CaminhoBanco, setCaminhoBanco] = useState(FormValidar.Caminho_Banco)
-
+    
     // Lista de imagens
     const Imagens = [
-        { original: Loira1, caminho_banco: "GarotaLoiraPadrao.jpg" },
-        { original: 'url-da-imagem-2.jpg', caminho_banco: "GarotaLoiraPadrao.jpg" },
-        { original: 'url-da-imagem-3.jpg' },
+        { original: Loira1, caminho_banco: "Loira1.png" },
+        { original: Morena1, caminho_banco: "Morena1.png" },
+        { original: Morena2, caminho_banco: "Morena2.png" },
+        { original: Morena3, caminho_banco: "Morena3.png" },
+        { original: Morena4, caminho_banco: "Morena4.png" },
+        { original: Rosa1, caminho_banco: "Rosa1.png" },
+        { original: Ruiva1, caminho_banco: "Ruiva1.png" },
+        { original: Azul2, caminho_banco: "Azul2.png" },
+        { original: Azul3, caminho_banco: "Azul3.png" },
+        { original: Azul4, caminho_banco: "Azul4.png" },
+        { original: Moicano1, caminho_banco: "Moicano1.png" },
+        { original: Branco1, caminho_banco: "Branco1.png" },
+        { original: Moreno1, caminho_banco: "Moreno1.png" },
+        { original: Nerd1, caminho_banco: "Nerd1.png" },
+        { original: Nerd2, caminho_banco: "Nerd2.png" },
     ];
-
+    
     const MudarImagemSelecionada = (i) => {
         setImagem(Imagens[i].original); // Atualiza a imagem selecionada
         setCaminhoBanco(Imagens[i].caminho_banco)
@@ -75,22 +86,24 @@ const Menu_Aluno = ({ Dados_usuario, token, navigate }) => {
                     {/* Seletor de Imagens em formato de bolinhas */}
                     <div className="mt-4 text-center d-flex align-items-center flex-column">
                         <h4>Imagem de perfil:</h4>
-                        <div className="d-flex gap-3">
+                        <div className="d-flex gap-3 flex-wrap">
                             {Imagens.map((imagem, index) => (
                                 <div
                                     key={index}
                                     className="image-circle-selector"
                                     onClick={() => MudarImagemSelecionada(index)}
                                     style={{
-                                        width: '50px',
-                                        height: '50px',
+                                        width: '80px',
+                                        height: '80px',
                                         borderRadius: '50%',
                                         overflow: 'hidden',
                                         border: '2px solid #ccc',
                                         cursor: 'pointer',
                                         boxShadow: ImagemSelecionada === imagem.original ? '0 0 10px 2px rgba(0, 0, 0, 0.2)' : 'none',
                                         border: ImagemSelecionada === imagem.original ? '3px solid #D84B4B' : 'none', // Adiciona a borda na imagem selecionada
-                                        transform: ImagemSelecionada == imagem.original ? 'scale(1.3)' : 'none'
+                                        transform: ImagemSelecionada == imagem.original ? 'scale(1.3)' : 'none',
+                                        transition: 'transform 0.3s ease, border 0.3s ease' // Adiciona transição suave
+
                                     }}
                                 >
                                     <img

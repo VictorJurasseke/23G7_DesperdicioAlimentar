@@ -16,11 +16,8 @@ import HeaderCardJogador from '../components/TelaPerfilJogador/HeaderCardJogador
 
 //-----
 // Imagem de wireframe
-import ImagemPerfil from '../../public/img/Perfilmagem/GarotoCorteAzul.png'
-import PetPrincipal from '../../public/img/CoelhoNeymar.gif'
-import '../components/TelaPerfilJogador/div_pets.css'
-import Coruja from '../../public/img/CorujaPng.png'
 
+import '../components/TelaPerfilJogador/div_pets.css'
 
 // Componentes
 import CardInfoJogador from '../components/TelaPerfilJogador/CardInfoJogador';

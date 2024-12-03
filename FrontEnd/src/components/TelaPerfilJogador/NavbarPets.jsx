@@ -81,20 +81,20 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
 
     const selectRaridadeSwitch = (SelectRaridade, MascotesCortados) => {
         switch (SelectRaridade) {
-            case '1':
+            case 'comum':
                 console.log("Comum selecionado e filtrando", TodosPetsTemporada.filter((pets) => pets.raridade_pet === "Comum"))
                 setMaximoSeta(3)
                 setMascotes(TodosPetsTemporada.filter((pets) => pets.raridade_pet === "Comum"));
                 break;
-            case '2':
+            case 'raro':
                 setMaximoSeta(3)
                 setMascotes(TodosPetsTemporada.filter((pets) => pets.raridade_pet === "Raro"));
                 break;
-            case '3':
+            case 'épico':
                 setMaximoSeta(3)
                 setMascotes(TodosPetsTemporada.filter((pets) => pets.raridade_pet === "Épico"));
                 break;
-            case '4':
+            case 'lendário':
                 setMaximoSeta(3)
                 setMascotes(TodosPetsTemporada.filter((pets) => pets.raridade_pet === "Lendário"));
                 break;
@@ -150,10 +150,10 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                         className="form-select form-select-sm jaroFont text-center p-1 fs-4" // Adicionado 'me-2' para margem à direita
                         aria-label="Default select example">
                         <option style={{}} value="">Todos:</option>
-                        <option style={{}} value="1">Comum</option>
-                        <option style={{}} value="2">Raro</option>
-                        <option style={{}} value="3">Épico</option>
-                        <option style={{}} value="4">Lendário</option>
+                        <option style={{}} value="comum">Comuns</option>
+                        <option style={{}} value="raro">Raros</option>
+                        <option style={{}} value="épico">Épicos</option>
+                        <option style={{}} value="lendário">Lendários</option>
                     </select>
                 </form>
             </div>
@@ -218,7 +218,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                             {MaximoSeta == 3 && null}
                         </div>
                     </>
-                ) : (<h1>Não tem mascotes</h1>)} 
+                ) : (<h1 className='m-0 jaroFont'>Você não possui nenhum {SelectRaridade}</h1>)} 
             </motion.div >
         </>
     );

@@ -83,7 +83,7 @@ module.exports.retornarUmUsuario = async (id) => {
 
 
 // VALILDAR CONTA USADA NA TELA ALUNO
-module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_usuarios) => {
+module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_usuarios,Caminho_Banco) => {
 
     // Criptografando a senha em hexadecimal no algoritmo de sha256 para não mandar para o banco em plano branco
     let senhaHash = crypto.createHash('sha256').update(NovaSenha).digest('hex');
@@ -98,8 +98,8 @@ module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_u
     try {
         conexao = await db.criarConexao();
         const [resultado] = await conexao.execute(
-            'UPDATE usuarios SET user_qrcode = ?, user_senha = ?, user_tipo_acesso = 2 WHERE ID_usuarios = ?',
-            [QRcode, senhaHash, ID_usuarios]
+            'UPDATE usuarios SET user_qrcode = ?, user_senha = ?, user_tipo_acesso = 2, user_img_caminho = ? WHERE ID_usuarios = ?',
+            [QRcode, senhaHash,Caminho_Banco, ID_usuarios]
         )
         return { status: true, message: "Sua conta foi validada com sucesso!" }
     } catch (error) {

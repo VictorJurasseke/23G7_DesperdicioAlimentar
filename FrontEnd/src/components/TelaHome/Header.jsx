@@ -45,29 +45,29 @@ function Header({ Dados_usuario,corLetra }) {
   return (
     <motion.div initial={{y:"-200px"}} animate={{y:0}} transition={{type:"spring", duration:0.1, stiffness:20, delay:0.5}} style={{zIndex:1}}>
 
-      <Navbar className="justify-content-between position-absolute col-12"   dark expand="lg">
-        <NavbarBrand style={{color:corLetra}} className=" d-flex" href="/">
+      <Navbar className="justify-content-between position-absolute col-12 jaroFont"   dark expand="lg">
+        <NavbarBrand style={{color:corLetra}} className="d-flex fs-4" href="/">
           H A T C H
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto d-flex justify-content-end col-12 p-1 gap-4" navbar>
             <NavItem className="d-flex align-items-center">
-              <NavLink style={{color:corLetra}} className=" fs-6" href="/list">
+              <NavLink style={{color:corLetra}} className="fs-4" href="/list">
                 Jogadores
               </NavLink>
             </NavItem>
             <NavItem className="d-flex align-items-center">
-              <NavLink style={{color:corLetra}} className=" fs-6" href="/rank">
+              <NavLink style={{color:corLetra}} className="fs-4" href="/rank">
                 Rank
               </NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav className="p-0">
+              <DropdownToggle nav className="p-0 align-self-center">
                 <img
                   src={ImagemUsuario}
                   alt="Usuário"
-                  style={{ width: 40, height: 40, borderRadius: "40px" }}
+                  style={{ width: 50, height:50, borderRadius: "40px" }}
                 />
               </DropdownToggle>
               <DropdownMenu right>

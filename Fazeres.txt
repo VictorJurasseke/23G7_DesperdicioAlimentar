@@ -13,6 +13,8 @@ Tela rank
 
 Dev alunos vários de uma vez e svc
 
+trigger de atualizar rank, quando matriculados mudar
+
 Criar tela de mostrar todos os mascotes que existem no jogo, bloqueados para o usuário - opcional
 
 Arrumar a simulação dos mascotes para usar o qrcode, assim como a balança e não id do usuário logado
@@ -24,5 +26,20 @@ Falar com a jaccqueline sobre o refeitório e a balança
 Fazer os relatórios
 
 Passar os diagramas de saída fluxo e os krl
+
+
+Tela Jogadores: 
+
+Preciso fazer um select e pegar todas as turmas do banco, gerar rádios, que ira servir para filtrar os usuários, que terão como informação, nome turma e pet principal, ao ser clicado, vou ser levado para pagina visitarPerfil, que sera como um perfil, porém com os dados do usuário que eu cliquei. sendo possível eu visualizar os mascotes do mesmo pontos e rank do usuário, se quem visitou foi o adm, visualizar quantidade de desperdício do aluno opcional
+
+Preciso de um select para tela jogadores que busca então:
+
+* user_nome & user_img_caminho &   WHERE user_tipo_acesso = 3
+
+* tur_nome tur_id
+
+* pet_principal & pet_evolucao & * pets
+
+
 
 

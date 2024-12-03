@@ -145,8 +145,10 @@ rotas.post('/validar', verificarToken, async (req, res) => {
     console.log("Corpo da Requisição:", req.body);
     console.log("ID do Usuário:", req.info.ID_usuarios);
 
-    const { NovaSenha, ConfirmarNovaSenha, QRcode } = req.body;
+    const { NovaSenha, ConfirmarNovaSenha, QRcode, Caminho_Banco } = req.body;
 
+
+    console.log(req.body)
     try {
         // Valida o corpo da requisição usando yup
         await ValidarusuarioSchema.validate(req.body, { abortEarly: false });
@@ -159,11 +161,12 @@ rotas.post('/validar', verificarToken, async (req, res) => {
             NovaSenha,
             QRcode,
             ConfirmarNovaSenha,
-            ID_usuarios: req.info.ID_usuarios
+            ID_usuarios: req.info.ID_usuarios,
+            Caminho_Banco
         });
 
         // Chama a função do modelo para validar a conta
-        const linhas = await model.ValidarConta(NovaSenha, QRcode, ConfirmarNovaSenha, req.info.ID_usuarios);
+        const linhas = await model.ValidarConta(NovaSenha, QRcode, ConfirmarNovaSenha, req.info.ID_usuarios,Caminho_Banco);
 
         // Verifica o retorno da model antes de enviar a resposta
         console.log("Retorno de ValidarConta:", linhas);
