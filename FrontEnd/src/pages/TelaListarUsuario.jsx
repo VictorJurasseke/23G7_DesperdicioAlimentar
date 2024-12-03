@@ -7,26 +7,7 @@ import CardUsuario from '../components/TelaListarUsuario/CardAluno';
 import { useNavigate } from 'react-router-dom';
 import { usePerfilDados } from '../components/TelaPerfil/FunctionTelaPerfil';
 import { useImportarDadosJogadores } from '../components/TelaListarUsuario/FunctionListarUsuario';
-
-const arrayPets = [
-
-  { id: 1, nome: "Victor Sales", caminho: "Egg.gif", turmas_ID_turmas: 1, tur_nome: "3º EM" },
-  { id: 2, nome: "Kayk Saraiva", caminho: "http://localhost:3025/public/CoelhoNeymar.gif", turmas_ID_turmas: 1, tur_nome: "3º EM" },
-  { id: 3, nome: "Nicolas Prado", caminho: "http://localhost:3025/public/CoelhoNike.gif", turmas_ID_turmas: 2, tur_nome: "2º EM" },
-  { id: 4, nome: "Gabriel Prado", caminho: "http://localhost:3025/public/Egg.gif", turmas_ID_turmas: 2, tur_nome: "2º EM" },
-  { id: 5, nome: "Lucas Moreno", caminho: "http://localhost:3025/public/CoelhoNeymar.gif", turmas_ID_turmas: 3, tur_nome: "1º EM" },
-  { id: 6, nome: "Raissa Furlan", caminho: "http://localhost:3025/public/CoelhoNike.gif", turmas_ID_turmas: 3, tur_nome: "1º EM" },
-  { id: 7, nome: "Alana Silva", caminho: "http://localhost:3025/public/Egg.gif", turmas_ID_turmas: 4, tur_nome: "9º FII" },
-  { id: 8, nome: "James Brito", caminho: "http://localhost:3025/public/CoelhoNeymar.gif", turmas_ID_turmas: 4, tur_nome: "9º FII" },
-  { id: 9, nome: "Victor Sales", caminho: "http://localhost:3025/public/Egg.gif", turmas_ID_turmas: 5, tur_nome: "8º FII" },
-  { id: 10, nome: "Kayk Saraiva", caminho: "http://localhost:3025/public/CoelhoNeymar.gif", turmas_ID_turmas: 5, tur_nome: "8º FII" },
-  { id: 11, nome: "Nicolas Prado", caminho: "http://localhost:3025/public/CoelhoNike.gif", turmas_ID_turmas: 6, tur_nome: "7º FII" },
-  { id: 12, nome: "Gabriel Prado", caminho: "http://localhost:3025/public/Egg.gif", turmas_ID_turmas: 6, tur_nome: "7º FII" },
-  { id: 13, nome: "Lucas Moreno", caminho: "http://localhost:3025/public/CoelhoNeymar.gif", turmas_ID_turmas: 7, tur_nome: "6º FII" },
-  { id: 14, nome: "Raissa Furlan", caminho: "http://localhost:3025/public/CoelhoNike.gif", turmas_ID_turmas: 7, tur_nome: "6º FII" },
-  { id: 15, nome: "Alana Silva", caminho: "http://localhost:3025/public/Egg.gif", turmas_ID_turmas: 8, tur_nome: "5º FI" },
-  { id: 16, nome: "James Brito", caminho: "http://localhost:3025/public/CoelhoNeymar.gif", turmas_ID_turmas: 8, tur_nome: "5º FI" },
-];
+import Fuse from 'fuse.js';
 
 
 const TelaUsuario = () => {
@@ -35,10 +16,25 @@ const TelaUsuario = () => {
   const navigate = useNavigate();
 
   const { Dados_usuario, verificarUsuario } = usePerfilDados(token, navigate);
-  const {  TodosJogadores, BuscarTodosJogadores, setTodosJogadores, TodasTurmas } = useImportarDadosJogadores(token, navigate);
+  const { TodosJogadores, BuscarTodosJogadores, setTodosJogadores, TodasTurmas } = useImportarDadosJogadores(token, navigate);
 
   const [JogadoresFiltrados, setJogadoresFiltrados] = useState([]);
   const [FiltroTurma, setFiltroTurma] = useState('Todos'); // Alterado para garantir valor inicial
+
+
+  // useState que guarda o texto do input de pesquisa
+  const [Pesquisa, setPesquisa] = useState('');
+
+  // Configurações do Fuse.js
+  const fuseOptions = {
+    keys: ['user_nome'], // Campos que serão pesquisados
+    threshold: 0.4, // Sensibilidade da pesquisa
+  };
+
+  // Instância do Fuse.js
+  const fuse = new Fuse(JogadoresFiltrados, fuseOptions);
+
+
 
 
   const AlterarTurma = (ID_turmas) => {
@@ -56,7 +52,20 @@ const TelaUsuario = () => {
   useEffect(() => {
     BuscarTodosJogadores(setJogadoresFiltrados)
     verificarUsuario();
+    FiltrarBarraPesquisa()
   }, []);
+
+  const FiltrarBarraPesquisa = () => {
+    if (Pesquisa.trim() === '') {
+      setFiltroTurma('Todos')
+    } else {
+      const resultados = fuse.search(Pesquisa).map((result) => result.item);
+      setJogadoresFiltrados(resultados);
+    }
+  }
+  useEffect(() => {
+    FiltrarBarraPesquisa()
+  }, [Pesquisa, TodosJogadores]);
 
   return (
     <>
@@ -87,21 +96,40 @@ const TelaUsuario = () => {
                     />
                   ))}
                 </div>
-                <form className="d-flex" role="search">
-                  <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                  <button className="btn btn-outline-success" type="submit">Search</button>
+                <form className="d-flex gap-2" role="search">
+                  <input
+                    value={Pesquisa}
+                    onChange={(e) => setPesquisa(e.target.value)}
+                    className="form-control me-2"
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                  />
                 </form>
               </div>
-              <div className='col-12 d-flex flex-wrap align-self-center p-2 align-items-center'>
+              <div className='col-12 d-flex flex-wrap align-self-center p-2 align-items-center gap-3 flex-row'>
                 {JogadoresFiltrados.length > 0 ? (
                   <>
+                    
                     {JogadoresFiltrados.map((item) => (
                       <CardUsuario
                         key={item.ID_usuarios}
-                        nome={item.user_nome}
+                        user_nome={item.user_nome}
+                        user_img_caminho={item.user_img_caminho}
+                        ID_usuarios={item.ID_usuarios}
+                        pontos_usuario={item.pontos_usuario}
+                        peso_acumulativo={item.peso_acumulativo}
+                        rank_usuario={item.rank_usuario}
+                        jo_nome={item.jo_nome}
+                        jo_tema={item.jo_tema}
+                        tur_nome={item.tur_nome}
+                        nome_pet={item.nome_pet}
                         caminho_pet={item.caminho_pet}
-                        turma={item.tur_nome}
+                        raridade_pet={item.raridade_pet}
+                        ID_inv_pets={item.ID_inv_pets}
                         evolucao={item.evolucao}
+                        token={token}
+                        navigate={navigate}
                       />
                     ))}
                   </>
