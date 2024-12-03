@@ -6,10 +6,11 @@ import FiltrosRadios from '../components/TelaListarUsuario/FiltrosRadios';
 import CardUsuario from '../components/TelaListarUsuario/CardAluno';
 import { useNavigate } from 'react-router-dom';
 import { usePerfilDados } from '../components/TelaPerfil/FunctionTelaPerfil';
+import { useImportarDadosJogadores } from '../components/TelaListarUsuario/FunctionListarUsuario';
 
 const arrayPets = [
 
-  { id: 1, nome: "Victor Sales", caminho: "http://localhost:3025/public/Egg.gif", turmas_ID_turmas: 1, tur_nome: "3º EM" },
+  { id: 1, nome: "Victor Sales", caminho: "Egg.gif", turmas_ID_turmas: 1, tur_nome: "3º EM" },
   { id: 2, nome: "Kayk Saraiva", caminho: "http://localhost:3025/public/CoelhoNeymar.gif", turmas_ID_turmas: 1, tur_nome: "3º EM" },
   { id: 3, nome: "Nicolas Prado", caminho: "http://localhost:3025/public/CoelhoNike.gif", turmas_ID_turmas: 2, tur_nome: "2º EM" },
   { id: 4, nome: "Gabriel Prado", caminho: "http://localhost:3025/public/Egg.gif", turmas_ID_turmas: 2, tur_nome: "2º EM" },
@@ -28,30 +29,17 @@ const arrayPets = [
 ];
 
 
-const ArrayFiltro = [
-  { ID_turmas: 1, tur_nome: "3º EM" },
-  { ID_turmas: 2, tur_nome: "2º EM" },
-  { ID_turmas: 3, tur_nome: "1º EM" },
-  { ID_turmas: 4, tur_nome: "9º FII" },
-  { ID_turmas: 5, tur_nome: "8º FII" },
-  { ID_turmas: 6, tur_nome: "7º FII" },
-  { ID_turmas: 7, tur_nome: "6º FII" },
-  { ID_turmas: 8, tur_nome: "5º FI" },
-  { ID_turmas: 9, tur_nome: "4º FI" },
-  { ID_turmas: 10, tur_nome: "3º FI" },
-  { ID_turmas: 11, tur_nome: "2ª FI" },
-  { ID_turmas: 12, tur_nome: "1º FI" },
-];
-
 const TelaUsuario = () => {
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   const { Dados_usuario, verificarUsuario } = usePerfilDados(token, navigate);
+  const {  TodosJogadores, BuscarTodosJogadores, setTodosJogadores, TodasTurmas } = useImportarDadosJogadores(token, navigate);
 
-  const [ArrayPetsFiltrados, setArrayPetsFiltrados] = useState(arrayPets);
+  const [JogadoresFiltrados, setJogadoresFiltrados] = useState([]);
   const [FiltroTurma, setFiltroTurma] = useState('Todos'); // Alterado para garantir valor inicial
+
 
   const AlterarTurma = (ID_turmas) => {
     setFiltroTurma(ID_turmas);
@@ -59,13 +47,14 @@ const TelaUsuario = () => {
 
   useEffect(() => {
     if (FiltroTurma !== 'Todos') {
-      setArrayPetsFiltrados(arrayPets.filter(pet => pet.turmas_ID_turmas === FiltroTurma));
+      setJogadoresFiltrados(TodosJogadores.filter(InfoJogadores => InfoJogadores.turmas_ID_turmas === FiltroTurma));
     } else {
-      setArrayPetsFiltrados(arrayPets);  // Exibe todos os pets quando 'Todos' é selecionado
+      setJogadoresFiltrados(TodosJogadores);  // Exibe todos os pets quando 'Todos' é selecionado
     }
   }, [FiltroTurma]);
 
   useEffect(() => {
+    BuscarTodosJogadores(setJogadoresFiltrados)
     verificarUsuario();
   }, []);
 
@@ -89,7 +78,7 @@ const TelaUsuario = () => {
                     checked={FiltroTurma === 'Todos'}  // Agora com o estado controlado
                   />
                   <label className="btn text-dark" htmlFor="Todos">Todos</label>
-                  {ArrayFiltro.map((item) => (
+                  {TodasTurmas.map((item) => (
                     <FiltrosRadios
                       key={item.ID_turmas}  // Adicione uma chave única para cada elemento
                       ID_turmas={item.ID_turmas}
@@ -104,14 +93,15 @@ const TelaUsuario = () => {
                 </form>
               </div>
               <div className='col-12 d-flex flex-wrap align-self-center p-2 align-items-center'>
-                {ArrayPetsFiltrados.length > 0 ? (
+                {JogadoresFiltrados.length > 0 ? (
                   <>
-                    {ArrayPetsFiltrados.map((item) => (
+                    {JogadoresFiltrados.map((item) => (
                       <CardUsuario
-                        key={item.id}
-                        nome={item.nome}
-                        caminho={item.caminho}
+                        key={item.ID_usuarios}
+                        nome={item.user_nome}
+                        caminho_pet={item.caminho_pet}
                         turma={item.tur_nome}
+                        evolucao={item.evolucao}
                       />
                     ))}
                   </>

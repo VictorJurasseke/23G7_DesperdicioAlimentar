@@ -1,6 +1,6 @@
 const db = require('../../db');
 const pet = require('../pets')
-const {sorteioComBaseNoPeso } = require('../pets');
+const { sorteioComBaseNoPeso } = require('../pets');
 
 
 
@@ -75,7 +75,7 @@ module.exports.MudarStatus = async (Status, ID_jogo) => {
 
         // Deletar usuários associados à escola
 
-        const [jogosInativos] = await conexao.execute('UPDATE jogos SET jo_status = 2 WHERE id_jogos != ?',[ID_jogo])
+        const [jogosInativos] = await conexao.execute('UPDATE jogos SET jo_status = 2 WHERE id_jogos != ?', [ID_jogo])
 
         // Finalmente, deletar a escola
         const [linhas] = await conexao.execute('UPDATE jogos SET jo_status = ? WHERE id_jogos = ?', [Status, ID_jogo]);
@@ -130,12 +130,12 @@ module.exports.ParticiparJogo = async (ID_usuarios, ID_jogos, ID_turmas) => {
 
         const pets = await conexao.execute('SELECT * FROM pets')
 
-    
+
 
         // Passo 5: Sortear um ovo aleatório
         const ovo = sorteioComBaseNoPeso(pets[0]);  // Função sorteia o ovo com base no peso dos pets
 
-        console.log("PetSorteado",ovo)
+        console.log("PetSorteado", ovo)
 
         // Passo 6: Criar o inventário do usuário com o ovo sorteado
         const [Inventario] = await conexao.execute(
@@ -159,40 +159,9 @@ module.exports.ParticiparJogo = async (ID_usuarios, ID_jogos, ID_turmas) => {
 };
 
 
-// Atualiza o ranking toda vez que alguem ganha ponto
-module.exports.atualizarRankingJogo = async (ID_jogos) => {
-    let conexao;
-    try {
-        conexao = await db.criarConexao();
-
-        // Obter a lista de usuários e seus pontos, com a classificação (rank)
-        const [resultados] = await conexao.execute(
-            `SELECT ID_usuarios, 
-                    RANK() OVER (ORDER BY pontos_usuario DESC) AS rank_usuario 
-             FROM jogos_matricula 
-             WHERE ID_jogos = ?`,
-            [ID_jogos]
-        );
-
-        // Atualizar o rank de cada usuário com base no resultado obtido
-        for (const { ID_usuarios, rank_usuario } of resultados) {
-            await conexao.execute(
-                'UPDATE jogos_matricula SET rank_usuario = ? WHERE ID_jogos = ? AND ID_usuarios = ?',
-                [rank_usuario, ID_jogos, ID_usuarios]
-            );
-        }
-
-        return { status: true };
-    } catch (error) {
-        console.error("Erro ao atualizar o ranking do jogo", error);
-        return { status: false, error: error };
-    } finally {
-        db.liberarConexao(conexao);
-    }
-};
 
 
-module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato,jo_desc) => {
+module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato, jo_desc) => {
     let conexao;
 
     try {
@@ -242,7 +211,7 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
                 jo_tema,
                 jo_desc
             ) VALUES (?, ?, ?, ?, ?, ?,?,?)`,
-            [unidade, jo_nome, jo_datai_formatada, jo_dataf_formatada, ID_jogos_config, jo_status, jo_tema,jo_desc]
+            [unidade, jo_nome, jo_datai_formatada, jo_dataf_formatada, ID_jogos_config, jo_status, jo_tema, jo_desc]
         );
         if (jogoCriado && configCriada) {
             return { status: true };
@@ -263,25 +232,63 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
 
 
 
-// SQL para Obter Ranking do chat:
-// sql
-// Copiar código
-// SELECT ID_usuarios,
-//        RANK() OVER (ORDER BY pontos_usuario DESC) AS rank_usuario
-// FROM jogos_matricula
-// WHERE ID_jogos = ?;
-// Explicação de cada parte:
-// SELECT ID_usuarios,:
 
-// Estamos selecionando a coluna ID_usuarios da tabela jogos_matricula, que representa o identificador de cada usuário inscrito em um determinado jogo.
-// RANK() OVER (ORDER BY pontos_usuario DESC) AS rank_usuario:
+// Preciso de um select para tela jogadores que busca então:
 
-// RANK() é uma função de janela (window function) no SQL. Ela gera um número de classificação (ranking) para cada linha com base em algum critério.
-// OVER (ORDER BY pontos_usuario DESC): Isso define a lógica de classificação. Neste caso, estamos ordenando os usuários pelos pontos (pontos_usuario) em ordem decrescente (DESC). Usuários com mais pontos terão um ranking menor (1º, 2º, 3º...).
-// AS rank_usuario: Nomeamos o resultado da função RANK() como rank_usuario, que será a posição (rank) de cada usuário com base nos seus pontos.
-// FROM jogos_matricula:
+// * user_nome & user_img_caminho * tur_nome tur_id &   WHERE user_tipo_acesso = 3 do jogo especifico
 
-// Especifica a tabela de onde estamos extraindo os dados. Aqui, a tabela jogos_matricula contém as informações sobre quais usuários estão inscritos em cada jogo e seus respectivos pontos.
-// WHERE ID_jogos = ?:
+// * pet_principal ->  pet_evolucao & * pets
 
-// A cláusula WHERE filtra os resultados para incluir apenas os usuários inscritos em um jogo específico. O ? é um placeholder que será substituído pelo valor real do ID_jogos no código do Node.js.
+
+// Busca todos os jogadores do jogo atual
+module.exports.BuscarJogadores = async () => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+
+        // Pega todos os jogadores que são jogadores e estão no jogo atual, só pra ter certeza da integridade
+        const [TodosJogadores] = await conexao.execute(`
+            SELECT 
+                u.user_nome,
+                u.user_img_caminho,
+                u.ID_usuarios,
+                m.turmas_ID_turmas,
+                m.pontos_usuario,
+                m.peso_acumulativo,
+                m.rank_usuario,
+                t.tur_nome,
+                j.jo_nome,
+                j.jo_tema,
+                p.nome_pet,
+                p.caminho_pet,
+                p.raridade_pet,
+                im.ID_inv_pets,
+                im.evolucao
+                FROM usuarios u
+                JOIN jogos_matricula m ON u.ID_usuarios = m.ID_usuarios 
+                JOIN jogos j ON j.ID_jogos = m.ID_jogos 
+                JOIN inventario_matricula im ON im.ID_usuarios = u.ID_usuarios  
+                JOIN pets p ON p.ID_pet = im.ID_pets 
+                JOIN turmas t ON t.ID_turmas = m.turmas_ID_turmas
+                WHERE u.user_tipo_acesso = 3  
+                AND j.jo_status = 1  
+                AND im.pet_principal = 1;  
+ 
+        `);
+
+        // Busca todas as turmas
+        const [TodasTurmas] = await conexao.execute('SELECT * FROM turmas');
+
+        // Retorna as informações completas
+        return {
+            status: true,
+            TodosJogadores: TodosJogadores,  // Retorna todos os jogadores
+            TodasTurmas: TodasTurmas         // Retorna todas as turmas
+        };
+    } catch (error) {
+        console.error("Erro ao buscar informações dos jogadores", error);
+        return { status: false, error: error };
+    } finally {
+        db.liberarConexao(conexao);
+    }
+};

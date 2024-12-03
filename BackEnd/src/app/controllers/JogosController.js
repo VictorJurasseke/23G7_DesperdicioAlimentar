@@ -129,5 +129,21 @@ rotas.post('/', verificarToken, async (req, res) => {
 
 
 
+// ROTA DE Buscar usado na tela Jogadores todos os jogadores do jogo atual,* jogosmatriculas e * usuarios - busca no jogo atual
+rotas.get('/BuscarJogadores', verificarToken, async (req, res) => {
+
+
+    try {
+                                    
+        const jogos = await model.BuscarJogadores();
+        res.json(jogos);
+    } catch (error) {
+        console.error("Erro ao tentar participar do jogo", error);
+        res.status(500).json({ error: "Erro interno do servidor" });
+    }
+});
+
+
+
 
 module.exports = rotas;
