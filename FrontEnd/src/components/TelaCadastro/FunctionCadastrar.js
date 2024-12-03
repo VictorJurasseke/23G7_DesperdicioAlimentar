@@ -8,6 +8,8 @@ export const urlUsuario = "http://localhost:3025/api/usuario";
 export const useCadastro = (token, navigate) => {
 
 
+  const [ImagemSelecionada, setImagem] = useState(null); // Estado para armazenar a imagem selecionada
+  const [CaminhoBanco, setCaminhoBanco] = useState(null)
 
   const ModalErroValidar = (errors) => {
 
@@ -60,7 +62,8 @@ export const useCadastro = (token, navigate) => {
   const [FormValidar, setFormValidar] = useState({
     NovaSenha: "",
     ConfirmarNovaSenha: "",
-    QRcode: ""
+    QRcode: "",
+    Caminho_Banco:"User.png"
   });
 
   const AtualizarFormValidar = (e) => {
@@ -94,7 +97,7 @@ export const useCadastro = (token, navigate) => {
     // }));
 
 
-    if (nova_senha === 0 || qrcode === 0 || confirmar_senha === 0) {
+    if (nova_senha === 0 || qrcode === 0 || confirmar_senha === 0 || CaminhoBanco === 0) {
       setErrosVisiveis(prevErros => ({
         ...prevErros,
         Campo: true,
@@ -121,7 +124,7 @@ export const useCadastro = (token, navigate) => {
         });
 
       console.log(resposta)
-      console.log("resposta req:",resposta.data)
+      console.log("resposta req:", resposta.data)
       if (resposta.data.errors) {
 
         console.log("Há erros presentes", resposta.data.errors)

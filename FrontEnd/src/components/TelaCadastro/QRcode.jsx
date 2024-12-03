@@ -5,7 +5,7 @@ import QrScanner from 'qr-scanner';
 
 
 
-const QRcode = ({ showScanner, setShowScanner, name, onChange  }) => {
+const QRcode = ({ showScanner, setShowScanner, name, onChange }) => {
 
 
 
@@ -21,7 +21,7 @@ const QRcode = ({ showScanner, setShowScanner, name, onChange  }) => {
     let qrScanner;
     if (showScanner && videoRef.current) {
       qrScanner = new QrScanner(videoRef.current, (result) => {
-       
+
         setScanResult(result); // `result.data` é geralmente uma string 
         console.log(scanResult)
         setShowScanner(false); // Oculta o scanner após sucesso
@@ -47,16 +47,19 @@ const QRcode = ({ showScanner, setShowScanner, name, onChange  }) => {
 
   return (
     <>
-      <div className="">
-        <p className='m-0'>QRCODE</p>
+      <div className="m-2">
+        <label htmlFor={name} className="form-label m-0">Qrcode</label>
         <input
+          required
           placeholder="QRCODE:"
           name={name}
+          onChange={onChange}
           value={scanResult}
-          readOnly // Tornar o campo apenas leitura
-          id="qrcode_registrar"
           className="form-control form-control-sm"
+          id="qrcode_registrar"
+          readOnly
         />
+
       </div>
       {showScanner && (
         <div className="scanner-overlay mt-3 ">
