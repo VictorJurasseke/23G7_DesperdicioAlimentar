@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SwalErroToken } from "../TelaPerfil/SwalError";
 import axios from 'axios';
+import CardInfoJogador from "../TelaPerfilJogador/CardInfoJogador";
 export const urlJogos = "http://localhost:3025/api/jogos";
 
 
@@ -86,6 +87,16 @@ const swalWithBootstrapButtons = Swal.mixin({
     buttonsStyling: false
 });
 
+
+
+
+
+import { MudarCorLetraRaridade } from "../TelaPerfilJogador/FunctionPets";
+import { BiSolidTrophy } from "react-icons/bi";
+import { RiCopperCoinFill } from 'react-icons/ri'; // Importando ícone
+
+
+// Função para renderizar o conteúdo do modal em HTML com as informações corretas
 export const ModalInfoJogadores = (
     token,
     navigate,
@@ -104,38 +115,64 @@ export const ModalInfoJogadores = (
     evolucao,
     tur_nome
 ) => {
-    swalWithBootstrapButtons.fire({
-        title: `${user_nome}`, // Nome do jogador como título
-        html: `
-            <div class="text-center">
-                <img src="http://localhost:3025/Pets/${caminho_pet}" 
-                     alt="${nome_pet}" 
-                     class="img-fluid rounded-circle mb-3" 
-                     style="max-width: 120px;">
-                <h5>${nome_pet} (${raridade_pet})</h5>
-                <p><strong>Jogador:</strong> ${user_nome}</p>
-                <p><strong>Turma:</strong> ${tur_nome}</p>
-                <p><strong>Pontos:</strong> ${pontos_usuario}</p>
-                <p><strong>Peso Acumulativo:</strong> ${peso_acumulativo}</p>
-                <p><strong>Rank:</strong> ${rank_usuario}</p>
-                <p><strong>Jogo:</strong> ${jo_nome}</p>
-                <p><strong>Evolução:</strong> ${evolucao || 'Não disponível'}</p>
+    // Aqui, montamos o HTML manualmente para passar para o SweetAlert
+    const content = `
+        <div class="text-center">
+            <div class="d-flex flex-row flex-wrap">
+                <!-- Imagem do Usuário -->
+                <div class="col-12 col-sm-12 col-md-4 col-lg-2 d-flex justify-content-center align-items-center">
+                    <img
+                        src="http://localhost:3025/public/${user_img_caminho}"
+                        class="rounded-circle"
+                        alt="User"
+                        style="object-fit: cover; max-height: 150px; max-width: 150px;"
+                    />
+                </div>
+                <!-- Informações do Usuário -->
+                <div style="white-space: nowrap; overflow: hidden;" class="col-sm-12 lh-lg text-start text-sm-center col-md-8 col-lg-2 text-md-center text-lg-start p-2 d-flex flex-column">
+                    <h1 class="jaroFont m-0">${user_nome}</h1>
+                    <h4 class="jaroFont m-0">Jogador do ${tur_nome}</h4>
+                </div>
+                <!-- Mascote -->
+                <div class="col-sm-12 col-md-12 col-lg-4 d-flex flex-column align-items-center justify-content-center">
+                    <img
+                        src="http://localhost:3025/Pets/${caminho_pet}"
+                        alt="PetPrincipal"
+                        style="object-fit: contain; height: 150px;"
+                    />
+                    <p class="fs-4 jaroFont m-0" style="color: ${MudarCorLetraRaridade(raridade_pet)}">${nome_pet}</p>
+                </div>
+              
+                <!-- Rank -->
+                <div class="col-12 col-md-12 col-lg-4 jaroFont justify-content-center align-items-center align-self-center" style="color: #243447;">
+                    <h2 class="">
+                        <BiSolidTrophy /> ${rank_usuario}º
+                    </h2>
+                </div>
             </div>
-        `,
+
+         
+        </div>
+    `;
+
+    // Aqui utilizamos SweetAlert para exibir o conteúdo HTML
+    Swal.fire({
+        html: content,
+        width: '70%',
         showCancelButton: true,
-        confirmButtonText: "Fechar",
-        cancelButtonText: "Visitar",
+        confirmButtonText: 'Fechar',
+        cancelButtonText: 'Visitar',
         customClass: {
-            confirmButton: "btn btn-primary mx-2",
-            cancelButton: "btn btn-secondary mx-2",
+            confirmButton: 'btn btn-primary mx-2',
+            cancelButton: 'btn btn-secondary mx-2',
         },
         buttonsStyling: false, // Usa botões estilizados manualmente
     }).then((result) => {
         if (result.isConfirmed) {
             console.log("Modal fechado.");
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-            // Navegar para editar as informações do jogador
-          
+            // Navegar para olhar as informações do jogador
+            navigate(`/visitar/${ID_usuarios}`);
         }
     });
 };

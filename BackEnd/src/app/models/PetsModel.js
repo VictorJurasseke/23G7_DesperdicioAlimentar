@@ -96,7 +96,7 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
     let conexao;
     try {
 
-        console.log("ID DO USUARIO",ID_usuarios)
+        console.log("ID DO USUARIO", ID_usuarios)
 
 
         conexao = await db.criarConexao();
@@ -115,11 +115,11 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             [ID_usuarios, Jogo[0].ID_jogos]
         );
 
-        if(Pets.length == 0){
-            return{status:false, message:`O usuário de ID:${ID_usuarios}, não possui nenhum mascote a ser procurado`,  }
+        if (Pets.length == 0) {
+            return { status: false, message: `O usuário de ID:${ID_usuarios}, não possui nenhum mascote a ser procurado`, }
         }
 
-        
+
 
         console.log("Pets do usuário:", Pets);
 
@@ -175,7 +175,7 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             PontosUsuario: RankJogoAtual[0].pontos_usuario,
             TurmasUsuario: TurmasJogador[0].tur_nome,
             ID_Jogos: Jogo[0].ID_jogos,
-            PetPrincipal:MascotePrincipal
+            PetPrincipal: MascotePrincipal
         };
     } catch (error) {
         console.error("Erro ao procurar pets:", error);
@@ -223,30 +223,54 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
         // Aumento de pontos
         let pontosAtribuidos = 0;
         if (desperdicio <= 0.050) {
+            console.log("Pontuação perfeita atingida")
             pontosAtribuidos = PontosPorRefeicaoPerfeita;
         } else if (desperdicio > 0.050 && desperdicio <= 0.200) {
+            console.log("Pontuação média atingida")
             pontosAtribuidos = PontosPorRefeicaoPerfeita / 2;
         } else if (desperdicio > 0.200 && desperdicio < 2) {
+            console.log("não conseguiu avanço nenhum")
             pontosAtribuidos = 0;
         } else if (desperdicio == 100) {
+            console.log("Evoluir")
             pontosAtribuidos = 1000;
         }
 
         pontosAtribuidos *= multiplicadorDia;
 
-        console.log("Valor desperdiçado:",desperdicio)
-    
+
+        console.log("Valor desperdiçado:", desperdicio)
+        console.log("PONTOS por refeição perfeita:", PontosPorRefeicaoPerfeita)
+        console.log("PONTOS GANHOS:", pontosAtribuidos)
 
         if (pontosAtribuidos > 0) {
-            await conexao.execute(
-                'UPDATE jogos_matricula SET pontos_usuario = pontos_usuario + ? WHERE ID_jogos = ? AND ID_usuarios = ? AND peso_acumulativo ?',
-                [pontosAtribuidos, ID_jogo, ID_usuarios, desperdicio]
-            );
+            // Garantir que desperdicio é um número
+            let desperdicioNumerico = parseFloat(desperdicio);
 
-            await conexao.execute(
+            // Verificar se a conversão foi bem-sucedida
+            if (isNaN(desperdicioNumerico)) {
+                console.error("O valor de desperdicio não é um número válido.");
+                return; // Ou outro tratamento adequado
+            }
+
+            // Agora você pode usar toFixed sem problemas
+            const desperdicioArredondado = desperdicioNumerico.toFixed(2);
+
+            console.log(pontosAtribuidos, ID_jogo, ID_usuarios, desperdicioArredondado)
+            // Executar a consulta SQL
+            const [AvancoPet] = await conexao.execute(
+                'UPDATE jogos_matricula SET pontos_usuario = pontos_usuario + ?, peso_acumulativo = peso_acumulativo + ? WHERE ID_jogos = ? AND ID_usuarios = ?;',
+                [pontosAtribuidos,desperdicioArredondado, ID_jogo, ID_usuarios, ]
+            );
+            console.log("Avanço pet:", AvancoPet)
+
+            const [pontuacao] = await conexao.execute(
                 'UPDATE inventario_matricula SET pontuacao_pet = pontuacao_pet + ? WHERE ID_inv_pets = ?',
                 [pontosAtribuidos, ID_inventario]
             );
+
+            console.log("Pontuação", pontuacao)
+
 
             const [Mascote] = await conexao.execute(
                 `SELECT i.pontuacao_pet, p.ponto_pet, i.evolucao, p.nome_pet, p.ID_pet FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.pontuacao_pet >= p.ponto_pet AND i.ID_inv_pets = ? AND i.evolucao = 1`,
@@ -367,7 +391,7 @@ module.exports.BuscarMascotePrincipalUsuario = async (ID_usuarios, ID_jogo) => {
 
         const [info_pet] = await conexao.execute('SELECT * FROM pets WHERE ID_pet = ?', [ID_Pet[0]?.ID_pets])
 
-        
+
 
         console.log("Buscando")
         if (info_pet.length > 0) {
@@ -392,8 +416,8 @@ module.exports.ApagarTodosPets = async () => {
         conexao = await db.criarConexao();
 
         const [inventario_matricula] = await conexao.execute('SELECT * FROM inventario_matricula')
-        if(inventario_matricula.length > 0){
-            return {status:false, message:'Você não pode deletar todos os pets caso eles estejam sendo usados'}
+        if (inventario_matricula.length > 0) {
+            return { status: false, message: 'Você não pode deletar todos os pets caso eles estejam sendo usados' }
         }
 
         const [linhas] = await conexao.execute('DELETE FROM pets');

@@ -12,6 +12,7 @@ import PerfilJogador from './pages/TelaPerfilJogador'
 
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import VisitarPerfilJogador from './pages/TelaVisitarPerfilJogador'
 
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
       <Route path="/games" element={<TelaParticiparJogo/>}/>
       <Route path="/rank" element={<TelaRank/>}/>
       <Route path="/player" element={<PerfilJogador/>}/>
+      <Route path="/visitar/:id" element={<VisitarPerfilJogador/>}/>
 
     </Routes>
   </Router>

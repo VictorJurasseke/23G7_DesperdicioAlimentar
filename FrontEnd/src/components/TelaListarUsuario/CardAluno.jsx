@@ -44,24 +44,8 @@ const CardUsuario = ({ token, navigate, user_nome, user_img_caminho, ID_usuarios
               className="card-img-top img-ajustada "
               style={{ filter: 'saturate(120%)', backgroundColor: corFundo, borderRadius:'6px 6px 0 0' }}
               alt={nome_pet}
-              draggable="false"
-              onClick={() => {
-                ModalPetProgresso(
-                  evolucao,
-                  ID_inventario,
-                  token,
-                  navigate,
-                  ponto_evo,
-                  ProcurarPets,
-                  nome,
-                  desc_pet,
-                );
-
-              }}
             />
           </div>
-
-
 
           <div className='bg-light m-0 p-0 d-flex flex-row gap-2 p-1'>
             <div className='' style={{ width: '30px', height: '30px' }}>
