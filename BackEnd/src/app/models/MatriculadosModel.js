@@ -28,7 +28,7 @@ module.exports.ApagarMatriculas = async (ID_usuarios) => {
             [ID_usuarios]
         );
 
-        const [inventario] = await conexao.execute('DELETE FROM inventario_matricula WHERE ID_usuarios', [ID_usuarios])
+        const [inventario] = await conexao.execute('DELETE FROM inventario_matricula WHERE ID_usuarios = ?', [ID_usuarios])
         const [matricula] = await conexao.execute('DELETE FROM jogos_matricula WHERE ID_usuarios = ?', [ID_usuarios]);
         return { status: true }
     } catch (error) {
