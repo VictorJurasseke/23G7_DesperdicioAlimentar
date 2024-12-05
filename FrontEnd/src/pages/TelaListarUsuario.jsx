@@ -110,33 +110,39 @@ const TelaUsuario = () => {
               <div className='col-12 d-flex flex-wrap align-self-center p-2 align-items-center gap-3 flex-row'>
                 {JogadoresFiltrados.length > 0 ? (
                   <>
-                    
-                    {JogadoresFiltrados.map((item) => (
-                      <CardUsuario
-                        key={item.ID_usuarios}
-                        user_nome={item.user_nome}
-                        user_img_caminho={item.user_img_caminho}
-                        ID_usuarios={item.ID_usuarios}
-                        pontos_usuario={item.pontos_usuario}
-                        peso_acumulativo={item.peso_acumulativo}
-                        rank_usuario={item.rank_usuario}
-                        jo_nome={item.jo_nome}
-                        jo_tema={item.jo_tema}
-                        tur_nome={item.tur_nome}
-                        nome_pet={item.nome_pet}
-                        caminho_pet={item.caminho_pet}
-                        raridade_pet={item.raridade_pet}
-                        ID_inv_pets={item.ID_inv_pets}
-                        evolucao={item.evolucao}
-                        token={token}
-                        ID_jogos={item.ID_jogos}
-                        navigate={navigate}
-                      />
-                    ))}
+                    {JogadoresFiltrados.map((item) => {
+                      if (item.ID_usuarios === Dados_usuario.ID_usuarios) {
+                        return null;
+                      } else {
+                        return (
+                          <CardUsuario
+                            key={item.ID_usuarios}
+                            user_nome={item.user_nome}
+                            user_img_caminho={item.user_img_caminho}
+                            ID_usuarios={item.ID_usuarios}
+                            pontos_usuario={item.pontos_usuario}
+                            peso_acumulativo={item.peso_acumulativo}
+                            rank_usuario={item.rank_usuario}
+                            jo_nome={item.jo_nome}
+                            jo_tema={item.jo_tema}
+                            tur_nome={item.tur_nome}
+                            nome_pet={item.nome_pet}
+                            caminho_pet={item.caminho_pet}
+                            raridade_pet={item.raridade_pet}
+                            ID_inv_pets={item.ID_inv_pets}
+                            evolucao={item.evolucao}
+                            token={token}
+                            ID_jogos={item.ID_jogos}
+                            navigate={navigate}
+                          />
+                        );
+                      }
+                    })}
                   </>
                 ) : (
                   <h1 className='jaroFont'>Nenhum jogador nesta turma</h1>
                 )}
+
 
 
               </div>

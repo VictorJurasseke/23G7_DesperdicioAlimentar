@@ -60,6 +60,7 @@ const TelaPerfil = () => {
                                 {Dados_usuario.user_tipo_acesso == 1 && (<Menu_Aluno Dados_usuario={Dados_usuario} token={token} navigate={navigate} />)}
                                 {Dados_usuario.user_tipo_acesso === 2 && (<Menu_Usuario Dados_usuario={Dados_usuario} token={token} navigate={navigate} />)}
                                 {Dados_usuario.user_tipo_acesso == 3 && navigate('/player')}
+                                {Dados_usuario.user_tipo_acesso == 4 && navigate('/Banca')}
 
                             </div>
                         </div>

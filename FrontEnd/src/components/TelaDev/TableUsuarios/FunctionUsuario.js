@@ -159,6 +159,7 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios, se
         <option value="0">Administrador</option>
         <option value="1">Aluno</option>
         <option value="2">Usuário</option>
+        <option value="4">Banca</option>
         </select>
         </div>
         <div class="mb-3 text-start">

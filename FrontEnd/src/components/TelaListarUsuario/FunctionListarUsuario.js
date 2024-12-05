@@ -57,7 +57,7 @@ export const useImportarDadosJogadores = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            
+
             console.log("Todos os jogadores e outras informações", resposta.data)
             setTodosJogadores(resposta.data.TodosJogadores)
             setTodasTurmas(resposta.data.TodasTurmas)
@@ -131,10 +131,10 @@ export const ModalInfoJogadores = (
                     />
                 </div>
                 <!-- Informações do Usuário -->
-                <div style="white-space: nowrap; overflow: hidden;" class="col-sm-12 lh-lg text-start text-sm-center col-md-8 col-lg-2 text-md-center text-lg-start p-2 d-flex flex-column">
-                    <h1 class="jaroFont m-0">${user_nome}</h1>
-                    <h4 class="jaroFont m-0">Jogador do ${tur_nome}</h4>
-                    <h4 class="jaroFont m-0">${rank_usuario}º Lugar</h4>
+                <div  class="col-sm-12 lh-lg text-start text-sm-center col-md-8 col-lg-2 text-md-center text-lg-start p-2 d-flex flex-column">
+                    <h3 class="jaroFont m-0 " style="white-space: nowrap; overflow: hidden; margin: 0; text-overflow: ellipsis">${user_nome}</h1>
+                    <h5 class="jaroFont m-0">Jogador do ${tur_nome}</h4>
+                    <h5 class="jaroFont m-0">${rank_usuario}º Lugar</h4>
                 </div>
                 <!-- Mascote -->
                 <div class="col-sm-12 col-md-12 col-lg-4 d-flex flex-column align-items-center justify-content-center">
@@ -143,7 +143,10 @@ export const ModalInfoJogadores = (
                         alt="PetPrincipal"
                         style="object-fit: contain; height: 150px;"
                     />
-                    <p class="fs-4 jaroFont m-0" style="color: ${MudarCorLetraRaridade(raridade_pet)}">${nome_pet}</p>
+                  <p class="fs-4 jaroFont m-0" style="color: ${MudarCorLetraRaridade(raridade_pet)};">
+                        ${nome_pet}
+                  </p>
+
                 </div>
               
                 <!-- Rank -->

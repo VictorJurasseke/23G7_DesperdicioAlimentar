@@ -77,8 +77,9 @@ const Card_pet = ({
             style={{ filter: 'saturate(120%)' }}
             alt={nome}
             draggable="false"
-            onClick={() => {  
+            onClick={() => {
               setAbrirDesc(!AbrirDesc); // Alterna o estado
+              
             }}
           />
         </div>
@@ -107,8 +108,8 @@ const Card_pet = ({
                 </p>
                 {BtnPrincipal && !visitante && (
                   <div className="d-flex align-items-center justify-content-center p-2 rounded">
-                  
-                    <Button onClick={() => { MudarPrincipal(token, navigate, ID_inventario,ProcurarPets) }} className="bg-success text-light m-0 d-flex align-items-center justify-content-center">
+
+                    <Button onClick={() => { MudarPrincipal(token, navigate, ID_inventario, ProcurarPets) }} className="bg-success text-light m-0 d-flex align-items-center justify-content-center">
                       <p className="m-0">Principal</p>
                     </Button>
                   </div>
@@ -117,28 +118,29 @@ const Card_pet = ({
 
 
             </div>
+            {evolucao === 1 && (
+              <div className="progress mt-2 m-2" style={{ height: '10px' }}>
+                <div
+                  className="progress-bar"
+                  role="progressbar"
+                  style={{
+                    width: `${BarraProgresso}%`,
+                    backgroundColor: "#28A745",
+                    transition: 'width 0.5s ease', // Suaviza a animação
+                  }}
+                  aria-valuenow={BarraProgresso}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            )}
           </motion.div>
         )}
 
 
 
         <div className="mt-5" style={{ position: 'absolute', bottom: '0', width: '50%', transform: 'translateX(50%)' }}>
-          {evolucao === 1 && (
-            <div className="progress mt-2 m-2" style={{ height: '10px' }}>
-              <div
-                className="progress-bar"
-                role="progressbar"
-                style={{
-                  width: `${BarraProgresso}%`,
-                  backgroundColor: "#28A745",
-                  transition: 'width 0.5s ease', // Suaviza a animação
-                }}
-                aria-valuenow={BarraProgresso}
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          )}
+
         </div>
       </motion.div>
 

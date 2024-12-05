@@ -12,6 +12,9 @@ export const NivelAcesso = (nivel_acesso) => {
     case 3:
       nivel_acesso = "Jogador";
       break;
+    case 4:
+      nivel_acesso = "Banca"
+      break;
   }
   return nivel_acesso
 }
