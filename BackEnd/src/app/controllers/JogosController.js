@@ -131,8 +131,6 @@ rotas.post('/', verificarToken, async (req, res) => {
 
 // ROTA DE Buscar usado na tela Jogadores todos os jogadores do jogo atual,* jogosmatriculas e * usuarios - busca no jogo atual
 rotas.get('/BuscarJogadores', verificarToken, async (req, res) => {
-
-
     try {
                                     
         const jogos = await model.BuscarJogadores();

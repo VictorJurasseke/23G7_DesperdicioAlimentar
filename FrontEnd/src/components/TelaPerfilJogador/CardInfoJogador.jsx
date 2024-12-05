@@ -36,7 +36,7 @@ const CardInfoJogador = ({ token, navigate, nome, img, pontos_usuario, rank_usua
     // "Épico"
     const ImagemIP = "http://localhost:3025/Pets/"
 
-    console.log("Card perfil foi carregado caminho:", caminho_pet)
+    console.log("Card perfil foi carregado caminho:", caminho_pet, img)
 
     return (
         // Card Informações do usuario
@@ -46,7 +46,7 @@ const CardInfoJogador = ({ token, navigate, nome, img, pontos_usuario, rank_usua
                 <img
                     src={`http://localhost:3025/public/${img}`}
                     className="rounded-circle"
-                    alt="User"
+                    alt={img}
                     style={{ objectFit: 'cover', maxHeight: "150px", maxWidth: "150px" }} // Circular e ajuste de imagem
                 />
             </div >

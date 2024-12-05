@@ -22,7 +22,8 @@ const Card_pet = ({
   navigate,
   ProcurarPets,
   desc_pet,
-  pet_principal
+  pet_principal,
+  visitante
 }) => {
 
 
@@ -76,17 +77,7 @@ const Card_pet = ({
             style={{ filter: 'saturate(120%)' }}
             alt={nome}
             draggable="false"
-            onClick={() => {
-              ModalPetProgresso(
-                evolucao,
-                ID_inventario,
-                token,
-                navigate,
-                ponto_evo,
-                ProcurarPets,
-                nome,
-                desc_pet,
-              );
+            onClick={() => {  
               setAbrirDesc(!AbrirDesc); // Alterna o estado
             }}
           />
@@ -114,8 +105,9 @@ const Card_pet = ({
                 <p className="text-light px-2 py-1 rounded m-0">
                   {raridade}
                 </p>
-                {BtnPrincipal && (
+                {BtnPrincipal && !visitante && (
                   <div className="d-flex align-items-center justify-content-center p-2 rounded">
+                  
                     <Button onClick={() => { MudarPrincipal(token, navigate, ID_inventario,ProcurarPets) }} className="bg-success text-light m-0 d-flex align-items-center justify-content-center">
                       <p className="m-0">Principal</p>
                     </Button>

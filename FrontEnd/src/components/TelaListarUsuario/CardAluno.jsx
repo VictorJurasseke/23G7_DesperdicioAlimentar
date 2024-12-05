@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ModalInfoJogadores } from './FunctionListarUsuario';
 
 
-const CardUsuario = ({ token, navigate, user_nome, user_img_caminho, ID_usuarios, pontos_usuario, peso_acumulativo, rank_usuario, jo_nome, jo_tema, nome_pet, caminho_pet, raridade_pet, ID_inv_pets, evolucao, tur_nome }) => {
+const CardUsuario = ({ token, navigate, user_nome, user_img_caminho, ID_usuarios, pontos_usuario, peso_acumulativo, rank_usuario, jo_nome, jo_tema, nome_pet, caminho_pet, raridade_pet, ID_inv_pets, evolucao, tur_nome,ID_jogos }) => {
 
   // Se a evolução for 1, mudamos a imagem e o nome para "Ovo"
   if (evolucao === 1) {
@@ -25,7 +25,7 @@ const CardUsuario = ({ token, navigate, user_nome, user_img_caminho, ID_usuarios
       <div>
 
         <motion.div
-          onClick={()=>{ModalInfoJogadores(token, navigate, user_nome, user_img_caminho, ID_usuarios, pontos_usuario, peso_acumulativo, rank_usuario, jo_nome, jo_tema, nome_pet, caminho_pet, raridade_pet, ID_inv_pets, evolucao, tur_nome )}}
+          onClick={()=>{ModalInfoJogadores(token, navigate, user_nome, user_img_caminho, ID_usuarios, pontos_usuario, peso_acumulativo, rank_usuario, jo_nome, jo_tema, nome_pet, caminho_pet, raridade_pet, ID_inv_pets, evolucao, tur_nome,ID_jogos )}}
           className="card text-dark card-pet d-flex"
           style={{
             maxWidth: "150px",

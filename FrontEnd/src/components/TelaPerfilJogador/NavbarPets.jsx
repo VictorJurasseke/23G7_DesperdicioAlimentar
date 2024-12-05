@@ -7,7 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaCircleChevronRight } from "react-icons/fa6";
 import { FaCircleChevronLeft } from "react-icons/fa6";
 
-const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema }) => {
+const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema, visitante }) => {
+
 
 
     // Guarda o filtro selecionado
@@ -173,6 +174,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                         {Mascotes.map((item) => (
 
                             <Card_pet
+                                visitante={visitante}
                                 key={item.ID_inv_pets} // Use um identificador único
                                 raridade={item.raridade_pet}
                                 nome={item.nome_pet}
@@ -218,7 +220,7 @@ const NavBarPets = ({ token, navigate, TodosPetsTemporada, ProcurarPets, jo_nome
                             {MaximoSeta == 3 && null}
                         </div>
                     </>
-                ) : (<h1 className='m-0 jaroFont'>Você não possui nenhum {SelectRaridade}</h1>)} 
+                ) : (<h1 className='m-0 jaroFont'>Não possui nenhum {SelectRaridade}</h1>)}
             </motion.div >
         </>
     );

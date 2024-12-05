@@ -57,7 +57,8 @@ export const useImportarDadosJogadores = (token, navigate) => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            console.log("Todos os jogadores e outras informações", resposta)
+            
+            console.log("Todos os jogadores e outras informações", resposta.data)
             setTodosJogadores(resposta.data.TodosJogadores)
             setTodasTurmas(resposta.data.TodasTurmas)
             setJogadoresFiltrados(resposta.data.TodosJogadores)
@@ -113,7 +114,8 @@ export const ModalInfoJogadores = (
     raridade_pet,
     ID_inv_pets,
     evolucao,
-    tur_nome
+    tur_nome,
+    ID_jogos
 ) => {
     // Aqui, montamos o HTML manualmente para passar para o SweetAlert
     const content = `
@@ -132,6 +134,7 @@ export const ModalInfoJogadores = (
                 <div style="white-space: nowrap; overflow: hidden;" class="col-sm-12 lh-lg text-start text-sm-center col-md-8 col-lg-2 text-md-center text-lg-start p-2 d-flex flex-column">
                     <h1 class="jaroFont m-0">${user_nome}</h1>
                     <h4 class="jaroFont m-0">Jogador do ${tur_nome}</h4>
+                    <h4 class="jaroFont m-0">${rank_usuario}º Lugar</h4>
                 </div>
                 <!-- Mascote -->
                 <div class="col-sm-12 col-md-12 col-lg-4 d-flex flex-column align-items-center justify-content-center">
@@ -145,10 +148,14 @@ export const ModalInfoJogadores = (
               
                 <!-- Rank -->
                 <div class="col-12 col-md-12 col-lg-4 jaroFont justify-content-center align-items-center align-self-center" style="color: #243447;">
-                    <h2 class="">
-                        <BiSolidTrophy /> ${rank_usuario}º
+                    <h2 class="">   
+                        <h2 class="">
+                            ${peso_acumulativo.toFixed(2)}kg Desperdiçado
+                        </h2>
                     </h2>
                 </div>
+           
+             
             </div>
 
          
@@ -158,7 +165,7 @@ export const ModalInfoJogadores = (
     // Aqui utilizamos SweetAlert para exibir o conteúdo HTML
     Swal.fire({
         html: content,
-        width: '70%',
+        width: '65%',
         showCancelButton: true,
         confirmButtonText: 'Fechar',
         cancelButtonText: 'Visitar',
@@ -172,7 +179,7 @@ export const ModalInfoJogadores = (
             console.log("Modal fechado.");
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             // Navegar para olhar as informações do jogador
-            navigate(`/visitar/${ID_usuarios}`);
+            navigate(`/visitar/${ID_usuarios}/${ID_jogos}`);
         }
     });
 };

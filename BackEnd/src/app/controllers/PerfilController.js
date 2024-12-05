@@ -3,6 +3,8 @@ const rotas = express.Router();
 const model = require("../../app/models/PerfilModel");
 const verificarToken = require('../middleware/autenticar')
 
+
+//pega as informações do usuario através de seu token
 rotas.get('/', verificarToken, async (req, res) => {
 
     console.log('Função de perfil chamada')
@@ -38,5 +40,31 @@ rotas.post('/dev', async (req, res) => {
         res.status(500).json({ error: "Erro interno do servidor" })
     }
 })
+
+
+// Visitar perfil - funcão
+//Procura todos os pets e informações do jogador de id passado na params, 
+
+rotas.get('/visitar/:ID_usuarios/:ID_jogos',verificarToken, async (req, res) => {
+
+    console.log('Função de visitar perfil chamada')
+    const ID_usuarios = req.params.ID_usuarios
+    const ID_jogos = req.params.ID_jogos
+ 
+
+    try {
+        res.json(await model.VisitarPerfil(ID_usuarios, ID_jogos))
+    } catch (error) {
+        console.error("Erro ao visitar perfil", error)
+        res.status(500).json({ error: "Erro interno do servidor" })
+    }
+})
+
+
+
+
+
+
+
 
 module.exports = rotas

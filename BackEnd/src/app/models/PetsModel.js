@@ -91,7 +91,7 @@ module.exports.CriarPetPadrao = async () => {
 
 // PROCURAR TELA PERFIL Procura todos os ultimos mascotes que já passaram por evolução
 
-// Procura qual os pets que o usuario possui, e verifica se ele já esta em sua forma final, se o mascote chegou neste ponto, ele deveria ganhar um mascote novo
+// Procura qual os pets que o usuario possui
 module.exports.ProcurarPetJogo = async (ID_usuarios) => {
     let conexao;
     try {
@@ -154,6 +154,7 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
 
         const [info_pet] = await conexao.execute('SELECT * FROM pets WHERE ID_pet = ?', [ID_Pet[0]?.ID_pets])
 
+        // nao lembro oq isso faz, acho que coloca os campos de evolucao em cada mascote de info_pet
         const MascotePrincipal = { ...info_pet[0], evolucao: ID_Pet[0]?.evolucao }
 
         console.log("Mostrar informação do pet principal", MascotePrincipal)

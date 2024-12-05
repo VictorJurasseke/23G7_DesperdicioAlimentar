@@ -256,6 +256,7 @@ module.exports.BuscarJogadores = async () => {
                 m.pontos_usuario,
                 m.peso_acumulativo,
                 m.rank_usuario,
+                j.ID_jogos,
                 t.tur_nome,
                 j.jo_nome,
                 j.jo_tema,

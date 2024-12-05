@@ -129,6 +129,7 @@ const TelaUsuario = () => {
                         ID_inv_pets={item.ID_inv_pets}
                         evolucao={item.evolucao}
                         token={token}
+                        ID_jogos={item.ID_jogos}
                         navigate={navigate}
                       />
                     ))}

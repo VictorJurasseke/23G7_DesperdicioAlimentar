@@ -30,7 +30,7 @@ export default function App() {
       <Route path="/games" element={<TelaParticiparJogo/>}/>
       <Route path="/rank" element={<TelaRank/>}/>
       <Route path="/player" element={<PerfilJogador/>}/>
-      <Route path="/visitar/:id" element={<VisitarPerfilJogador/>}/>
+      <Route path="/visitar/:ID_usuarios/:ID_jogos" element={<VisitarPerfilJogador/>}/>
 
     </Routes>
   </Router>
