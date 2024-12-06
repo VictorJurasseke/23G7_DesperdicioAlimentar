@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import QrScanner from 'qr-scanner';
 
-
+import { RiQrCodeFill } from "react-icons/ri";
 
 
 
@@ -48,7 +48,7 @@ const QRcode = ({ showScanner, setShowScanner, name, onChange }) => {
   return (
     <>
       <div className="m-2">
-        <label htmlFor={name} className="form-label m-0">Qrcode</label>
+        <label htmlFor={name} className="form-label m-0 d-flex align-items-center">Qrcode:<RiQrCodeFill /></label>
         <input
           required
           placeholder="QRCODE:"

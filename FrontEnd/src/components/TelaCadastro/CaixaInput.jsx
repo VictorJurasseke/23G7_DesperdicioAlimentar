@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 
-const CaixaInput = ({ nomeCaixa, name, value, onChange, type }) => {
+const CaixaInput = ({ nomeCaixa, name, value, onChange, type, placeholder }) => {
 
     return (
         <>
@@ -10,6 +10,7 @@ const CaixaInput = ({ nomeCaixa, name, value, onChange, type }) => {
                 <input
                     required
                     id={name}
+                    placeholder={placeholder}
                     name={name}
                     onChange={onChange}
                     value={value}
