@@ -149,8 +149,8 @@ rotas.post('/peso', verificarToken, async (req, res) => {
     console.log(Peso, QRcode)
     try {
                                     
-        // const jogos = await model.BuscarJogadores();
-        // res.json(jogos);
+        const jogos = await model.ProgressoJogador(Peso, QRcode);
+        res.json(jogos);
     } catch (error) {
         console.error("Erro ao tentar participar do jogo", error);
         res.status(500).json({ error: "Erro interno do servidor" });

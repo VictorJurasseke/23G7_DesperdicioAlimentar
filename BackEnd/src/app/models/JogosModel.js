@@ -53,11 +53,19 @@ module.exports.ApagarJogos = async (id) => {
     try {
         conexao = await db.criarConexao();
 
-        // Deletar usuários associados à escola
+        // Muda o status dos jogadores associados para usuario 
 
-        // Finalmente, deletar a escola
+        const [jogosInativos] = await conexao.execute('UPDATE jogos SET jo_status = 2 WHERE id_jogos != ?', [id])
+
+
+        const [Matricula] = await conexao.execute('DELETE FROM jogos_matricula WHERE ID_jogos = ? ',[id])
+        const [inventario] = await conexao.execute('DELETE FROM inventario_matricula WHERE ID_jogos = ?'[id])
+        
+        
+        // Finalmente, deletar o jogo
         const [linhas] = await conexao.execute('DELETE FROM jogos WHERE ID_jogos = ?', [id]);
-        return { status: true }
+        
+        return { status: true, message:"Deletou o jogo com sucesso" }
     } catch (error) {
         return { status: false, error: error }
         throw error // Repassa para a controller
@@ -73,11 +81,11 @@ module.exports.MudarStatus = async (Status, ID_jogo) => {
     try {
         conexao = await db.criarConexao();
 
-        // Deletar usuários associados à escola
+        // coloca os jogadores como usuarios
 
         const [jogosInativos] = await conexao.execute('UPDATE jogos SET jo_status = 2 WHERE id_jogos != ?', [ID_jogo])
 
-        // Finalmente, deletar a escola
+        // Finalmente, muda o status
         const [linhas] = await conexao.execute('UPDATE jogos SET jo_status = ? WHERE id_jogos = ?', [Status, ID_jogo]);
 
 
@@ -153,6 +161,172 @@ module.exports.ParticiparJogo = async (ID_usuarios, ID_jogos, ID_turmas) => {
             return { status: false, message: "Erro Interno do servidor!" };
         }
 
+    } finally {
+        db.liberarConexao(conexao);
+    }
+};
+
+
+
+// Progresso PET
+module.exports.ProgressoJogador = async (desperdicio, QRcode) => {
+    console.log("Valor desperdiçado:", desperdicio);
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+
+
+        // Busca o pet que precisa evoluir no inventario do jogador, pra isso eu preciso do qrcode
+        // pra descobrir o id do usuario e descobrir o id da matricula pra descobrir o id de inventario responsavel por ter o mascote de evolucao 1 
+
+        const [matricula] = await conexao.execute("SELECT im.ID_inv_pets, u.ID_usuarios FROM usuarios u, inventario_matricula im WHERE user_qrcode = ? AND im.ID_usuarios = u.ID_usuarios", [QRcode])
+
+        if (matricula.length == 0) {
+            return { status: false, message: "Não foi achado nenhum usuário e mascote com este qrcode" }
+        }
+        console.log(matricula[0].ID_usuarios)
+        console.log(matricula)
+
+        const ID_usuarios = matricula[0].ID_usuarios
+        const ID_inventario = matricula[0].ID_inv_pets
+
+        // Busca o jogo atual
+        const [jogo] = await conexao.execute(
+            "SELECT jc.*, j.ID_jogos FROM jogos j, inventario_matricula i, jogos_config jc WHERE i.ID_inv_pets = ? AND i.ID_jogos = j.ID_jogos AND j.jo_status = 1",
+            [ID_inventario]
+        );
+
+        const ID_jogo = jogo[0].ID_jogos;
+        const MediaRefeicao = jogo[0].valor_grama;
+        const PontosPorRefeicaoPerfeita = jogo[0].valor_pontos;
+        console.log("Pontos perfeito", PontosPorRefeicaoPerfeita)
+
+        // Multiplicador com base no dia da semana
+        const diaDaSemana = new Date().getDay();
+        let multiplicadorDia = 1;
+
+        switch (diaDaSemana) {
+            case 0: multiplicadorDia = jogo[0].jogos_pts_domingo; break;
+            case 1: multiplicadorDia = jogo[0].jogos_pts_segunda; break;
+            case 2: multiplicadorDia = jogo[0].jogos_pts_terca; break;
+            case 3: multiplicadorDia = jogo[0].jogos_pts_quarta; break;
+            case 4: multiplicadorDia = jogo[0].jogos_pts_quinta; break;
+            case 5: multiplicadorDia = jogo[0].jogos_pts_sexta; break;
+            case 6: multiplicadorDia = jogo[0].jogos_pts_sabado; break;
+        }
+
+        // Aumento de pontos
+        let pontosAtribuidos = 0;
+        // menor que 50 gramas de comida
+        if (desperdicio <= 0.050) {
+            console.log("Pontuação perfeita atingida")
+            pontosAtribuidos = PontosPorRefeicaoPerfeita;
+            // maior que 50gramas e menor que 200g
+        } else if (desperdicio > 0.050 && desperdicio <= 0.200) {
+            console.log("Pontuação média atingida")
+            pontosAtribuidos = PontosPorRefeicaoPerfeita / 2;
+            // maior que 200g
+        } else if (desperdicio > 0.200 && desperdicio < 2) {
+            console.log("não conseguiu avanço nenhum")
+            pontosAtribuidos = 0;
+        } else if (desperdicio == 100) {
+            console.log("Evoluir")
+            pontosAtribuidos = 1000;
+        }
+
+        pontosAtribuidos *= multiplicadorDia;
+
+
+        console.log("Valor desperdiçado:", desperdicio)
+        console.log("PONTOS por refeição perfeita:", PontosPorRefeicaoPerfeita)
+        console.log("PONTOS GANHOS:", pontosAtribuidos)
+
+        if (pontosAtribuidos > 0) {
+            // Garantir que desperdicio é um número
+            let desperdicioNumerico = parseFloat(desperdicio);
+
+            // Verificar se a conversão foi bem-sucedida
+            if (isNaN(desperdicioNumerico)) {
+                console.error("O valor de desperdicio não é um número válido.");
+                return; // Ou outro tratamento adequado
+            }
+
+            // Agora você pode usar toFixed sem problemas
+            const desperdicioArredondado = desperdicioNumerico.toFixed(2);
+
+            console.log(pontosAtribuidos, ID_jogo, ID_usuarios, desperdicioArredondado)
+            // Executar a consulta SQL
+            const [AvancoPet] = await conexao.execute(
+                'UPDATE jogos_matricula SET pontos_usuario = pontos_usuario + ?, peso_acumulativo = peso_acumulativo + ? WHERE ID_jogos = ? AND ID_usuarios = ?;',
+                [pontosAtribuidos, desperdicioArredondado, ID_jogo, ID_usuarios,]
+            );
+            console.log("Avanço pet:", AvancoPet)
+
+            const [pontuacao] = await conexao.execute(
+                'UPDATE inventario_matricula SET pontuacao_pet = pontuacao_pet + ? WHERE ID_inv_pets = ?',
+                [pontosAtribuidos, ID_inventario]
+            );
+
+            console.log("Pontuação", pontuacao)
+
+
+            const [Mascote] = await conexao.execute(
+                `SELECT i.pontuacao_pet, p.ponto_pet, i.evolucao, p.nome_pet, p.ID_pet FROM inventario_matricula i, pets p WHERE i.ID_pets = p.ID_pet AND i.pontuacao_pet >= p.ponto_pet AND i.ID_inv_pets = ? AND i.evolucao = 1`,
+                [ID_inventario]
+            );
+
+            if (Mascote.length > 0) {
+                // Mascote pode evoluir
+                await conexao.execute(
+                    'UPDATE inventario_matricula SET evolucao = 2 WHERE ID_inv_pets = ?',
+                    [ID_inventario]
+                );
+
+                const [petsDisponiveis] = await conexao.execute(
+                    'SELECT * FROM pets WHERE ID_pet NOT IN (SELECT ID_pets FROM inventario_matricula WHERE ID_usuarios = ? AND ID_jogos = ?)',
+                    [ID_usuarios, ID_jogo]
+                );
+
+                // Garantir que há pets disponíveis para o sorteio
+                if (petsDisponiveis.length > 0) {
+                    let sorteado = sorteioComBaseNoPeso(petsDisponiveis, Mascote[0].ID_pet);
+
+                    // Verifica se o pet sorteado já existe no inventário
+                    const [ChecarMascoteRepetido] = await conexao.execute(
+                        'SELECT i.ID_inv_pets FROM inventario_matricula i WHERE i.ID_pets = ? AND i.ID_usuarios = ? AND i.ID_jogos = ?',
+                        [sorteado.ID_pet, ID_usuarios, ID_jogo]
+                    );
+
+                    // Se o mascote sorteado já existe no inventário, tenta outro sorteio
+                    if (ChecarMascoteRepetido.length > 0) {
+                        console.log("Mascote repetido, sorteando novamente...");
+                        sorteado = sorteioComBaseNoPeso(petsDisponiveis, Mascote[0].ID_pet);
+                    }
+
+                    const DataAtual = new Date().toISOString().split('T')[0];
+
+                    // Inserir o novo mascote
+                    await conexao.execute(
+                        'INSERT INTO inventario_matricula (ID_jogos, ID_usuarios, ID_pets, pet_data, pontuacao_pet, evolucao, pet_quantidade, pet_principal) VALUES(?,?,?,?,?,?,?,?)',
+                        [ID_jogo, ID_usuarios, sorteado.ID_pet, DataAtual, 0, 1, 1, 0]
+                    );
+
+                } else {
+                    console.log("Não há novos mascotes disponíveis para sorteio.");
+                }
+
+            } else {
+                console.log("O mascote ainda não evoluiu");
+            }
+        } else {
+            console.log("O usuário não ganhou nenhum ponto");
+        }
+
+        return { status: true, message: "Seu pet teve seu progresso aumentado com sucesso" };
+
+    } catch (error) {
+        console.error("Erro ao aumentar o progresso dos pets", error);
+        return { status: false, error: error.message };
     } finally {
         db.liberarConexao(conexao);
     }
@@ -293,3 +467,6 @@ module.exports.BuscarJogadores = async () => {
         db.liberarConexao(conexao);
     }
 };
+
+
+// ProgressoJogador

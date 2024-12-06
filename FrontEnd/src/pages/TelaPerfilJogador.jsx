@@ -72,7 +72,7 @@ const PerfilJogador = () => {
                         </div>
 
                         {/* Tela principal */}
-                        <div className="col-12 p-3 d-flex min-vh-100 justify-content-center z-1">
+                        <div className="col-12 p-3 d-flex justify-content-center min-vh-100  z-1">
 
 
                             {/* Card principal */}
