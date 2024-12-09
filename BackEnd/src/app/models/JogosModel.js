@@ -169,11 +169,14 @@ module.exports.ParticiparJogo = async (ID_usuarios, ID_jogos, ID_turmas) => {
 
 
 // Progresso PET
-module.exports.ProgressoJogador = async (desperdicio, QRcode) => {
-    console.log("Valor desperdiçado:", desperdicio);
+module.exports.ProgressoJogador = async (pesoComTara, QRcode) => {
     let conexao;
+    let desperdicio
+    console.log("Valor desperdiçado junto com a tara:", pesoComTara);
     try {
         conexao = await db.criarConexao();
+
+
 
 
         // Busca o pet que precisa evoluir no inventario do jogador, pra isso eu preciso do qrcode
@@ -195,7 +198,8 @@ module.exports.ProgressoJogador = async (desperdicio, QRcode) => {
             "SELECT jc.*, j.ID_jogos FROM jogos j, inventario_matricula i, jogos_config jc WHERE i.ID_inv_pets = ? AND i.ID_jogos = j.ID_jogos AND j.jo_status = 1",
             [ID_inventario]
         );
-
+        desperdicio = pesoComTara - jogo[0].tara_prato;
+        console.log("Desperdicio sem a tara:", desperdicio)
         const ID_jogo = jogo[0].ID_jogos;
         const MediaRefeicao = jogo[0].valor_grama;
         const PontosPorRefeicaoPerfeita = jogo[0].valor_pontos;
@@ -227,10 +231,10 @@ module.exports.ProgressoJogador = async (desperdicio, QRcode) => {
             pontosAtribuidos = PontosPorRefeicaoPerfeita / 2;
             // maior que 200g
         } else if (desperdicio > 0.200 && desperdicio < 2) {
-            console.log("não conseguiu avanço nenhum")
+            console.log("não conseguiu avanço nenhum por conta do peso")
             pontosAtribuidos = 0;
         } else if (desperdicio == 100) {
-            console.log("Evoluir")
+            console.log("Evoluir forçado")
             pontosAtribuidos = 1000;
         }
 
@@ -319,7 +323,7 @@ module.exports.ProgressoJogador = async (desperdicio, QRcode) => {
                 console.log("O mascote ainda não evoluiu");
             }
         } else {
-            console.log("O usuário não ganhou nenhum ponto");
+            console.log("O usuário não ganhou nenhum ponto, sem progresso");
         }
 
         return { status: true, message: "Seu pet teve seu progresso aumentado com sucesso" };

@@ -1,48 +1,54 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Importa o CSS do Bootstrap
-import { HiPencil, HiOutlineTrash } from "react-icons/hi";
-import RankTR from './TableRankTR';
-import { useImportarDadosRank } from './FunctionRank';
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
+import RankTR from "./TableRankTR";
 
-// Atualizando o array com os novos campos
-
-const TableRank = ({info, atualizar, token, navigate}) => {
-
-    
+const TableRank = ({ info, atualizar, token, navigate }) => {
+    // Preenche o array `info` com valores padrão até o tamanho 10
+    const filledInfo = [...info];
+    while (filledInfo.length < 10) {
+        filledInfo.push({
+            user_nome: "-",
+            tur_nome: "-",
+            user_periodo: "-",
+            pontos_usuario: "-",
+            rank_usuario: filledInfo.length + 1,
+            ID_usuarios: `placeholder-${filledInfo.length + 1}`,
+        });
+    }
 
     return (
-        <>
-        {info.length === 0 && <p className='mt-5 vw-100 text-center'>Não há registros</p>}
-            {info.length > 0 &&
-            <table className="table table-striped  table-hover">
-                <thead className="thead-dark">
-                    <tr>
-                        <th>Nome</th>
-                        <th>Turmas</th>
-                        <th>Período</th>
-                        <th>Pontos</th>
-                        <th>Rank</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {info.map((item) => (
-                        <RankTR
-                            key={item}
-                            usernome={item.user_nome}
-                            user_periodo={item.user_periodo}
-                            turma={item.tur_nome}
-                            pontos_usuario={item.pontos_usuario}
-                            rank_usuario={item.rank_usuario}
-                            atualizar={atualizar}
-                            token={token}
-                            navigate={navigate}
-
-                        />
-                    ))}
-                </tbody>
-            </table>}
-        </>
+        <div className="table-container col-4">
+            <h2 className="table-title">RANKING DE PRIMAVERA!</h2>
+            {filledInfo.length === 0 && <p className="mt-5 vw-100">Não há registros</p>}
+            {filledInfo.length > 0 && (
+                <table className="custom-table">
+                    
+                    <thead>
+                        <tr className="">
+                            <th className="competitors-header">Competidores</th>
+                            <th className="points-header">Pontos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filledInfo.map((item) => (
+                            <RankTR
+                                key={item.ID_usuarios}
+                                usernome={item.user_nome}
+                                turma={item.tur_nome}
+                                user_periodo={item.user_periodo}
+                                pontos_usuario={item.pontos_usuario}
+                                rank_usuario={item.rank_usuario}
+                                atualizar={atualizar}
+                                token={token}
+                                navigate={navigate}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+            )}
+            <div className="flower-icon ">🌸</div>
+        </div>
     );
 };
 

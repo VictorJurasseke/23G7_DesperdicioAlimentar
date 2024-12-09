@@ -4,6 +4,8 @@ const model = require("../../app/models/RankModel");
 const verificarToken = require('../middleware/autenticar')
 
 
+
+//Retorna o rank do jogo atual
 rotas.get('/', verificarToken, async (req, res) => {
 
     try {

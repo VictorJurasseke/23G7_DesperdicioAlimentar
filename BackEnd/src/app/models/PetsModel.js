@@ -137,7 +137,7 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
 
         // Passo 5: Verificiar qual o rank atual do usuário com seu id de usuário e id_jogo atual
         const [RankJogoAtual] = await conexao.execute(
-            'SELECT m.rank_usuario, m.pontos_usuario, m.turmas_ID_turmas FROM jogos_matricula m WHERE m.ID_usuarios = ? AND m.ID_jogos = ?;',
+            'SELECT m.rank_usuario, m.pontos_usuario, m.turmas_ID_turmas, m.peso_acumulativo FROM jogos_matricula m WHERE m.ID_usuarios = ? AND m.ID_jogos = ?;',
             [ID_usuarios, Jogo[0].ID_jogos]
         );
 
@@ -176,7 +176,9 @@ module.exports.ProcurarPetJogo = async (ID_usuarios) => {
             PontosUsuario: RankJogoAtual[0].pontos_usuario,
             TurmasUsuario: TurmasJogador[0].tur_nome,
             ID_Jogos: Jogo[0].ID_jogos,
-            PetPrincipal: MascotePrincipal
+            peso_acumulativo: RankJogoAtual[0].peso_acumulativo,
+            PetPrincipal: MascotePrincipal,
+        
         };
     } catch (error) {
         console.error("Erro ao procurar pets:", error);
@@ -245,20 +247,20 @@ module.exports.ProgressoPet = async (desperdicio, ID_inventario, ID_usuarios) =>
         console.log("PONTOS GANHOS:", pontosAtribuidos)
 
         if (pontosAtribuidos > 0) {
-            // Garantir que desperdicio é um número
+            
+            
             let desperdicioNumerico = parseFloat(desperdicio);
 
-            // Verificar se a conversão foi bem-sucedida
             if (isNaN(desperdicioNumerico)) {
                 console.error("O valor de desperdicio não é um número válido.");
-                return; // Ou outro tratamento adequado
+                return; 
             }
 
-            // Agora você pode usar toFixed sem problemas
+            
             const desperdicioArredondado = desperdicioNumerico.toFixed(2);
 
             console.log(pontosAtribuidos, ID_jogo, ID_usuarios, desperdicioArredondado)
-            // Executar a consulta SQL
+        
             const [AvancoPet] = await conexao.execute(
                 'UPDATE jogos_matricula SET pontos_usuario = pontos_usuario + ?, peso_acumulativo = peso_acumulativo + ? WHERE ID_jogos = ? AND ID_usuarios = ?;',
                 [pontosAtribuidos,desperdicioArredondado, ID_jogo, ID_usuarios, ]

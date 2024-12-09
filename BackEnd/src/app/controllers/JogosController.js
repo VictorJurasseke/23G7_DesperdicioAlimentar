@@ -44,7 +44,7 @@ rotas.get('/disp/:ID_escola', verificarToken, async (req, res) => {
     }
 });
 
-// Altera o stado do jogo
+// Altera o estado do jogo
 rotas.put('/mudarStatus/:statusReal/:ID_jogo', verificarToken, async (req, res) => {
     
     console.log("Requisição recebida em /api/jogos/mudarStatus"); // Log
@@ -136,14 +136,14 @@ rotas.get('/BuscarJogadores', verificarToken, async (req, res) => {
         const jogos = await model.BuscarJogadores();
         res.json(jogos);
     } catch (error) {
-        console.error("Erro ao tentar participar do jogo", error);
+        console.error("Erro ao tentar buscar jogadores jogo", error);
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });
 
 
 
-// ROTA DE Buscar usado na tela Jogadores todos os jogadores do jogo atual,* jogosmatriculas e * usuarios - busca no jogo atual
+// ROTA de progresso usado na tela banca
 rotas.post('/peso', verificarToken, async (req, res) => {
     const {Peso, QRcode} = req.body
     console.log(Peso, QRcode)
@@ -152,7 +152,7 @@ rotas.post('/peso', verificarToken, async (req, res) => {
         const jogos = await model.ProgressoJogador(Peso, QRcode);
         res.json(jogos);
     } catch (error) {
-        console.error("Erro ao tentar participar do jogo", error);
+        console.error("Erro ao tentar progresso do jogador", error);
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });

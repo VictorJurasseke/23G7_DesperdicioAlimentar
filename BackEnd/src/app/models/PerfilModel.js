@@ -133,7 +133,7 @@ module.exports.VisitarPerfil = async (ID_usuarios, ID_jogo) => {
 
         // Passo 5: Verificiar qual o rank atual do usuário com seu id de usuário e id_jogo atual
         const [RankJogoAtual] = await conexao.execute(
-            'SELECT m.rank_usuario, m.pontos_usuario, m.turmas_ID_turmas FROM jogos_matricula m WHERE m.ID_usuarios = ? AND m.ID_jogos = ?;',
+            'SELECT m.rank_usuario, m.pontos_usuario, m.turmas_ID_turmas, m.peso_acumulativo FROM jogos_matricula m WHERE m.ID_usuarios = ? AND m.ID_jogos = ?;',
             [ID_usuarios, ID_jogo]
         );
 
@@ -174,6 +174,7 @@ module.exports.VisitarPerfil = async (ID_usuarios, ID_jogo) => {
             ID_Jogos: ID_jogo,
             PetPrincipal: MascotePrincipal,
             UsuarioVisitado: UsuarioVisitado,
+            peso_acumulativo:RankJogoAtual[0].peso_acumulativo
             
         };
 

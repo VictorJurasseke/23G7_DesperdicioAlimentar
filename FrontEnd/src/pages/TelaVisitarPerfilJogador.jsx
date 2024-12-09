@@ -71,7 +71,7 @@ const VisitarPerfilJogador = () => {
                             <HeaderCardJogador jo_nome={Dados_Visitado.jo_nome} QuantidadeMascote={Dados_Visitado.mascotesStatus} />
                             <div className='p-4 '>
                                 {Dados_Visitado.PetPrincipal ? (
-                                    <CardInfoJogador turma={Dados_Visitado.TurmasUsuario} nome_pet={Dados_Visitado.PetPrincipal.nome_pet} raridade_pet={Dados_Visitado.PetPrincipal.raridade_pet} evolucao={Dados_Visitado.PetPrincipal.evolucao} QuantidadeMascote={Dados_Visitado.mascotesStatus} caminho_pet={Dados_Visitado.PetPrincipal.caminho_pet} img={Dados_Visitado.UsuarioVisitado[0].user_img_caminho} nome={Dados_Visitado.UsuarioVisitado[0].user_nome} rank_usuario={Dados_Visitado.RankJogoAtual} pontos_usuario={Dados_Visitado.PontosUsuario} />) : (<h1>Não carregou</h1>)}
+                                    <CardInfoJogador peso_acumulativo={Dados_Visitado.peso_acumulativo} turma={Dados_Visitado.TurmasUsuario} nome_pet={Dados_Visitado.PetPrincipal.nome_pet} raridade_pet={Dados_Visitado.PetPrincipal.raridade_pet} evolucao={Dados_Visitado.PetPrincipal.evolucao} QuantidadeMascote={Dados_Visitado.mascotesStatus} caminho_pet={Dados_Visitado.PetPrincipal.caminho_pet} img={Dados_Visitado.UsuarioVisitado[0].user_img_caminho} nome={Dados_Visitado.UsuarioVisitado[0].user_nome} rank_usuario={Dados_Visitado.RankJogoAtual} pontos_usuario={Dados_Visitado.PontosUsuario} />) : (<h1>Não carregou</h1>)}
 
                                 <div className='col-12 d-flex flex-column'>
 
