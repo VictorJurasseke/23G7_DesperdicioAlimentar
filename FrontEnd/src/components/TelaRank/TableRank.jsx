@@ -19,7 +19,7 @@ const TableRank = ({ info, atualizar, token, navigate }) => {
 
     return (
         <div className="table-container col-4">
-            <h2 className="table-title">RANKING DE PRIMAVERA!</h2>
+            <h2 className="table-title">{info[0].jo_nome}!</h2>
             {filledInfo.length === 0 && <p className="mt-5 vw-100">Não há registros</p>}
             {filledInfo.length > 0 && (
                 <table className="custom-table">
