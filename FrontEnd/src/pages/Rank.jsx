@@ -77,7 +77,8 @@ const TelaRank = () => {
 
                         </div>
                     ) : (
-                        navigate("/user")
+                        // navigate("/user")
+                        <></>
                     )}
 
                 </>
