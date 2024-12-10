@@ -13,7 +13,7 @@ import { useImportarDadosRank } from '../components/TelaRank/FunctionRank';
 import { usePerfilDados } from '../components/TelaPerfil/FunctionTelaPerfil';
 import TableRankComponente from '../components/TelaRank/TableRankComponent';
 
-
+import LoadingComponent from '../components/TelaPerfil/LoadingComponent'
 
 
 const TelaRank = () => {
@@ -77,8 +77,7 @@ const TelaRank = () => {
 
                         </div>
                     ) : (
-                        // navigate("/user")
-                        <></>
+                        <LoadingComponent/>
                     )}
 
                 </>
