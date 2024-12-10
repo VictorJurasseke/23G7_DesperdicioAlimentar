@@ -14,16 +14,6 @@ const swalWithBootstrapButtons = Swal.mixin({
     buttonsStyling: false
 });
 
-// Função de abrir a tela de edição de items
-
-// Função de abrir a tela de edição de itens
-export const ModalEditJogos = (id, navigate, token) => {
-    swalWithBootstrapButtons.fire({
-        title: "Edit User",
-        text: "Editar as informações do jogo.",
-        icon: "info"
-    });
-};
 
 export const ModalConfigJogos = (id, navigate, token) => {
     swalWithBootstrapButtons.fire({
@@ -301,6 +291,99 @@ export const atualizarDatas = () => {
 
 
 
+// Modal editar jogo
+export const ModalEditarJogo = async (id, atualizar, navigate, token) => {
+    try {
+        // Requisição para buscar dados do jogo
+        let resposta = await axios.get(`${urlJogos}/especifico/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        // Dados do Jogo para preencher o formulário
+        const jogo = resposta.data[0]; // Acessando o primeiro item da resposta
+
+        console.log("Jogo", jogo.jo_nome);
+
+        // Exibir o modal com os dados do jogo
+        const { value: formValues } = await Swal.fire({
+            title: `Editar o jogo: ${jogo.jo_nome}`,
+            html: `
+                <form id="form-jogo">
+                    <div class="mb-3 text-start">
+                        <label for="jogos_pts_segunda-edit" class="form-label">Multiplicador Segunda</label>
+                        <input type="number" id="jogos_pts_segunda-edit" class="form-control" value="${jogo.jogos_pts_segunda}">
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label for="jogos_pts_terca-edit" class="form-label">Multiplicador Terça</label>
+                        <input type="number" id="jogos_pts_terca-edit" class="form-control" value="${jogo.jogos_pts_terca}">
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label for="jogos_pts_quarta-edit" class="form-label">Multiplicador Quarta</label>
+                        <input type="number" id="jogos_pts_quarta-edit" class="form-control" value="${jogo.jogos_pts_quarta}">
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label for="jogos_pts_quinta-edit" class="form-label">Multiplicador Quinta</label>
+                        <input type="number" id="jogos_pts_quinta-edit" class="form-control" value="${jogo.jogos_pts_quinta}">
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label for="jogos_pts_sexta-edit" class="form-label">Multiplicador Sexta</label>
+                        <input type="number" id="jogos_pts_sexta-edit" class="form-control" value="${jogo.jogos_pts_sexta}">
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label for="jogos_pts_sabado-edit" class="form-label">Multiplicador Sábado</label>
+                        <input type="number" id="jogos_pts_sabado-edit" class="form-control" value="${jogo.jogos_pts_sabado}">
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label for="jogos_pts_domingo-edit" class="form-label">Multiplicador Domingo</label>
+                        <input type="number" id="jogos_pts_domingo-edit" class="form-control" value="${jogo.jogos_pts_domingo}">
+                    </div>
+                </form>
+            `,
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#198754",
+            confirmButtonText: "Confirmar",
+        });
+
+        // Se o modal for confirmado
+        if (formValues) {
+            // Pegando os valores dos multiplicadores e convertendo para float
+            const jogos_pts_segunda = parseFloat(document.getElementById("jogos_pts_segunda-edit").value);
+            const jogos_pts_terca = parseFloat(document.getElementById("jogos_pts_terca-edit").value);
+            const jogos_pts_quarta = parseFloat(document.getElementById("jogos_pts_quarta-edit").value);
+            const jogos_pts_quinta = parseFloat(document.getElementById("jogos_pts_quinta-edit").value);
+            const jogos_pts_sexta = parseFloat(document.getElementById("jogos_pts_sexta-edit").value);
+            const jogos_pts_sabado = parseFloat(document.getElementById("jogos_pts_sabado-edit").value);
+            const jogos_pts_domingo = parseFloat(document.getElementById("jogos_pts_domingo-edit").value);
+
+            // Criando o objeto com os dados para atualização
+            const novoForm = {
+                jogos_pts_segunda,
+                jogos_pts_terca,
+                jogos_pts_quarta,
+                jogos_pts_quinta,
+                jogos_pts_sexta,
+                jogos_pts_sabado,
+                jogos_pts_domingo
+            };
+
+            // Chama a função para editar o jogo
+            EditarJogo(navigate, token, novoForm, atualizar, id);
+        }
+    } catch (error) {
+        console.error("Erro ao editar o jogo:", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: 'Ocorreu um erro ao carregar os dados do jogo. Tente novamente mais tarde.'
+        });
+    }
+};
+
+
+
 
 export const useImportarDadosJogos = (token, navigate) => {
 
@@ -458,6 +541,42 @@ export const CriarJogo = async (atualizar, navigate, token, novoForm) => {
 };
 
 
+export const EditarJogo = async (navigate, token, novoForm, atualizar, id) => {
+
+    
+
+    novoForm.jogos_data_mudanca = new Date().toISOString().split('T')[0]
+
+    console.log("Formulario de edit:",novoForm)
+    try {
+
+        const resposta = await axios.put(`${urlJogos}/${id}`, novoForm, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(resposta);
+        if (!resposta.data.status) {
+            swalWithBootstrapButtons.fire({
+                title: "Falhou!",
+                html: "Seu jogo não foi editado com sucesso!<br> <br> Erro: " + resposta.data.message,
+                icon: "error"
+            });
+        } else {
+            atualizar(); // Atualiza a lista após a criação
+            swalWithBootstrapButtons.fire({
+                title: "Criado!",
+                text: "Seu jogo foi editado com sucesso!",
+                icon: "success"
+            });
+            console.log("Jogo editado sucesso");
+        }
+    } catch (error) {
+        SwalErroToken(navigate, error)
+
+    }
+};
 export const MudarStatus = async (id, atualizar, navigate, token, status) => {
 
 

@@ -16,6 +16,19 @@ rotas.get('/', verificarToken, async (req, res) => {
     }
 });
 
+// Puxar config da (TEMPORADAS) especifica
+rotas.get('/especifico/:ID_jogos', verificarToken, async (req, res) => {
+    console.log("Requisição recebida em /api/jogos/:id"); // Log
+    try {
+        const ID_jogos = req.params.ID_jogos
+        const jogos = await model.retornarJogoEspecifico(ID_jogos);
+        res.json(jogos);
+    } catch (error) {
+        console.error("Erro ao listar os jogos", error);
+        res.status(500).json({ error: "Erro interno do servidor" });
+    }
+});
+
 // Puxar todos OS JOGOS ATIVOS
 rotas.get('/ativos', verificarToken, async (req, res) => {
     console.log("Requisição recebida em /api/jogos"); // Log
@@ -32,9 +45,9 @@ rotas.get('/ativos', verificarToken, async (req, res) => {
 
 // Puxar todos os jogos disponiveis em escola  X
 rotas.get('/disp/:ID_escola', verificarToken, async (req, res) => {
-    
+
     console.log("Requisição recebida em /api/jogos"); // Log
-    console.log("Controller",req.params.ID_escola)
+    console.log("Controller", req.params.ID_escola)
     try {
         const jogos = await model.retornarJogosDaEscola(req.params.ID_escola);
         res.json(jogos);
@@ -46,7 +59,7 @@ rotas.get('/disp/:ID_escola', verificarToken, async (req, res) => {
 
 // Altera o estado do jogo
 rotas.put('/mudarStatus/:statusReal/:ID_jogo', verificarToken, async (req, res) => {
-    
+
     console.log("Requisição recebida em /api/jogos/mudarStatus"); // Log
 
     try {
@@ -80,10 +93,10 @@ rotas.delete('/:id', verificarToken, async (req, res) => {
 // ROTA DE PARTICIPAR DO JOGO - puxa o id do usuario atual, usado tela de usuario
 rotas.post('/participar', verificarToken, async (req, res) => {
     // Antes era por req.params, mas foi feita mudanças no banco então muda aqui também
-    let {ID_jogos, ID_turmas} = req.body
+    let { ID_jogos, ID_turmas } = req.body
     console.log("Requisição recebida em /api/jogos/:", ID_jogos, " no id do usuario", req.info.ID_usuarios); // Log
     try {
-                                                // ID DO USUARIO, ID DO JOGO QUE VAI PARTICIPAR, periodo do usuario, e a turma do usuario
+        // ID DO USUARIO, ID DO JOGO QUE VAI PARTICIPAR, periodo do usuario, e a turma do usuario
         const jogos = await model.ParticiparJogo(req.info.ID_usuarios, ID_jogos, ID_turmas);
         res.json(jogos);
     } catch (error) {
@@ -117,22 +130,43 @@ rotas.post('/', verificarToken, async (req, res) => {
     } = req.body
     console.log("Unidade:", unidade)
     console.log("Requisição recebida em /api/jogos no id do usuario", req.info.ID_usuarios); // Log
-    console.log("Controller",unidade,jo_nome,jo_datai_formatada,jo_dataf_formatada,jo_status,jogos_pts_segunda,jogos_pts_terca,jogos_pts_quarta,jogos_pts_quinta,jogos_pts_sexta,jogos_pts_sabado,jogos_pts_domingo,dataMudada,valor_grama,valor_pontos,tara_prato,jo_desc)
+    console.log("Controller", unidade, jo_nome, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato, jo_desc)
     try {
-        const jogos = await model.CriarJogo(unidade,jo_tema,jo_nome,jo_datai_formatada,jo_dataf_formatada,jo_status,jogos_pts_segunda,jogos_pts_terca,jogos_pts_quarta,jogos_pts_quinta,jogos_pts_sexta,jogos_pts_sabado,jogos_pts_domingo,dataMudada,valor_grama,valor_pontos,tara_prato,jo_desc)
+        const jogos = await model.CriarJogo(unidade, jo_tema, jo_nome, jo_datai_formatada, jo_dataf_formatada, jo_status, jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, dataMudada, valor_grama, valor_pontos, tara_prato, jo_desc)
         res.json(jogos);
     } catch (error) {
         console.error("Erro ao criar jogo:", error.message);
-        res.status(500).json({ error: "Erro interno do servidor", resp:error });
+        res.status(500).json({ error: "Erro interno do servidor", resp: error });
     }
 });
 
 
+// Editar multiplicador do jogo
+rotas.put('/:ID_jogos', verificarToken, async (req, res) => {
+    const {
+        jogos_pts_segunda,
+        jogos_pts_terca,
+        jogos_pts_quarta,
+        jogos_pts_quinta,
+        jogos_pts_sexta,
+        jogos_pts_sabado,
+        jogos_pts_domingo
+    } = req.body
+
+    const ID_jogos = req.params.ID_jogos
+    try {
+        const LinhasEditarJogo = await model.EditarJogo( jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, ID_jogos)
+        res.json(LinhasEditarJogo);
+    } catch (error) {
+        console.error("Erro ao criar jogo:", error.message);
+        res.status(500).json({ error: "Erro interno do servidor", resp: error });
+    }
+});
 
 // ROTA DE Buscar usado na tela Jogadores todos os jogadores do jogo atual,* jogosmatriculas e * usuarios - busca no jogo atual
 rotas.get('/BuscarJogadores', verificarToken, async (req, res) => {
     try {
-                                    
+
         const jogos = await model.BuscarJogadores();
         res.json(jogos);
     } catch (error) {
@@ -145,10 +179,10 @@ rotas.get('/BuscarJogadores', verificarToken, async (req, res) => {
 
 // ROTA de progresso usado na tela banca
 rotas.post('/peso', verificarToken, async (req, res) => {
-    const {Peso, QRcode} = req.body
+    const { Peso, QRcode } = req.body
     console.log(Peso, QRcode)
     try {
-                                    
+
         const jogos = await model.ProgressoJogador(Peso, QRcode);
         res.json(jogos);
     } catch (error) {

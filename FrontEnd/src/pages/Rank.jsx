@@ -6,9 +6,13 @@ import Header from '../components/TelaHome/Header';
 import TabelaRank from '../components/TelaRank/TableRank';
 import '../components/TelaRank/Rank.css';
 
+
+
 import { useNavigate } from 'react-router-dom';
 import { useImportarDadosRank } from '../components/TelaRank/FunctionRank';
 import { usePerfilDados } from '../components/TelaPerfil/FunctionTelaPerfil';
+import TableRankComponente from '../components/TelaRank/TableRankComponent';
+
 
 
 
@@ -22,8 +26,8 @@ const TelaRank = () => {
     const { Dados_usuario, verificarUsuario } = usePerfilDados(token, navigate);
 
 
-    const { TableRank, BuscarRank } = useImportarDadosRank(token, navigate); // Passa token e navigate corretamente
-    console.log(TableRank)
+    const { InfoRank, BuscarRank, InfoJogo} = useImportarDadosRank(token, navigate); // Passa token e navigate corretamente
+
 
 
     useEffect(() => {
@@ -48,21 +52,34 @@ const TelaRank = () => {
         <>
             {Dados_usuario && (
                 <>
-                    <Header corLetra={"#000000"} Dados_usuario={Dados_usuario} />
-                    <div className='d-flex flex-column min-vh-100 justify-content-center'>
+                    <Header corLetra={"#ffffff"} Dados_usuario={Dados_usuario} />
 
-                        {TableRank.length > 0 ? ( // Verifica se há dados na tabela
-                            <div className='d-flex flex-column jaroFont justify-content-center align-items-center min-vh-100'>
-                                {TableRank[0].jo_tema == 4 && (<h1>Primavera</h1>)}
 
-                                {/* Primavera */}
-
-                                <TabelaRank info={TableRank} atualizar={BuscarRank} token={token} navigate={navigate} />
-                            </div>
-                        ) : (
-                            <p>Não há jogadores</p>
-                        )}
+                    <div className="fundoIMG min-vh-100">
+                        {/* Aqui vai o conteúdo da sua página */}
                     </div>
+
+                    {InfoJogo.length > 0 ? ( // Verifica se há algum jogo ativo
+                        <div className='d-flex jaroFont col-12 justify-content-center min-vh-100'>
+
+                            <div className='col-lg-8 col-md-9 col-sm-12 shadow h-100 rounded' style={{ marginTop: "100px", marginBottom:"100px" }}>
+
+                                {InfoRank.length > 0 ?  (
+                                    <>
+                                        <TableRankComponente info={InfoRank} atualizar={BuscarRank} token={token} navigate={navigate} />
+                                    </>
+
+
+                                ) : (<h1 className='text-light text-center'>Ainda não existe jogadores!</h1>)}
+                            </div>
+
+                            {/* Primavera */}
+
+                        </div>
+                    ) : (
+                        navigate("/user")
+                    )}
+
                 </>
             )}
         </>

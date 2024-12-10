@@ -82,7 +82,19 @@ const PerfilJogador = () => {
                                 <HeaderCardJogador jo_nome={jo_nome} QuantidadeMascote={QuantidadeMascote} />
                                 <div className='p-4 '>
                                     {PetPrincipal ? (
-                                        <CardInfoJogador peso_acumulativo={Peso_Acumulativo} turma={TurmasUsuario} nome_pet={PetPrincipal.nome_pet} raridade_pet={PetPrincipal.raridade_pet} evolucao={PetPrincipal.evolucao} QuantidadeMascote={QuantidadeMascote} caminho_pet={PetPrincipal.caminho_pet} img={Dados_usuario.user_img_caminho} nome={Dados_usuario.user_nome} rank_usuario={jo_rank} pontos_usuario={pontos} />) : (<h1>Não carregou</h1>)}
+                                        <CardInfoJogador 
+                                        peso_acumulativo={Peso_Acumulativo}
+                                        turma={TurmasUsuario}
+                                        nome_pet={PetPrincipal.nome_pet}
+                                        raridade_pet={PetPrincipal.raridade_pet}
+                                        evolucao={PetPrincipal.evolucao}
+                                        QuantidadeMascote={QuantidadeMascote}
+                                        caminho_pet={PetPrincipal.caminho_pet}
+                                        img={Dados_usuario.user_img_caminho}
+                                        nome={Dados_usuario.user_nome}
+                                        rank_usuario={jo_rank}
+                                        pontos_usuario={pontos}
+                                         />) : (<h1>Não carregou</h1>)}
 
                                     <div className='col-12 d-flex flex-column'>
 

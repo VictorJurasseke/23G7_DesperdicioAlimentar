@@ -1,7 +1,8 @@
 
 export const SwalErroToken = (navigate, error) => {
-    if(error.respose.status){
-        if (error.response.status = 403 || error.response.status == 501 || error.response.status == 401) {
+    console.log(error)
+    if(error.data?.status){
+        if (error.data.status = 403 || error.response?.status == 501 || error.response.status == 401) {
     
             let timerInterval;
             const swalWithBootstrapButtons = Swal.mixin({

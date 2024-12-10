@@ -19,7 +19,6 @@ const MatriculadosTR = ({ID_jogos,ID_usuarios, jo_nome, user_nome, pontos_usuari
                
                 <td className='fs-5'>
                     <div className='col-12 d-flex justify-content-evenly'>
-                    <a onClick={() => { ModalEditMatriculados(ID_usuarios,BuscarTodosMatriculados,navigate,token,setMatriculadoFiltrado) }}><HiPencil /></a>
                     <a onClick={() => { ModalDeleteMatriculados(ID_usuarios,BuscarTodosMatriculados, BuscarNaoMatriculados, navigate,token,setMatriculadoFiltrado,setSelectJogo) }}><HiOutlineTrash /></a>
                     </div>
                 </td>

@@ -67,6 +67,7 @@ const TelaUsuario = () => {
     FiltrarBarraPesquisa()
   }, [Pesquisa, TodosJogadores]);
 
+
   return (
     <>
       {Dados_usuario && (
@@ -140,7 +141,7 @@ const TelaUsuario = () => {
                     })}
                   </>
                 ) : (
-                  <h1 className='jaroFont'>Nenhum jogador nesta turma</h1>
+                  <h1 className='jaroFont'>Nenhum  resultado para busca</h1>
                 )}
 
 

@@ -6,7 +6,8 @@ import { SwalErroToken } from '../TelaPerfil/SwalError';
 export const urlRank = "http://localhost:3025/api/rank";
 
 export const useImportarDadosRank = (token, navigate) => { 
-    const [TableRank, setTableRank] = useState([]);
+    const [InfoRank, setInfoRank] = useState([]);
+    const [InfoJogo, setInfoJogo] = useState([]);
 
     const BuscarRank = async () => {
         try {
@@ -16,7 +17,8 @@ export const useImportarDadosRank = (token, navigate) => {
                 }
             });
             console.log(resposta.data)
-            setTableRank(resposta.data);
+            setInfoRank(resposta.data.InfoRank);
+            setInfoJogo(resposta.data.InfoJogo);
         } catch (error) {
             console.error("Erro ao importar dados:", error); // Log do erro para depuração
             SwalErroToken(navigate); // Chama a função de erro caso haja problema
@@ -24,7 +26,8 @@ export const useImportarDadosRank = (token, navigate) => {
     };
 
     return {
-        TableRank,
+        InfoRank,
+        InfoJogo,
         BuscarRank,
     };
 };

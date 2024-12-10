@@ -17,6 +17,32 @@ module.exports.retornarTodosJogos = async () => {
         db.liberarConexao(conexao);
     }
 };
+module.exports.retornarJogoEspecifico = async (ID_jogos) => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+
+        // Primeira consulta: busca o jogo específico com as informações da configuração
+        const [linhasJogo] = await conexao.execute(
+            `SELECT * 
+             FROM jogos j
+             JOIN jogos_config jc ON j.ID_jogos_config = jc.ID_jogos_config
+             WHERE j.ID_jogos = ?`,
+            [ID_jogos]
+        );
+
+        // Segunda consulta: busca todos os jogos (se necessário)
+        const [todosJogos] = await conexao.execute('SELECT * FROM jogos');
+
+        return linhasJogo
+
+    } catch (error) {
+        console.error("Erro ao listar todos os jogos", error);
+        throw error;
+    } finally {
+        db.liberarConexao(conexao);
+    }
+};
 
 
 module.exports.retornarTodosJogosAtivos = async () => {
@@ -58,14 +84,14 @@ module.exports.ApagarJogos = async (id) => {
         const [jogosInativos] = await conexao.execute('UPDATE jogos SET jo_status = 2 WHERE id_jogos != ?', [id])
 
 
-        const [Matricula] = await conexao.execute('DELETE FROM jogos_matricula WHERE ID_jogos = ? ',[id])
+        const [Matricula] = await conexao.execute('DELETE FROM jogos_matricula WHERE ID_jogos = ? ', [id])
         const [inventario] = await conexao.execute('DELETE FROM inventario_matricula WHERE ID_jogos = ?'[id])
-        
-        
+
+
         // Finalmente, deletar o jogo
         const [linhas] = await conexao.execute('DELETE FROM jogos WHERE ID_jogos = ?', [id]);
-        
-        return { status: true, message:"Deletou o jogo com sucesso" }
+
+        return { status: true, message: "Deletou o jogo com sucesso" }
     } catch (error) {
         return { status: false, error: error }
         throw error // Repassa para a controller
@@ -233,7 +259,7 @@ module.exports.ProgressoJogador = async (pesoComTara, QRcode) => {
         } else if (desperdicio > 0.200 && desperdicio < 2) {
             console.log("não conseguiu avanço nenhum por conta do peso")
             pontosAtribuidos = 0;
-        } else if (desperdicio == 100) {
+        } else if (desperdicio == 99.84999999403954) {
             console.log("Evoluir forçado")
             pontosAtribuidos = 1000;
         }
@@ -343,6 +369,7 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
     let conexao;
 
     try {
+
         conexao = await db.criarConexao();
 
         // Inserir nova configuração na tabela 'jogos_config'
@@ -409,6 +436,68 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
 
 
 
+//usada na tela dev rota de editar jogo
+module.exports.EditarJogo = async (jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, ID_jogos) => {
+    let conexao;
+
+    try {
+        // Criando a conexão com o banco de dados
+        conexao = await db.criarConexao();
+
+        // Verificando se o jogo existe antes de tentar a atualização
+        const [jogoExistente] = await conexao.execute(`
+            SELECT ID_jogos_config FROM jogos WHERE ID_jogos = ?
+        `, [ID_jogos]);
+
+        if (jogoExistente.length === 0) {
+            return { status: false, message: "Nenhum jogo encontrado para o ID fornecido." };
+        }
+
+        // Recuperando o ID_jogos_config para a atualização
+        const ID_jogos_config = jogoExistente[0].ID_jogos_config;
+
+        // Executando a consulta de atualização
+        const [result] = await conexao.execute(`
+            UPDATE jogos_config
+            SET 
+                jogos_pts_segunda = ?,
+                jogos_pts_terca = ?,
+                jogos_pts_quarta = ?,
+                jogos_pts_quinta = ?,
+                jogos_pts_sexta = ?,
+                jogos_pts_sabado = ?,
+                jogos_pts_domingo = ?
+            WHERE ID_jogos_config = ?
+        `, [
+            jogos_pts_segunda,
+            jogos_pts_terca,
+            jogos_pts_quarta,
+            jogos_pts_quinta,
+            jogos_pts_sexta,
+            jogos_pts_sabado,
+            jogos_pts_domingo,
+            ID_jogos_config
+        ]);
+
+        // Retornando sucesso ou erro
+        if (result.affectedRows > 0) {
+            return { status: true, message: "Jogo atualizado com sucesso!" };
+        } else {
+            return { status: false, message: "Nenhuma atualização realizada. Verifique os dados." };
+        }
+    } catch (error) {
+        console.error("Erro ao editar o jogo:", error.message);
+        if (error.errno == 1062) {
+            return { status: false, message: "Você não pode adicionar duas temporadas iguais!" };
+        } else {
+            return { status: false, message: "Erro Interno do servidor!" };
+        }
+    } finally {
+        // Liberando a conexão
+        db.liberarConexao(conexao);
+    }
+};
+
 
 
 // Preciso de um select para tela jogadores que busca então:
@@ -436,6 +525,7 @@ module.exports.BuscarJogadores = async () => {
                 m.rank_usuario,
                 j.ID_jogos,
                 t.tur_nome,
+                j.jo_status,
                 j.jo_nome,
                 j.jo_tema,
                 p.nome_pet,

@@ -62,6 +62,9 @@ export const useImportarDadosJogadores = (token, navigate) => {
             setTodosJogadores(resposta.data.TodosJogadores)
             setTodasTurmas(resposta.data.TodasTurmas)
             setJogadoresFiltrados(resposta.data.TodosJogadores)
+            if(resposta.data.TodosJogadores.length == 0){
+                navigate('/user')
+            }
         } catch (error) {
             console.log(error)
             SwalErroToken(navigate, error)

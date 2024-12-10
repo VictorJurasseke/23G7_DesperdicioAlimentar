@@ -47,7 +47,7 @@ export const usePetsDados = (token, navigate) => {
             SetPetPrincipal(resposta.data.PetPrincipal)
 
             
-            // Mostra em mascotes apenas a quantidade exibida por padrão
+         
            
         } catch (error) {
             console.log("Deu erro em procurar os pets:", error)

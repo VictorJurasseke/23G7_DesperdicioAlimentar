@@ -7,7 +7,7 @@ import InfoPerfil from './InfoPerfil';
 const CardPerfil = ({ nome, img, periodo, token, navigate, nivel_acesso }) => {
 
   return (
-    <motion.div className="col-12 text-dark mt-3 p-3 shadow-sm card-perfil bg-light" style={{zIndex:2000}}  initial={{y:"-100vh", opacity:0}} transition={{duration:"1", type:"spring", stiffness:20}} animate={{y:10, opacity:1}}>
+    <motion.div className="col-12 text-dark mt-3 p-3 shadow-sm card-perfil" style={{zIndex:2000}}  initial={{y:"-100vh", opacity:0}} transition={{duration:"1", type:"spring", stiffness:20}} animate={{y:10, opacity:1}}>
       <div className="row d-flex mt-4 align-items-center">
         <div className="col-auto text-center">
           <img
