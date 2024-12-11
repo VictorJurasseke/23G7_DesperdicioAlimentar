@@ -56,4 +56,4 @@ async function iniciarApp() {
     });
 }
 
-module.exports.iniciarApp = iniciarApp;
+iniciarApp()
