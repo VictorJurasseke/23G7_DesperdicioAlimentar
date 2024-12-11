@@ -6,19 +6,14 @@ import { ModalCriarPet, ModalDeleteTodosPets, useImportarDadosPets } from './Fun
 import PetsTR from './PetsTR';
 import Fuse from 'fuse.js';
 
-
 const TablePets = ({ token, navigate }) => {
 
     const { TodosPets, BuscarTodosPets } = useImportarDadosPets(token, navigate)
 
     // Guarda o filtro selecionado
     const [SelectRaridade, setSelectRaridade] = useState('');
-
-
     // Guarda a barra de pesquisa
     const [Pesquisa, setPesquisa] = useState('');
-
-
     // Guarda os Pets filtrados
     const [PetsFiltrado, setPetsFiltrado] = useState(TodosPets);
 
@@ -26,7 +21,6 @@ const TablePets = ({ token, navigate }) => {
         BuscarTodosPets()
         console.log(TodosPets)
     }, [])
-
 
     const selectRaridadeSwitch = (SelectRaridade) => {
         switch (SelectRaridade) {
@@ -46,16 +40,13 @@ const TablePets = ({ token, navigate }) => {
                 setPetsFiltrado(TodosPets);
         }
     }
-    // Função para filtrar os mascotes
+
     useEffect(() => {
         selectRaridadeSwitch(SelectRaridade)
-        console.log("tema:", SelectRaridade)
-        console.log("todos:", TodosPets)
         setPesquisa('')
     }, [SelectRaridade, TodosPets]);
 
-
-    // // Configurações do Fuse.js
+    // Configurações do Fuse.js
     const fuseOptions = {
         keys: ['nome_pet'], // Campos que serão pesquisados
         threshold: 0.4, // Sensibilidade da pesquisa
@@ -74,20 +65,15 @@ const TablePets = ({ token, navigate }) => {
     }, [Pesquisa, TodosPets]);
 
     return (
-        <>
-            <div className='col-12 d-flex justify-content-end'>
-                <div className='align-items-center text-center d-flex flex-row gap-3 position-absolute' style={{ top: '200px', zIndex: 20 }}>
-
-                    <div className=''>
-                        <button onClick={()=>{ModalDeleteTodosPets(BuscarTodosPets, token, navigate)}} className='btn btn-danger'>
-                            Deletar Todos
-                        </button >
-                    </div>
-                    <form className="d-flex" role="search">
+        <div className="container-fluid">
+            <div className="row justify-content-start align-items-center">
+                {/* Filtro por Raridade */}
+                <div className="d-flex flex-wrap justify-content-start gap-2 mb-3">
+                    <form className="d-flex flex-column flex-sm-row mb-2 mb-sm-0" role="search">
                         <select
                             value={SelectRaridade}
                             onChange={(e) => setSelectRaridade(e.target.value)}
-                            className="form-select"
+                            className="form-select w-100 w-sm-auto"
                             aria-label="Default select example"
                         >
                             <option value="">Todos:</option>
@@ -97,22 +83,29 @@ const TablePets = ({ token, navigate }) => {
                             <option value="4">Lendário</option>
                         </select>
                     </form>
-                    <form className="d-flex" role="search">
+                    <form className="d-flex col-lg-4 col-12 w-sm-auto" role="search">
                         <input
                             value={Pesquisa}
                             onChange={(e) => setPesquisa(e.target.value)}
-                            className="form-control me-2"
+                            className="form-control"
                             type="search"
-                            placeholder="Search"
+                            placeholder="Buscar pet"
                             aria-label="Search"
                         />
                     </form>
+                    <button
+                        onClick={() => ModalDeleteTodosPets(BuscarTodosPets, token, navigate)}
+                        className="btn btn-danger col-12 col-sm-auto mt-2 mt-sm-0"
+                    >
+                        Deletar Todos
+                    </button>
                 </div>
             </div>
 
-            {TodosPets.length > 0 ?
-                (
-                    <table className="table table-striped  table-hover  text-center">
+            {/* Tabela */}
+            <div className="table-responsive">
+                {TodosPets.length > 0 ? (
+                    <table className="table table-striped table-hover text-center">
                         <thead className="thead-dark">
                             <tr>
                                 <th>ID Pet</th>
@@ -125,7 +118,6 @@ const TablePets = ({ token, navigate }) => {
                             </tr>
                         </thead>
                         <tbody>
-
                             {PetsFiltrado.map((item) => (
                                 <PetsTR
                                     key={item.ID_pet}
@@ -142,19 +134,23 @@ const TablePets = ({ token, navigate }) => {
                             ))}
                         </tbody>
                     </table>
-
                 ) : (
-                    <p className='text-center mt-4'>Não há resultados para busca...</p>
+                    <div className="text-center mt-4 alert alert-warning">
+                        <strong>Não há resultados para a pesquisa...</strong>
+                    </div>
                 )}
-
-            <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
-                <BiAddToQueue
-                    className='text-success'
-                    onClick={() => { ModalCriarPet(token, navigate, TodosPets, BuscarTodosPets) }}
-                />
-
             </div>
-        </>
+
+            {/* Botão Adicionar - Alinhado à direita */}
+            <div className="text-center mb-3">
+                <BiAddToQueue
+                    className="text-success fs-1"
+                    onClick={() => ModalCriarPet(token, navigate, TodosPets, BuscarTodosPets)}
+                    title="Adicionar Novo Pet"
+                    style={{ cursor: 'pointer' }}
+                />
+            </div>
+        </div>
     );
 };
 

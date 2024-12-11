@@ -16,9 +16,9 @@ const TelaPets = ({token,navigate}) => {
         <>
             
             <div className='d-flex flex-fill flex-column'>
-            <div className=''>
+        
                 <TablePets token={token} navigate={navigate}/>
-            </div>
+          
         </div>
          
 

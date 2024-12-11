@@ -17,9 +17,9 @@ const TelaUsuario = ({token,navigate}) => {
         <>
             
             <div className='d-flex flex-fill flex-column'>
-            <div className=''>
+     
                 <TableUsuario token={token} navigate={navigate}/>
-            </div>
+          
         </div>
          
 

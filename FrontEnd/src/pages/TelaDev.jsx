@@ -13,6 +13,7 @@ import TelaPets from '../components/TelaDev/TablePets/TelaPets';
 
 
 import { useNavigate } from 'react-router-dom';
+import TelaRelatorio from '../components/TelaDev/TelaRelatorio/TelaRelatorio';
 
 const TelaDev = () => {
   console.log("Tela renderizada");
@@ -38,20 +39,25 @@ const TelaDev = () => {
     return <LoadingComponent />; // Exibe o loading enquanto os componentes estão carregando
   }
 
+  
   return (
     <>
 
-      <div className='d-flex flex-column min-vh-100'>
+      <div className='mt-5'>
+
         <TelasTroca FuncaoAlvo={FuncaoAlvo} />
-        <div className='d-flex flex-column flex-fill'>
+        <div className='d-flex flex-column'>
           {Radio === 'option1' && <TelaUnidade token={token} navigate={navigate} />}
           {Radio === 'option2' && <TelaTurmas token={token} navigate={navigate} />}
           {Radio === 'option3' && <TelaUsuario token={token} navigate={navigate} />}
           {Radio === 'option4' && <TelaMatriculados token={token} navigate={navigate} />}
           {Radio === 'option5' && <TelaJogo token={token} navigate={navigate} />}
           {Radio === 'option6' && <TelaPets token={token} navigate={navigate} />}
+          {Radio === 'option7' && <TelaRelatorio token={token} navigate={navigate} />}
+          
         </div>
       </div>
+
     </>
   );
 };

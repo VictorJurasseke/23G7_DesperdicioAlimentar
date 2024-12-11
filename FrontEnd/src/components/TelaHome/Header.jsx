@@ -45,7 +45,7 @@ function Header({ Dados_usuario,corLetra }) {
   return (
     <motion.div initial={{y:"-200px"}} animate={{y:0}} transition={{type:"spring", duration:0.1, stiffness:20, delay:0.5}} style={{zIndex:1}}>
 
-      <Navbar className="justify-content-between position-absolute col-12 jaroFont"   dark expand="lg">
+      <Navbar className="justify-content-between position-absolute col-12 jaroFont text-light" style={{backgroundColor:"#243447", zIndex:2000}}  dark expand="lg">
         <NavbarBrand style={{color:corLetra}} className="d-flex fs-4" href="/">
           H A T C H
         </NavbarBrand>

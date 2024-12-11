@@ -208,7 +208,7 @@ module.exports.ProgressoJogador = async (pesoComTara, QRcode) => {
         // Busca o pet que precisa evoluir no inventario do jogador, pra isso eu preciso do qrcode
         // pra descobrir o id do usuario e descobrir o id da matricula pra descobrir o id de inventario responsavel por ter o mascote de evolucao 1 
 
-        const [matricula] = await conexao.execute("SELECT im.ID_inv_pets, u.ID_usuarios FROM usuarios u, inventario_matricula im WHERE user_qrcode = ? AND im.ID_usuarios = u.ID_usuarios", [QRcode])
+        const [matricula] = await conexao.execute("SELECT im.ID_inv_pets, u.ID_usuarios FROM usuarios u, inventario_matricula im WHERE user_qrcode = ? AND im.ID_usuarios = u.ID_usuarios AND evolucao = 1", [QRcode])
 
         if (matricula.length == 0) {
             return { status: false, message: "Não foi achado nenhum usuário e mascote com este qrcode" }
@@ -218,6 +218,9 @@ module.exports.ProgressoJogador = async (pesoComTara, QRcode) => {
 
         const ID_usuarios = matricula[0].ID_usuarios
         const ID_inventario = matricula[0].ID_inv_pets
+
+        console.log("INVENTARIO",ID_inventario)
+        console.log("USUARIO",ID_usuarios)
 
         // Busca o jogo atual
         const [jogo] = await conexao.execute(
@@ -260,11 +263,12 @@ module.exports.ProgressoJogador = async (pesoComTara, QRcode) => {
             console.log("não conseguiu avanço nenhum por conta do peso")
             pontosAtribuidos = 0;
         } else if (desperdicio == 99.84999999403954) {
-            console.log("Evoluir forçado")
+            console.log("Evoluir forçado, colocando 1000 pontos")
             pontosAtribuidos = 1000;
         }
-
+        console.log("Multiplicando pelo fator diario:", multiplicadorDia)
         pontosAtribuidos *= multiplicadorDia;
+
 
 
         console.log("Valor desperdiçado:", desperdicio)
@@ -541,7 +545,7 @@ module.exports.BuscarJogadores = async () => {
                 JOIN turmas t ON t.ID_turmas = m.turmas_ID_turmas
                 WHERE u.user_tipo_acesso = 3  
                 AND j.jo_status = 1  
-                AND im.pet_principal = 1;  
+                AND im.pet_principal = 1 ORDER BY m.rank_usuario;  
  
         `);
 

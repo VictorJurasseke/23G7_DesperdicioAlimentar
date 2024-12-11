@@ -8,35 +8,21 @@ import { useImportarDadosJogos } from '../TableJogo/FunctionJogos';
 import { useImportarDadosTurmas } from '../TableTurmas/FunctionTurmas';
 import Fuse from 'fuse.js';
 
-
 const TableMatriculadosComponent = ({ token, navigate }) => {
-    const { TodosMatriculados, BuscarTodosMatriculados, NaoMatriculados, BuscarNaoMatriculados } = useImportarDadosMatriculados(token, navigate); // Busca todos os matriculados
-
-
-    // Guarda todos os jogos
+    const { TodosMatriculados, BuscarTodosMatriculados, NaoMatriculados, BuscarNaoMatriculados } = useImportarDadosMatriculados(token, navigate);
     const { TodosJogos, BuscarJogos } = useImportarDadosJogos(token, navigate);
-
-    // Guarda todas as turmas
     const { TodasTurmas, BuscarTurmas } = useImportarDadosTurmas(token, navigate);
 
-    // Quando a tela carregar ele busca todas as informações do banco
     useEffect(() => {
         BuscarTodosMatriculados();
         BuscarJogos();
         BuscarTurmas();
         BuscarNaoMatriculados();
-        console.log("TODOS JOGOS", TodosJogos);
     }, []);
 
-    // Guarda o filtro selecionado
     const [SelectJogo, setSelectJogo] = useState('');
-
-    // Guarda a barra de pesquisa
     const [Pesquisa, setPesquisa] = useState('');
-
-    // Guarda os matriculados filtrados
     const [MatriculadoFiltrado, setMatriculadoFiltrado] = useState(TodosMatriculados);
-
 
     const SelectSwitchJogo = (SelectJogo) => {
         switch (SelectJogo) {
@@ -57,62 +43,48 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
         }
     }
 
-    // Função para filtrar os matriculados
     useEffect(() => {
-        SelectSwitchJogo(SelectJogo)
-        console.log("tema:", SelectJogo)
-        console.log("todos:", TodosMatriculados)
-        setPesquisa('')
+        SelectSwitchJogo(SelectJogo);
+        setPesquisa('');
     }, [SelectJogo, TodosMatriculados]);
 
-
-
-    // // Configurações do Fuse.js
     const fuseOptions = {
-        keys: ['user_nome'], // Campos que serão pesquisados
-        threshold: 0.4, // Sensibilidade da pesquisa
+        keys: ['user_nome'],
+        threshold: 0.4,
     };
 
     const fuse = new Fuse(MatriculadoFiltrado, fuseOptions);
 
-    const FiltrarBarraPesquisa = () =>{
+    const FiltrarBarraPesquisa = () => {
         if (Pesquisa.trim() === '') {
             setMatriculadoFiltrado(TodosMatriculados);
-            SelectSwitchJogo(SelectJogo)
+            SelectSwitchJogo(SelectJogo);
         } else {
             const resultados = fuse.search(Pesquisa).map((result) => result.item);
             setMatriculadoFiltrado(resultados);
         }
     }
 
-
     useEffect(() => {
-        FiltrarBarraPesquisa()
+        FiltrarBarraPesquisa();
     }, [Pesquisa, TodosMatriculados]);
-
-    // Função para carregar os jogos no select
-    // const CarregarJogosSelect = (TodosJogos) => {
-    //     return TodosJogos.map(jogos => (
-    //         <option key={jogos.ID_jogos} value={jogos.jo_tema}>
-    //             {jogos.jo_nome}
-    //         </option>
-    //     ));
-    // };
-    // {CarregarJogosSelect(TodosJogos)}
 
     if (!TodosMatriculados || !TodosJogos) {
         return <LoadDev />;
     }
+
     return (
-        <>
-            <div className='col-12 d-flex justify-content-end'>
-                <div className='align-items-center text-center d-flex flex-row gap-3 position-absolute' style={{ top: '200px', zIndex:20 }}>
-                    <form className="d-flex" role="search">
+        <div className="container-fluid">
+            {/* Filtro e Pesquisa */}
+            <div className="row justify-content-start align-items-center">
+                <div className="d-flex flex-wrap justify-content-start gap-2 mb-3">
+                    {/* Filtro por Jogo */}
+                    <form className="d-flex flex-column flex-sm-row mb-2 mb-sm-0" role="search">
                         <select
                             value={SelectJogo}
                             onChange={(e) => setSelectJogo(e.target.value)}
-                            className="form-select"
-                            aria-label="Default select example"
+                            className="form-select w-100 w-sm-auto"
+                            aria-label="Filtro por Jogo"
                         >
                             <option value="">Todos:</option>
                             <option value="1">Verão</option>
@@ -121,30 +93,33 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
                             <option value="4">Primavera</option>
                         </select>
                     </form>
-                    <form className="d-flex" role="search">
+
+                    {/* Barra de Pesquisa */}
+                    <form className="d-flex col-lg-4 col-12 w-sm-auto" role="search">
                         <input
                             value={Pesquisa}
                             onChange={(e) => setPesquisa(e.target.value)}
-                            className="form-control me-2"
+                            className="form-control"
                             type="search"
-                            placeholder="Search"
+                            placeholder="Buscar por usuário"
                             aria-label="Search"
                         />
                     </form>
                 </div>
             </div>
 
-            {MatriculadoFiltrado && MatriculadoFiltrado.length > 0 ? (
-                <>
+            {/* Tabela de Matriculados */}
+            <div className="table-responsive">
+                {MatriculadoFiltrado.length > 0 ? (
                     <table className="table table-striped table-hover text-center">
-                        <thead>
+                        <thead className="thead-dark">
                             <tr>
                                 <th>Jogo</th>
                                 <th>Usuário</th>
                                 <th>Pontos Usuário</th>
                                 <th>Rank</th>
                                 <th>Escola</th>
-                                <th>Functions</th>
+                                <th>Funções</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -167,16 +142,23 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
                             ))}
                         </tbody>
                     </table>
-                </>
-            ) : (
-                <p className='text-center mt-4'>Não há resultados para busca...</p>
-            )}
-            <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }}>
-                <BiAddToQueue onClick={() => ModalCriarMatricula(NaoMatriculados, BuscarNaoMatriculados, navigate, token, TodosJogos, TodasTurmas, BuscarTodosMatriculados)} />
+                ) : (
+                    <div className="text-center mt-4 alert alert-warning">
+                        <strong>Não há resultados para a pesquisa...</strong>
+                    </div>
+                )}
             </div>
-        </>
+
+            {/* Botão Adicionar - Alinhado à direita */}
+            <div className="text-center mb-3">
+                <BiAddToQueue
+                    onClick={() => ModalCriarMatricula(NaoMatriculados, BuscarNaoMatriculados, navigate, token, TodosJogos, TodasTurmas, BuscarTodosMatriculados)}
+                    title="Adicionar Nova Matrícula"
+                    style={{ cursor: 'pointer', fontSize: '40px', color: 'green' }}
+                />
+            </div>
+        </div>
     );
 }
-
 
 export default TableMatriculadosComponent;

@@ -28,7 +28,7 @@ const CardRankTR = ({ token, navigate, user_nome, user_img_caminho, ID_usuarios,
 
     return (
         <>
-                        < div className=' d-flex flex-row flex-wrap' style={{ minHeight: '200px'}}>
+                        < div className=' d-flex flex-row flex-wrap' style={{ minHeight: '200px', backgroundColor:"#F3E8D1"}}>
                             {/* Div de imagem do usuário */}
                             {/* Status no jogo atual */}
                             <div className=' d-flex align-items-center justify-content-center flex-column col-6  col-md-6 col-lg-2 jaroFont' style={{ color: "#243447" }}>

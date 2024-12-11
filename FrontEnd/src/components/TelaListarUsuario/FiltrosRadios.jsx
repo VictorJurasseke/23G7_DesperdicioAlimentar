@@ -17,7 +17,7 @@ const FiltrosRadios = ({ ID_turmas, tur_nome, AlterarTurma }) => {
                 autoComplete="off"
                 onChange={AtivarAlterador}  // Chama o AtivarAlterador ao selecionar para trocar a turma
             />
-            <label className="btn text-dark" htmlFor={"option" + ID_turmas}>
+            <label className="btn btn-outline-secondary" htmlFor={"option" + ID_turmas}>
                 {tur_nome}
             </label>
         </>

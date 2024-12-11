@@ -1,0 +1,10 @@
+.btn-check:checked + .btn {
+    background-color: #243447; /* Cor de fundo ao clicar */
+    color: white; /* Cor do texto ao clicar */
+    border-color: #243447; /* Cor da borda */
+  }
+  
+  .btn-check + .btn {
+    transition: all 0.3s ease; /* Transição suave para o clique */
+  }
+  
