@@ -9,8 +9,8 @@ const UrlPerfilDados = "http://localhost:3025/api/perfil";
 
 export const useLogin = () => {
     const [FormLogin, setFormlogin] = useState({
-        email: "vitorsaleskikao@gmail.com",
-        senha: "23492349"
+        email: "",
+        senha: ""
     });
 
     // Função chamada caso duplicação de dados no banco

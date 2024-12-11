@@ -26,7 +26,7 @@ const TableTurmas = ({ token, navigate }) => {
 
             <>
                 {TodasTurmas.length > 0 ? (
-                    <table className="table table-striped  table-hover text-center">
+                    <table className="table table-striped table-hover text-center table-bordered shadow-sm">
                         <thead >
                             <tr>
                                 <th>id</th>

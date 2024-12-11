@@ -103,7 +103,7 @@ const TablePets = ({ token, navigate }) => {
             </div>
 
             {/* Tabela */}
-            <div className="table-responsive">
+            <div className="table table-striped table-hover text-center table-bordered shadow-sm">
                 {TodosPets.length > 0 ? (
                     <table className="table table-striped table-hover text-center">
                         <thead className="thead-dark">

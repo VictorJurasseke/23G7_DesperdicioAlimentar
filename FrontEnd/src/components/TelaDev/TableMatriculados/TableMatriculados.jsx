@@ -111,7 +111,7 @@ const TableMatriculadosComponent = ({ token, navigate }) => {
             {/* Tabela de Matriculados */}
             <div className="table-responsive">
                 {MatriculadoFiltrado.length > 0 ? (
-                    <table className="table table-striped table-hover text-center">
+                    <table className="table table-striped table-hover text-center table-bordered shadow-sm">
                         <thead className="thead-dark">
                             <tr>
                                 <th>Jogo</th>

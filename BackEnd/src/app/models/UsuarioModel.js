@@ -157,7 +157,7 @@ module.exports.retornarLogin = async (email, senha) => {
 
 
         // Gera o token através do codigo secreto
-        token = jwt.sign(payload, senhaCodigoSecreto, { expiresIn: '1h' });
+        token = jwt.sign(payload, senhaCodigoSecreto, { expiresIn: '30m' });
 
 
 

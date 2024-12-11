@@ -1,9 +1,6 @@
 
 export const SwalErroToken = (navigate, error) => {
-    console.log(error)
-    if(error.data?.status){
-        if (error.data.status = 403 || error.response?.status == 501 || error.response.status == 401) {
-    
+    console.log("ocorreu um erro:",error)
             let timerInterval;
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
@@ -35,12 +32,10 @@ export const SwalErroToken = (navigate, error) => {
             }).then((result) => {
                 if (result.dismiss === Swal.DismissReason.timer) {
     
-                    // localStorage.removeItem("token"); // Remove o token
-                    // navigate('/login');
+                    localStorage.removeItem("token"); // Remove o token
+                    navigate('/login');
                 }
             });
-    }
-    } else {
-        console.log("Ocorreu o seguinte erro:", error.response.status)
-    }
+   
+   
 }
