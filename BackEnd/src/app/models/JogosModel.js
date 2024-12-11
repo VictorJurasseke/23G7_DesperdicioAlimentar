@@ -205,10 +205,26 @@ module.exports.ProgressoJogador = async (pesoComTara, QRcode) => {
 
 
 
-        // Busca o pet que precisa evoluir no inventario do jogador, pra isso eu preciso do qrcode
+        // Busca o pet que precisa evoluir no inventario do jogador do jogo atual, pra isso eu preciso do qrcode
         // pra descobrir o id do usuario e descobrir o id da matricula pra descobrir o id de inventario responsavel por ter o mascote de evolucao 1 
 
-        const [matricula] = await conexao.execute("SELECT im.ID_inv_pets, u.ID_usuarios FROM usuarios u, inventario_matricula im WHERE user_qrcode = ? AND im.ID_usuarios = u.ID_usuarios AND evolucao = 1", [QRcode])
+        const [matricula] = await conexao.execute(`
+        SELECT 
+            im.ID_inv_pets, 
+            u.ID_usuarios,
+            u.user_nome,
+            j.jo_nome
+        FROM 
+            usuarios u
+        JOIN 
+            inventario_matricula im ON im.ID_usuarios = u.ID_usuarios
+        JOIN 
+            jogos j ON j.ID_jogos = im.ID_jogos -- Relaciona o inventário ao jogo
+        WHERE 
+            u.user_qrcode = ?
+            AND im.evolucao = 1 
+            AND j.jo_status = 1
+        LIMIT 1; -- Garante que apenas um resultado seja retornado`, [QRcode])
 
         if (matricula.length == 0) {
             return { status: false, message: "Não foi achado nenhum usuário e mascote com este qrcode" }
@@ -219,14 +235,15 @@ module.exports.ProgressoJogador = async (pesoComTara, QRcode) => {
         const ID_usuarios = matricula[0].ID_usuarios
         const ID_inventario = matricula[0].ID_inv_pets
 
-        console.log("INVENTARIO",ID_inventario)
-        console.log("USUARIO",ID_usuarios)
+        console.log("INVENTARIO", ID_inventario)
+        console.log("USUARIO", ID_usuarios)
 
         // Busca o jogo atual
         const [jogo] = await conexao.execute(
             "SELECT jc.*, j.ID_jogos FROM jogos j, inventario_matricula i, jogos_config jc WHERE i.ID_inv_pets = ? AND i.ID_jogos = j.ID_jogos AND j.jo_status = 1",
             [ID_inventario]
         );
+        console.log(ID_inventario)
         desperdicio = pesoComTara - jogo[0].tara_prato;
         console.log("Desperdicio sem a tara:", desperdicio)
         const ID_jogo = jogo[0].ID_jogos;
@@ -511,7 +528,7 @@ module.exports.EditarJogo = async (jogos_pts_segunda, jogos_pts_terca, jogos_pts
 // * pet_principal ->  pet_evolucao & * pets
 
 
-// Busca todos os jogadores do jogo atual
+// Busca todos os jogadores do jogo atual usado na tela jogadores
 module.exports.BuscarJogadores = async () => {
     let conexao;
     try {
@@ -520,32 +537,41 @@ module.exports.BuscarJogadores = async () => {
         // Pega todos os jogadores que são jogadores e estão no jogo atual, só pra ter certeza da integridade
         const [TodosJogadores] = await conexao.execute(`
             SELECT 
-                u.user_nome,
-                u.user_img_caminho,
-                u.ID_usuarios,
-                m.turmas_ID_turmas,
-                m.pontos_usuario,
-                m.peso_acumulativo,
-                m.rank_usuario,
-                j.ID_jogos,
-                t.tur_nome,
-                j.jo_status,
-                j.jo_nome,
-                j.jo_tema,
-                p.nome_pet,
-                p.caminho_pet,
-                p.raridade_pet,
-                im.ID_inv_pets,
-                im.evolucao
-                FROM usuarios u
-                JOIN jogos_matricula m ON u.ID_usuarios = m.ID_usuarios 
-                JOIN jogos j ON j.ID_jogos = m.ID_jogos 
-                JOIN inventario_matricula im ON im.ID_usuarios = u.ID_usuarios  
-                JOIN pets p ON p.ID_pet = im.ID_pets 
-                JOIN turmas t ON t.ID_turmas = m.turmas_ID_turmas
-                WHERE u.user_tipo_acesso = 3  
-                AND j.jo_status = 1  
-                AND im.pet_principal = 1 ORDER BY m.rank_usuario;  
+    u.user_nome,
+    u.user_img_caminho,
+    u.ID_usuarios,
+    m.turmas_ID_turmas,
+    m.pontos_usuario,
+    m.peso_acumulativo,
+    m.rank_usuario,
+    j.ID_jogos,
+    t.tur_nome,
+    j.jo_status,
+    j.jo_nome,
+    j.jo_tema,
+    p.nome_pet,
+    p.caminho_pet,
+    p.raridade_pet,
+    im.ID_inv_pets,
+    im.evolucao
+FROM 
+    usuarios u
+JOIN 
+    jogos_matricula m ON u.ID_usuarios = m.ID_usuarios 
+JOIN 
+    jogos j ON j.ID_jogos = m.ID_jogos 
+JOIN 
+    inventario_matricula im ON im.ID_usuarios = u.ID_usuarios  
+JOIN 
+    pets p ON p.ID_pet = im.ID_pets 
+JOIN 
+    turmas t ON t.ID_turmas = m.turmas_ID_turmas
+WHERE 
+    u.user_tipo_acesso = 3  
+    AND j.jo_status = 1  
+    AND im.ID_jogos = j.ID_jogos -- Adiciona a relação com o jogo atual
+ORDER BY m.rank_usuario ASC
+
  
         `);
 

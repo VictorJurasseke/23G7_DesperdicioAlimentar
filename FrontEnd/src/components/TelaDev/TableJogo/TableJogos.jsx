@@ -19,7 +19,7 @@ const TableJogos = ({ token, navigate }) => {
     const { TodasUnidade, BuscarUnidades } = useImportarDadosUnidade(token, navigate)
 
 
-   
+
 
     console.log(TodosJogos)
 
@@ -37,44 +37,46 @@ const TableJogos = ({ token, navigate }) => {
         <>
 
             <>
-            {TodosJogos.length > 0 ? 
-            (
+                {TodosJogos.length > 0 ?
+                    (
 
-                <table className="table table-striped  table-hover text-center">
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>Nome do Jogo</th>
-                            <th>Data Inicio</th>
-                            <th>Data Fim</th>
-                            <th>Escola Resignada</th>
-                            <th>Functions</th>
-                            <th>Status</th>
+                        <table className="table table-striped  table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>Nome do Jogo</th>
+                                    <th>Data Inicio</th>
+                                    <th>Data Fim</th>
+                                    <th>Escola Resignada</th>
+                                    <th>Functions</th>
+                                    <th>Status</th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                        {TodosJogos.map((item) => (
-                            <TableJogosTR
+                                {TodosJogos.map((item) => (
+                                    <TableJogosTR
 
-                                key={item.ID_jogos}
-                                id={item.ID_jogos}
-                                nome={item.jo_nome}
-                                dataInicio={item.jo_datai}
-                                dataFim={item.jo_dataf}
-                                escola={item.es_nome}
-                                status={StatusJogo(item.jo_status)}
-                                atualizar={BuscarJogos}
-                                token={token}
-                                navigate={navigate}
-                            />
-                        ))}
-                    </tbody>
-                </table>
-            ) : (
-                <p className='text-center mt-4'>Não há resultados para busca...</p>
-             )}
+                                        key={item.ID_jogos}
+                                        id={item.ID_jogos}
+                                        nome={item.jo_nome}
+                                        dataInicio={item.jo_datai}
+                                        dataFim={item.jo_dataf}
+                                        escola={item.es_nome}
+                                        status={StatusJogo(item.jo_status)}
+                                        atualizar={BuscarJogos}
+                                        token={token}
+                                        navigate={navigate}
+                                    />
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <div className="text-center mt-4 alert alert-warning">
+                            <strong>Não há resultados para a pesquisa...</strong>
+                        </div>
+                    )}
             </>
             <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
                 <BiAddToQueue onClick={() => ModalCriarJogo(BuscarJogos, navigate, token, TodasUnidade, setForm, Form)} />

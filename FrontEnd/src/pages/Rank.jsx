@@ -50,7 +50,7 @@ const TelaRank = () => {
     }
     return (
         <>
-            {Dados_usuario && (
+            {Dados_usuario && InfoJogo &&(
                 <>
                     <Header corLetra={"#ffffff"} Dados_usuario={Dados_usuario} />
 

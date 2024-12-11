@@ -91,7 +91,7 @@ const TelaUsuario = () => {
                     autoComplete="off"
                     checked={FiltroTurma === 'Todos'}  // Agora com o estado controlado
                   />
-                  <label className="btn btn-outline-secondary" htmlFor="Todos">Todos</label>
+                  <label className="btn btn-outline-secondary jaroFont" htmlFor="Todos">Todos</label>
                   {TodasTurmas.map((item) => (
                     <FiltrosRadios
                       key={item.ID_turmas}  // Adicione uma chave única para cada elemento
@@ -143,10 +143,6 @@ const TelaUsuario = () => {
                 ) : (
                   <h1 className='jaroFont'>Nenhum resultado para busca</h1>
                 )}
-
-
-
-
               </div>
             </div>
           </div>

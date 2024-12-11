@@ -47,7 +47,9 @@ const TableTurmas = ({ token, navigate }) => {
                             ))}
                         </tbody>
                     </table>
-                ) : (<p className='text-center mt-4'>Não há resultados para busca...</p>)}
+                ) : (<div className="text-center mt-4 alert alert-warning">
+                    <strong>Não há resultados para a pesquisa...</strong>
+                </div>)}
 
                 <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }} >
                     <BiAddToQueue onClick={() => { ModalCriarTurma(token, navigate, BuscarTurmas) }} />

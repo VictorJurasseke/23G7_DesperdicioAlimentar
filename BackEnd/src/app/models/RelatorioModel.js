@@ -60,9 +60,10 @@ module.exports.retornarTotalTemporadas = async () => {
             JOIN 
                 jogos j ON jm.ID_jogos = j.ID_jogos  
             GROUP BY 
-                j.jo_nome, t.tur_nome  
+                j.jo_nome, t.tur_nome, j.jo_datai
             ORDER BY 
-                j.jo_datai 
+                j.jo_datai;
+
         `);
 
         // Armazenando o resultado por temporada
