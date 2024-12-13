@@ -55,7 +55,7 @@ const TelaBanca = () => {
                                     {/* Card principal */}
 
 
-                                    <div className='col-lg-4 col-md-6 col-5 col-sm-6 d-flex justify-content-center align-items-center gap-5'>
+                                    <div className='col-lg-3 col-md-6 col-5 col-sm-6 d-flex justify-content-center align-items-center gap-5' style={{marginTop:"60px"}}>
                                        
                                         <div className='col-5' >
                                             

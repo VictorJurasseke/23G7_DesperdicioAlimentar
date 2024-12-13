@@ -5,6 +5,7 @@ import { SwalErroToken } from '../../TelaPerfil/SwalError';
 import { Form } from 'react-router-dom';
 import CaixaInput from '../../TelaCadastro/CaixaInput';
 
+
 // Variavel necessaria para o SweetAlert2
 
 const swalWithBootstrapButtons = Swal.mixin({
@@ -16,20 +17,92 @@ const swalWithBootstrapButtons = Swal.mixin({
 });
 
 // Função de abrir a tela de edição de items
+export const ModalEditUsuario = async (id, atualizar, token, navigate) => {
+    try {
+        // Requisição para buscar dados do usuário
+        let resposta = await axios.get(`${urlUsuario}/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
 
-export const ModalEditUsuario = (id, atualizar, token, navigate) => {
-    
-    swalWithBootstrapButtons.fire({
-        title: "Edit User",
-        text: "Here you can edit user details.",
-        icon: "info"
-    });
+        // Dados do usuário para preencher o formulário
+        const usuario = resposta.data[0]// Acessando o primeiro item da resposta
+
+
+        // Exibir o modal com os dados do usuário
+        const { value: formValues } = await Swal.fire({
+            title: `Editar usuário: ${usuario.user_nome}`,
+            html: `
+            <form id="form-jogo">
+                <div class="mb-3 text-start">
+                    <label for="user_nome" class="form-label">Nome:</label>
+                    <input type="text" id="user_nome_edit" class="form-control" placeholder="Nome do aluno" value="${usuario.user_nome || ''}">
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="user_email_edit" class="form-label">Email:</label>
+                    <input type="text" id="user_email_edit" class="form-control" placeholder="Email@gmail.com" value="${usuario.user_email || ''}">
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="user_senha" class="form-label">Senha:</label>
+                    <input type="password" id="user_senha_edit" class="form-control" placeholder="Sesisp@SeuRM"">
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="tipo_acesso_edit" class="form-label">Tipo de Acesso:</label>
+                    <select id="tipo_acesso_edit" class="form-select">
+                        <option value="0" ${usuario.user_tipo_acesso === 0 ? 'selected' : ''}>Administrador</option>
+                        <option value="1" ${usuario.user_tipo_acesso === 1 ? 'selected' : ''}>Aluno</option>
+                        <option value="2" ${usuario.user_tipo_acesso === 2 ? 'selected' : ''}>Usuário</option>
+                        <option value="3" ${usuario.user_tipo_acesso === 3 ? 'selected' : ''}>Jogador</option>
+                        <option value="4" ${usuario.user_tipo_acesso === 4 ? 'selected' : ''}>Banca</option>
+                    </select>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="periodo" class="form-label">Período:</label>
+                    <select id="periodo_edit" class="form-select">
+                        <option value="Matutino" ${usuario.user_periodo === 'Matutino' ? 'selected' : ''}>Matutino</option>
+                        <option value="Noturno" ${usuario.user_periodo === 'Noturno' ? 'selected' : ''}>Noturno</option>
+                    </select>
+                </div>
+            </form>`,
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#198754",
+            confirmButtonText: "Confirmar",
+            preConfirm: () => {
+                // Retorna os dados do formulário preenchido
+                return {
+                    user_nome: document.getElementById('user_nome_edit').value,
+                    user_email: document.getElementById('user_email_edit').value,
+                    user_senha: document.getElementById('user_senha_edit').value,
+                    user_tipo_acesso: document.getElementById('tipo_acesso_edit').value,
+                    user_periodo: document.getElementById('periodo_edit').value,
+                    user_img_caminho: usuario.user_img_caminho || "User.png", // Mantendo a imagem original ou atribuindo um padrão
+                    user_qrcode: usuario.user_qrcode || "" // Mantendo o QR code original ou vazio
+                };
+            }
+        });
+
+        if (formValues) {
+            // Chame a função para criar ou editar o usuário com os dados coletados
+            EditarUsuario(navigate, token, formValues, atualizar,id);
+        }
+    } catch (error) {
+        console.error("Erro ao editar o usuário:", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: 'Ocorreu um erro ao carregar os dados do usuário. Tente novamente mais tarde.'
+        });
+    }
 };
+
+
 
 // Função de Abrir Modal para deletar arquivos
 
 export const ModalDeleteUsuario = (id, atualizar, token, navigate) => {
-    
+
     swalWithBootstrapButtons.fire({
         title: "Tem certeza?",
         text: "Você não podera reverter isto!",
@@ -51,12 +124,52 @@ export const ModalDeleteUsuario = (id, atualizar, token, navigate) => {
     });
 };
 
+
+
+
+const EditarUsuario = async (navigate, token, formValues, BuscarTodosUsuarios,id) => {
+
+    try {
+        const resposta = await axios.put(`${urlUsuario}/${id}`, formValues, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+
+        console.log(resposta.data.status);
+        console.log("respota", resposta);
+
+
+        if (resposta.data?.errors || resposta?.status == false) {
+
+            console.log("Há erros presentes", resposta.data.errors)
+
+            ModalErroUsuario(resposta.data.errors, token, navigate, BuscarTodosUsuarios)
+        } else {
+            BuscarTodosUsuarios(); // Atualiza a lista
+            swalWithBootstrapButtons.fire({
+                title: "Criado!",
+                text: "Seu usuário foi editado com sucesso!",
+                icon: "success"
+            });
+            console.log("Usuário criado com sucesso");
+        }
+    } catch (error) {
+        console.log("Deu algum erro?")
+        SwalErroToken(navigate, error);
+    }
+
+
+}
+
 export const useImportarDadosUsuario = (token, navigate) => {
     const [TodosUsuarios, setTodosUsuarios] = useState([])
-    
+
     async function BuscarTodosUsuarios() {
-        
-        
+
+
         try {
             let resposta = await axios.get(urlUsuario, {
                 headers: {
@@ -66,11 +179,11 @@ export const useImportarDadosUsuario = (token, navigate) => {
             setTodosUsuarios(resposta.data)
         } catch (error) {
             SwalErroToken(navigate, error)
-            
+
         }
-        
+
     }
-    
+
     return {
         TodosUsuarios,
         BuscarTodosUsuarios,
@@ -80,14 +193,14 @@ export const useImportarDadosUsuario = (token, navigate) => {
 
 export const deletarUsuario = async (id, atualizar, token, navigate) => {
     try {
-        let resposta = await axios.delete(`${urlUsuario}/${id}`,{
+        let resposta = await axios.delete(`${urlUsuario}/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
         console.log(resposta)
         if (!resposta.data.status) {
-            
+
             swalWithBootstrapButtons.fire({
                 title: "Falhou!",
                 html: "Seu usuario não foi deletado!<br> <br>" + resposta.data.message,
@@ -99,13 +212,13 @@ export const deletarUsuario = async (id, atualizar, token, navigate) => {
                 text: "Seu usuario foi deletado!",
                 icon: "success"
             });
-            console.log("Apagou sucesso",resposta.data)
+            console.log("Apagou sucesso", resposta.data)
             atualizar(); // Atualiza a lista após a exclusão
-            
+
         }
     } catch (error) {
         SwalErroToken(navigate, error)
-        
+
     }
 };
 // estou adicionando usuarios com SVC
@@ -124,9 +237,9 @@ export const ModalAdicionarUsuario = (token, navigate, BuscarTodosUsuarios) => {
         confirmButtonText: "Upload"
     }).then((result) => {
         if (result.isConfirmed) {
-            
-            
-            
+
+
+
         }
     });
     console.log("AA")
@@ -171,17 +284,17 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios, se
                     </select>
                     </div>
                     </form>`,
-                    icon: "info",
-                    showCancelButton: false,
-                    confirmButtonColor: "#198754",
-                    confirmButtonText: "Cadastrar",
-                    preConfirm: () => {
-                        
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const Form = {
-                            user_nome: document.getElementById('user_nome').value,
+        icon: "info",
+        showCancelButton: false,
+        confirmButtonColor: "#198754",
+        confirmButtonText: "Cadastrar",
+        preConfirm: () => {
+
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const Form = {
+                user_nome: document.getElementById('user_nome').value,
                 user_email: document.getElementById('user_email').value,
                 user_senha: document.getElementById('user_senha').value,
                 user_tipo_acesso: document.getElementById('tipo_acesso').value,
@@ -189,10 +302,10 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios, se
                 user_img_caminho: "User.png", // Adicione o caminho da imagem se necessário
                 user_qrcode: "" // Adicione o QR code se necessário
             };
-            
+
             console.log("Periodoo", Form.user_periodo)
             console.log("Objeto Form:", Form);
-            CriarUsuario(navigate, token, Form, BuscarTodosUsuarios,setUsuarioFiltrado)
+            CriarUsuario(navigate, token, Form, BuscarTodosUsuarios, setUsuarioFiltrado)
 
         }
     });
@@ -202,9 +315,9 @@ export const ModalCriarUsuario = async (token, navigate, BuscarTodosUsuarios, se
 
 
 // CriarUsuario
-export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios,setUsuarioFiltrado) => {
-    
-    
+export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios, setUsuarioFiltrado) => {
+
+
     try {
         const resposta = await axios.post(`${urlUsuario}`, Form, {
             headers: {
@@ -212,16 +325,16 @@ export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios,se
                 'Content-Type': 'application/json'
             }
         });
-        
-        
+
+
         console.log(resposta.data.status);
         console.log("respota", resposta);
-        
-        
+
+
         if (resposta.data.errors || resposta.status == false) {
-            
+
             console.log("Há erros presentes", resposta.data.errors)
-            
+
             ModalErroUsuario(resposta.data.errors, token, navigate, BuscarTodosUsuarios)
         } else {
             BuscarTodosUsuarios(setUsuarioFiltrado); // Atualiza a lista
@@ -240,22 +353,22 @@ export const CriarUsuario = async (navigate, token, Form, BuscarTodosUsuarios,se
 
 
 export const ModalErroUsuario = (errors, token, navigate, BuscarTodosUsuarios) => {
-    
-    
+
+
     const erroFormatado = errors.join('<br>')
-    
-    
-    
+
+
+
     Swal.fire({
         title: 'Erro!',
         html: erroFormatado,
         icon: 'error',
         allowOutsideClick: false,
         allowEscapeKey: false,
-        confirmButtonText: 'Tentar novamente',
+        confirmButtonText: 'Fechar',
     }).then((result) => {
         if (result.isConfirmed) {
-            ModalCriarUsuario(token, navigate, BuscarTodosUsuarios);
+            
         }
     });
 }

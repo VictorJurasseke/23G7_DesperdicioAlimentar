@@ -8,19 +8,16 @@ import TableMatriculados from './TableMatriculados';
 
 
 
-const TelaMatriculados = ({token,navigate}) => {
-    
+const TelaMatriculados = ({ token, navigate }) => {
+
     // table da tabela jogo e o botoa de rota de adicionar
-    
-    
+
+
     return (
         <>
-           <div className='d-flex flex-fill flex-column'>
-            <div className=''>
-                <TableMatriculados token={token} navigate={navigate}/>
+            <div className='d-flex flex-fill flex-column'>
+                <TableMatriculados token={token} navigate={navigate} />
             </div>
-
-        </div>
         </>
     );
 };

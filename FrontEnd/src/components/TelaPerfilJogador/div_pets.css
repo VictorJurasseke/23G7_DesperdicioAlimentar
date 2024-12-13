@@ -98,7 +98,7 @@
   left: 0;
   z-index: -1;
   /* Coloca a imagem de fundo atrás do conteúdo */
-  filter: blur(10px);
+  filter: grayscale(0.8)
   /* Aplica o blur na imagem de fundo */
 }
 

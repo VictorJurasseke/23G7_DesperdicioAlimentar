@@ -28,7 +28,7 @@ const TableUnidade = ({ token, navigate }) => {
 
             <>
                 {TodasUnidade.length > 0 ? (
-                    <table className="table table-striped  table-hover text-center">
+                    <table className="table table-striped table-hover text-center table-bordered shadow-sm">
                         <thead>
                             <tr >
                                 <th>id</th>
@@ -50,12 +50,11 @@ const TableUnidade = ({ token, navigate }) => {
                         </tbody>
                     </table>
 
-                ) : (<p className='text-center mt-4'>Não há resultados para busca...</p>)}
+                ) : (<div className="text-center mt-4 alert alert-warning">
+                    <strong>Não há resultados para a pesquisa...</strong>
+                </div>)}
                 <div className='text-center d-flex flex-fill justify-content-center align-items-end' style={{ fontSize: '40px' }}>
-
                     <BiAddToQueue onClick={() => { ModalCriarUnidade(token, navigate, BuscarUnidades) }} />
-
-
                 </div>
 
             </>

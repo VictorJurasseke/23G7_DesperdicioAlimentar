@@ -17,6 +17,7 @@ export const usePetsDados = (token, navigate) => {
     const [TurmasUsuario, setTurmasUsuario] = useState()
     const [ID_Jogos, setID_jogos] = useState()
     const [PetPrincipal, SetPetPrincipal] = useState()
+    const [Peso_Acumulativo, SetPeso_Acumulativo] = useState()
 
     // Função para procurar todos os pets do usuario no jogo especifico e mandar as info dele
     const ProcurarPets = async () => {
@@ -45,6 +46,7 @@ export const usePetsDados = (token, navigate) => {
             setQuantidadeMascote(resposta.data.mascotesStatus)
             setID_jogos(resposta.data?.ID_Jogos)
             SetPetPrincipal(resposta.data.PetPrincipal)
+            SetPeso_Acumulativo(resposta.data.peso_acumulativo)
 
             
             // Mostra em mascotes apenas a quantidade exibida por padrão
@@ -63,7 +65,7 @@ export const usePetsDados = (token, navigate) => {
     //     ProcurarPets();
     // }, []); // Array vazio garante que o efeito será executado apenas uma vez
 
-    return { TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema, pontos, jo_rank, TurmasUsuario, ID_Jogos, PetPrincipal }; // Retorna o estado
+    return { TodosPetsTemporada, ProcurarPets, jo_nome, QuantidadeMascote, jo_tema, pontos, jo_rank, TurmasUsuario, ID_Jogos, PetPrincipal, Peso_Acumulativo }; // Retorna o estado
 };
 
 

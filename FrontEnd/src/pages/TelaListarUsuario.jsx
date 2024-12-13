@@ -67,11 +67,16 @@ const TelaUsuario = () => {
     FiltrarBarraPesquisa()
   }, [Pesquisa, TodosJogadores]);
 
+
+  const uniqueJogadores = JogadoresFiltrados.filter(
+    (item, index, self) => index === self.findIndex((t) => t.ID_usuarios === item.ID_usuarios)
+  );
+
   return (
     <>
       {Dados_usuario && (
         <>
-          <Header Dados_usuario={Dados_usuario} corLetra={'#000000'} />
+          <Header Dados_usuario={Dados_usuario} corLetra={'#ffffff'} />
           <div className='min-vh-100 d-flex col-12 bg-light gap-2 flex-column'>
             <div style={{ height: "100px" }}></div>
             <div className='col-12 p-2 d-flex flex-wrap align-self-center'>
@@ -86,7 +91,7 @@ const TelaUsuario = () => {
                     autoComplete="off"
                     checked={FiltroTurma === 'Todos'}  // Agora com o estado controlado
                   />
-                  <label className="btn text-dark" htmlFor="Todos">Todos</label>
+                  <label className="btn btn-outline-secondary jaroFont" htmlFor="Todos">Todos</label>
                   {TodasTurmas.map((item) => (
                     <FiltrosRadios
                       key={item.ID_turmas}  // Adicione uma chave única para cada elemento
@@ -110,41 +115,34 @@ const TelaUsuario = () => {
               <div className='col-12 d-flex flex-wrap align-self-center p-2 align-items-center gap-3 flex-row'>
                 {JogadoresFiltrados.length > 0 ? (
                   <>
-                    {JogadoresFiltrados.map((item) => {
-                      if (item.ID_usuarios === Dados_usuario.ID_usuarios) {
-                        return null;
-                      } else {
-                        return (
-                          <CardUsuario
-                            key={item.ID_usuarios}
-                            user_nome={item.user_nome}
-                            user_img_caminho={item.user_img_caminho}
-                            ID_usuarios={item.ID_usuarios}
-                            pontos_usuario={item.pontos_usuario}
-                            peso_acumulativo={item.peso_acumulativo}
-                            rank_usuario={item.rank_usuario}
-                            jo_nome={item.jo_nome}
-                            jo_tema={item.jo_tema}
-                            tur_nome={item.tur_nome}
-                            nome_pet={item.nome_pet}
-                            caminho_pet={item.caminho_pet}
-                            raridade_pet={item.raridade_pet}
-                            ID_inv_pets={item.ID_inv_pets}
-                            evolucao={item.evolucao}
-                            token={token}
-                            ID_jogos={item.ID_jogos}
-                            navigate={navigate}
-                          />
-                        );
-                      }
-                    })}
+                    {uniqueJogadores.map((item) => (
+                      <CardUsuario
+                        key={item.ID_usuarios} // ID único para cada elemento
+                        user_nome={item.user_nome}
+                        user_img_caminho={item.user_img_caminho}
+                        ID_usuarios={item.ID_usuarios}
+                        pontos_usuario={item.pontos_usuario}
+                        peso_acumulativo={item.peso_acumulativo}
+                        rank_usuario={item.rank_usuario}
+                        jo_nome={item.jo_nome}
+                        jo_tema={item.jo_tema}
+                        tur_nome={item.tur_nome}
+                        nome_pet={item.nome_pet}
+                        caminho_pet={item.caminho_pet}
+                        raridade_pet={item.raridade_pet}
+                        ID_inv_pets={item.ID_inv_pets}
+                        evolucao={item.evolucao}
+                        token={token}
+                        ID_jogos={item.ID_jogos}
+                        navigate={navigate}
+                        visitante={item.ID_usuarios !== Dados_usuario.ID_usuarios} // Define visitante
+                        
+                      />
+                    ))}
                   </>
                 ) : (
-                  <h1 className='jaroFont'>Nenhum jogador nesta turma</h1>
+                  <h1 className='jaroFont'>Nenhum resultado para busca</h1>
                 )}
-
-
-
               </div>
             </div>
           </div>

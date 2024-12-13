@@ -4,7 +4,7 @@ const validator = require('validator');
 module.exports.retornarTodosUsuario = async () => {
     let conexao;
 
-    
+
 
     try {
 
@@ -31,7 +31,7 @@ module.exports.retornarTodosUsuario = async () => {
 module.exports.CadastrarUsuario = async (user_nome, user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode) => {
 
     let senhaHash = crypto.createHash('sha256').update(user_senha).digest('hex');
-   
+
     let conexao;
 
     try {
@@ -42,7 +42,7 @@ module.exports.CadastrarUsuario = async (user_nome, user_email, user_senha, user
         //Executa o sql no bd
         const [linhas] = await conexao.execute(
             'INSERT INTO usuarios (user_nome,user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode) VALUES (?,?, ?, ?, ?, ?, ?)', [user_nome, user_email, senhaHash, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode])
-        
+
 
         return { status: true }
 
@@ -71,7 +71,9 @@ module.exports.retornarUmUsuario = async (id) => {
     try {
         conexao = await db.criarConexao();
         const [linhas] = await conexao.execute(
-            'SELECT * FROM usuarios WHERE ID_usuarios = ?', [id])
+            'SELECT ID_usuarios, user_nome, user_email, user_tipo_acesso, user_img_caminho, user_periodo, user_qrcode FROM usuarios WHERE ID_usuarios = ?', [id])
+
+
         return linhas
     } catch (error) {
         throw error // Repassa o erro para controller
@@ -83,7 +85,7 @@ module.exports.retornarUmUsuario = async (id) => {
 
 
 // VALILDAR CONTA USADA NA TELA ALUNO
-module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_usuarios,Caminho_Banco) => {
+module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_usuarios, Caminho_Banco) => {
 
     // Criptografando a senha em hexadecimal no algoritmo de sha256 para não mandar para o banco em plano branco
     let senhaHash = crypto.createHash('sha256').update(NovaSenha).digest('hex');
@@ -99,15 +101,15 @@ module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_u
         conexao = await db.criarConexao();
         const [resultado] = await conexao.execute(
             'UPDATE usuarios SET user_qrcode = ?, user_senha = ?, user_tipo_acesso = 2, user_img_caminho = ? WHERE ID_usuarios = ?',
-            [QRcode, senhaHash,Caminho_Banco, ID_usuarios]
+            [QRcode, senhaHash, Caminho_Banco, ID_usuarios]
         )
         return { status: true, message: "Sua conta foi validada com sucesso!" }
     } catch (error) {
         console.log(error)
         if (error.code == 'ER_DUP_ENTRY') {
             return { status: false, message: "Algum usuário já usou este QRCODE, Tente Novamente:" }
-        } else{
-            return {status:false, message :" Erro desconhecido!", erro: error}
+        } else {
+            return { status: false, message: " Erro desconhecido!", erro: error }
         }
         throw error // Repassa para a controller
     } finally {
@@ -120,6 +122,8 @@ module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_u
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const { param } = require('../controllers/UsuarioController');
+const { isArgumentsObject } = require('util/types');
 
 module.exports.retornarLogin = async (email, senha) => {
 
@@ -153,7 +157,7 @@ module.exports.retornarLogin = async (email, senha) => {
 
 
         // Gera o token através do codigo secreto
-        token = jwt.sign(payload, senhaCodigoSecreto, { expiresIn: '1h' });
+        token = jwt.sign(payload, senhaCodigoSecreto, { expiresIn: '30m' });
 
 
 
@@ -167,13 +171,13 @@ module.exports.retornarLogin = async (email, senha) => {
 };
 module.exports.ApagarUsuario = async (id_deletar, ID_usuarios) => {
     console.log(id_deletar, ID_usuarios)
-    let conexao; 
+    let conexao;
     try {
         conexao = await db.criarConexao();
-        
+
         // Verifica se o usuário esta tentando deletar a própria conta
-        if(id_deletar == ID_usuarios){
-            return {status:false, message:"Você não pode deletar sua conta!"}
+        if (id_deletar == ID_usuarios) {
+            return { status: false, message: "Você não pode deletar sua conta!" }
         }
 
         // Finalmente, deletar a escola
@@ -187,3 +191,43 @@ module.exports.ApagarUsuario = async (id_deletar, ID_usuarios) => {
 
     }
 };
+
+
+
+module.exports.EditarUsuario = async (user_nome, user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode, ID_usuarios) => {
+    let senhaHash = crypto.createHash('sha256').update(user_senha).digest('hex');
+    let conexao;
+    console.log("Parametros:",user_nome, user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode, ID_usuarios)
+    try {
+        // Faz a conexão com o banco com uma função
+        conexao = await db.criarConexao();
+
+        // Executa o SQL de edição no banco de dados
+        const [linhas] = await conexao.execute(
+            'UPDATE usuarios SET user_nome = ?, user_email = ?, user_senha = ?, user_tipo_acesso = ?, user_periodo = ?, user_img_caminho = ?, user_qrcode = ? WHERE ID_usuarios = ?',
+            [user_nome, user_email, senhaHash, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode, ID_usuarios]
+        );
+   
+        // Verifica se algum registro foi atualizado
+        if (linhas.affectedRows > 0) {
+            console.log("Retornando")
+            return { status: true, message:"Concluido, informações alterada com sucesso" };
+        } else {
+            return { status: false, message: "Não houve alterações" };
+        }
+
+    } catch (error) {
+        console.error("Erro ao editar o usuário", error);
+        if (error.code == 'ER_DUP_ENTRY') {
+            return { status: false, message: "Entrada de dados duplicada" };
+        } else {
+            return { status: false, message: "Erro interno do servidor!" };
+        }
+        throw error; // Repassa o erro para a controller
+    } finally {
+        db.liberarConexao(conexao); // Libera a conexão
+    }
+};
+
+
+

@@ -33,8 +33,7 @@ const TableUsuario = ({ token, navigate }) => {
     // Instância do Fuse.js
     const fuse = new Fuse(UsuarioFiltrado, fuseOptions);
 
-
-    const SelectSwitchAcesso = (SelectAcesso) =>{
+    const SelectSwitchAcesso = (SelectAcesso) => {
         switch (SelectAcesso) {
             case '0':
                 setUsuarioFiltrado(TodosUsuarios.filter((usuario) => usuario.user_tipo_acesso === 0));
@@ -50,47 +49,46 @@ const TableUsuario = ({ token, navigate }) => {
                 break;
             default:
                 setUsuarioFiltrado(TodosUsuarios);
-    
         }
     }
 
     // Efeito para filtrar por tipo de acesso
     useEffect(() => {
-        SelectSwitchAcesso(SelectAcesso)
-        setPesquisa('')
+        SelectSwitchAcesso(SelectAcesso);
+        setPesquisa('');
     }, [SelectAcesso, TodosUsuarios]);
 
     // Efeito para buscar todos os usuários ao montar o componente
     useEffect(() => {
         BuscarTodosUsuarios(setUsuarioFiltrado);
-        SelectSwitchAcesso(SelectAcesso)
-        FiltrarBarraPesquisa()
+        SelectSwitchAcesso(SelectAcesso);
+        FiltrarBarraPesquisa();
     }, []);
 
     // Função para lidar com a pesquisa
-
-    const FiltrarBarraPesquisa = () =>{
+    const FiltrarBarraPesquisa = () => {
         if (Pesquisa.trim() === '') {
             setUsuarioFiltrado(TodosUsuarios);
-            SelectSwitchAcesso(SelectAcesso)
+            SelectSwitchAcesso(SelectAcesso);
         } else {
             const resultados = fuse.search(Pesquisa).map((result) => result.item);
             setUsuarioFiltrado(resultados);
         }
     }
+
     useEffect(() => {
-        FiltrarBarraPesquisa()
+        FiltrarBarraPesquisa();
     }, [Pesquisa, TodosUsuarios]);
 
     return (
         <>
-            <div className='col-12 d-flex justify-content-end'>
-                <div className='align-items-center text-center d-flex flex-row gap-3 position-absolute' style={{ top: '200px', zIndex:20 }}>
+            <div className='col-12 d-flex justify-content-between my-2'>
+                <div className='d-flex gap-3'>
                     <form className="d-flex" role="search">
                         <select
                             onChange={(e) => setSelectAcesso(e.target.value)}
                             className="form-select"
-                            aria-label="Default select example"
+                            aria-label="Filtrar por tipo de acesso"
                         >
                             <option value="5" selected>Todos</option>
                             <option value="0">Administrador</option>
@@ -105,14 +103,15 @@ const TableUsuario = ({ token, navigate }) => {
                             onChange={(e) => setPesquisa(e.target.value)}
                             className="form-control me-2"
                             type="search"
-                            placeholder="Search"
-                            aria-label="Search"
+                            placeholder="Pesquisar"
+                            aria-label="Pesquisar"
                         />
                     </form>
                 </div>
             </div>
+
             {UsuarioFiltrado.length > 0 ? (
-                <table className="table table-striped table-hover text-center">
+                <table className="table table-striped table-hover text-center table-bordered shadow-sm">
                     <thead className="thead-dark">
                         <tr>
                             <th>ID Usuário</th>
@@ -120,12 +119,10 @@ const TableUsuario = ({ token, navigate }) => {
                             <th>Email</th>
                             <th>Nível Acesso</th>
                             <th>Período</th>
-                            <th></th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-
-
                         {UsuarioFiltrado.map((item) => (
                             <UsuarioTR
                                 key={item.ID_usuarios}
@@ -144,21 +141,24 @@ const TableUsuario = ({ token, navigate }) => {
                         ))}
                     </tbody>
                 </table>
-
-            ) : (<p className='text-center mt-4'>Não há resultados para busca...</p>)
-            }
+            ) : (
+                <div className="text-center mt-4 alert alert-warning">
+                    <strong>Não há resultados para a pesquisa...</strong>
+                </div>
+            )}
 
             <div className="d-flex justify-content-center mt-4">
                 <div className='d-flex align-items-center'>
                     <BiAddToQueue
-                        className='text-success'
+                        className='text-success me-3'
                         onClick={() => ModalCriarUsuario(token, navigate, BuscarTodosUsuarios, setUsuarioFiltrado)}
-                        style={{ fontSize: '40px', marginRight: '15px', cursor: 'pointer' }}
+                        style={{ fontSize: '40px', cursor: 'pointer' }}
                     />
                     <Button
-                        className="btn btn-success"
+                        className="btn btn-success d-flex align-items-center"
                         onClick={() => ModalAdicionarUsuario(token, navigate, TodosUsuarios, BuscarTodosUsuarios, setUsuarioFiltrado)}
                     >
+                        <IoMdAdd style={{ fontSize: '20px', marginRight: '8px' }} />
                         Importar SVC
                     </Button>
                 </div>

@@ -16,7 +16,10 @@ import VisitarPerfilJogador from './pages/TelaVisitarPerfilJogador'
 import TelaBanca from './pages/TelaBanca'
 
 
+
+
 export default function App() {
+
   return (
     
  

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SwalErroToken } from '../TelaPerfil/SwalError';
+import { ModalErroUsuario } from '../TelaDev/TableUsuarios/FunctionUsuario';
 
 const UrlPerfilDados = "http://localhost:3025/api/perfil";
 
@@ -11,7 +12,7 @@ export const usePerfilJogadorVisitado = (token, navigate, ID_usuarios, ID_jogo) 
     // Jogador é quem esta sendo visitado
     const [Dados_Visitado, setDados_Visitado] = useState([]);
 
-    
+
     // Função para verificar o usuario e mandar as info dele
     const BuscarVisitado = async () => {
         if (!token) {
@@ -20,19 +21,23 @@ export const usePerfilJogadorVisitado = (token, navigate, ID_usuarios, ID_jogo) 
         }
 
         try {
-            let resposta = await axios.get(UrlPerfilDados+`/visitar/${ID_usuarios}/${ID_jogo}`, {
+            let resposta = await axios.get(UrlPerfilDados + `/visitar/${ID_usuarios}/${ID_jogo}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            
+
             console.log("Carregando dados do visitado", resposta.data)
             setDados_Visitado(resposta.data);
+            // Mostra em mascotes apenas a quantidade exibida por padrão
+            if (resposta.data?.status == false) {
+                navigate("/list")
+            }
         } catch (error) {
             console.log("Deu erro no function perfil")
             SwalErroToken(navigate, error)
 
-          
+
         }
     };
 

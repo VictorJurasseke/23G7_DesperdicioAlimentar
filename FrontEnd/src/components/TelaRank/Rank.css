@@ -1,0 +1,50 @@
+/* Estilo do container geral */
+.table-container {
+  padding: 20px;
+  margin: 20px auto;
+  position: relative;
+  text-align: center;
+  height: 120%;
+  background-color: red;
+}
+
+/* Título */
+.table-title-primavera {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #8705b0;
+  width: 100%;
+}
+
+/* Estilo personalizado para a tabela */
+.custom-table-primavera {
+  border-radius: 40px;
+  width: 100%;
+  background-color: #f2abc5;
+  color: white;
+}
+
+.custom-table tbody td {
+  padding: 4px;
+  border: none;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+
+/* Ícone de flor no canto */
+.icon-primavera {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  font-size: 5rem;
+  color: #ff6fb5;
+
+}
+
+.competitors-header-primavera, .points-header-primavera{
+  color:#a72300;
+  font-size:1.5rem;
+  width: 50%;
+  
+}

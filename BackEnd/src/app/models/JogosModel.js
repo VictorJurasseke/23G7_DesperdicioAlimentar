@@ -17,6 +17,32 @@ module.exports.retornarTodosJogos = async () => {
         db.liberarConexao(conexao);
     }
 };
+module.exports.retornarJogoEspecifico = async (ID_jogos) => {
+    let conexao;
+    try {
+        conexao = await db.criarConexao();
+
+        // Primeira consulta: busca o jogo específico com as informações da configuração
+        const [linhasJogo] = await conexao.execute(
+            `SELECT * 
+             FROM jogos j
+             JOIN jogos_config jc ON j.ID_jogos_config = jc.ID_jogos_config
+             WHERE j.ID_jogos = ?`,
+            [ID_jogos]
+        );
+
+        // Segunda consulta: busca todos os jogos (se necessário)
+        const [todosJogos] = await conexao.execute('SELECT * FROM jogos');
+
+        return linhasJogo
+
+    } catch (error) {
+        console.error("Erro ao listar todos os jogos", error);
+        throw error;
+    } finally {
+        db.liberarConexao(conexao);
+    }
+};
 
 
 module.exports.retornarTodosJogosAtivos = async () => {
@@ -58,14 +84,14 @@ module.exports.ApagarJogos = async (id) => {
         const [jogosInativos] = await conexao.execute('UPDATE jogos SET jo_status = 2 WHERE id_jogos != ?', [id])
 
 
-        const [Matricula] = await conexao.execute('DELETE FROM jogos_matricula WHERE ID_jogos = ? ',[id])
+        const [Matricula] = await conexao.execute('DELETE FROM jogos_matricula WHERE ID_jogos = ? ', [id])
         const [inventario] = await conexao.execute('DELETE FROM inventario_matricula WHERE ID_jogos = ?'[id])
-        
-        
+
+
         // Finalmente, deletar o jogo
         const [linhas] = await conexao.execute('DELETE FROM jogos WHERE ID_jogos = ?', [id]);
-        
-        return { status: true, message:"Deletou o jogo com sucesso" }
+
+        return { status: true, message: "Deletou o jogo com sucesso" }
     } catch (error) {
         return { status: false, error: error }
         throw error // Repassa para a controller
@@ -169,17 +195,36 @@ module.exports.ParticiparJogo = async (ID_usuarios, ID_jogos, ID_turmas) => {
 
 
 // Progresso PET
-module.exports.ProgressoJogador = async (desperdicio, QRcode) => {
-    console.log("Valor desperdiçado:", desperdicio);
+module.exports.ProgressoJogador = async (pesoComTara, QRcode) => {
     let conexao;
+    let desperdicio
+    console.log("Valor desperdiçado junto com a tara:", pesoComTara);
     try {
         conexao = await db.criarConexao();
 
 
-        // Busca o pet que precisa evoluir no inventario do jogador, pra isso eu preciso do qrcode
+
+
+        // Busca o pet que precisa evoluir no inventario do jogador do jogo atual, pra isso eu preciso do qrcode
         // pra descobrir o id do usuario e descobrir o id da matricula pra descobrir o id de inventario responsavel por ter o mascote de evolucao 1 
 
-        const [matricula] = await conexao.execute("SELECT im.ID_inv_pets, u.ID_usuarios FROM usuarios u, inventario_matricula im WHERE user_qrcode = ? AND im.ID_usuarios = u.ID_usuarios", [QRcode])
+        const [matricula] = await conexao.execute(`
+        SELECT 
+            im.ID_inv_pets, 
+            u.ID_usuarios,
+            u.user_nome,
+            j.jo_nome
+        FROM 
+            usuarios u
+        JOIN 
+            inventario_matricula im ON im.ID_usuarios = u.ID_usuarios
+        JOIN 
+            jogos j ON j.ID_jogos = im.ID_jogos -- Relaciona o inventário ao jogo
+        WHERE 
+            u.user_qrcode = ?
+            AND im.evolucao = 1 
+            AND j.jo_status = 1
+        LIMIT 1; -- Garante que apenas um resultado seja retornado`, [QRcode])
 
         if (matricula.length == 0) {
             return { status: false, message: "Não foi achado nenhum usuário e mascote com este qrcode" }
@@ -190,12 +235,17 @@ module.exports.ProgressoJogador = async (desperdicio, QRcode) => {
         const ID_usuarios = matricula[0].ID_usuarios
         const ID_inventario = matricula[0].ID_inv_pets
 
+        console.log("INVENTARIO", ID_inventario)
+        console.log("USUARIO", ID_usuarios)
+
         // Busca o jogo atual
         const [jogo] = await conexao.execute(
             "SELECT jc.*, j.ID_jogos FROM jogos j, inventario_matricula i, jogos_config jc WHERE i.ID_inv_pets = ? AND i.ID_jogos = j.ID_jogos AND j.jo_status = 1",
             [ID_inventario]
         );
-
+        console.log(ID_inventario)
+        desperdicio = pesoComTara - jogo[0].tara_prato;
+        console.log("Desperdicio sem a tara:", desperdicio)
         const ID_jogo = jogo[0].ID_jogos;
         const MediaRefeicao = jogo[0].valor_grama;
         const PontosPorRefeicaoPerfeita = jogo[0].valor_pontos;
@@ -227,14 +277,15 @@ module.exports.ProgressoJogador = async (desperdicio, QRcode) => {
             pontosAtribuidos = PontosPorRefeicaoPerfeita / 2;
             // maior que 200g
         } else if (desperdicio > 0.200 && desperdicio < 2) {
-            console.log("não conseguiu avanço nenhum")
+            console.log("não conseguiu avanço nenhum por conta do peso")
             pontosAtribuidos = 0;
-        } else if (desperdicio == 100) {
-            console.log("Evoluir")
+        } else if (desperdicio == 99.84999999403954) {
+            console.log("Evoluir forçado, colocando 1000 pontos")
             pontosAtribuidos = 1000;
         }
-
+        console.log("Multiplicando pelo fator diario:", multiplicadorDia)
         pontosAtribuidos *= multiplicadorDia;
+
 
 
         console.log("Valor desperdiçado:", desperdicio)
@@ -319,7 +370,7 @@ module.exports.ProgressoJogador = async (desperdicio, QRcode) => {
                 console.log("O mascote ainda não evoluiu");
             }
         } else {
-            console.log("O usuário não ganhou nenhum ponto");
+            console.log("O usuário não ganhou nenhum ponto, sem progresso");
         }
 
         return { status: true, message: "Seu pet teve seu progresso aumentado com sucesso" };
@@ -339,6 +390,7 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
     let conexao;
 
     try {
+
         conexao = await db.criarConexao();
 
         // Inserir nova configuração na tabela 'jogos_config'
@@ -405,6 +457,68 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
 
 
 
+//usada na tela dev rota de editar jogo
+module.exports.EditarJogo = async (jogos_pts_segunda, jogos_pts_terca, jogos_pts_quarta, jogos_pts_quinta, jogos_pts_sexta, jogos_pts_sabado, jogos_pts_domingo, ID_jogos) => {
+    let conexao;
+
+    try {
+        // Criando a conexão com o banco de dados
+        conexao = await db.criarConexao();
+
+        // Verificando se o jogo existe antes de tentar a atualização
+        const [jogoExistente] = await conexao.execute(`
+            SELECT ID_jogos_config FROM jogos WHERE ID_jogos = ?
+        `, [ID_jogos]);
+
+        if (jogoExistente.length === 0) {
+            return { status: false, message: "Nenhum jogo encontrado para o ID fornecido." };
+        }
+
+        // Recuperando o ID_jogos_config para a atualização
+        const ID_jogos_config = jogoExistente[0].ID_jogos_config;
+
+        // Executando a consulta de atualização
+        const [result] = await conexao.execute(`
+            UPDATE jogos_config
+            SET 
+                jogos_pts_segunda = ?,
+                jogos_pts_terca = ?,
+                jogos_pts_quarta = ?,
+                jogos_pts_quinta = ?,
+                jogos_pts_sexta = ?,
+                jogos_pts_sabado = ?,
+                jogos_pts_domingo = ?
+            WHERE ID_jogos_config = ?
+        `, [
+            jogos_pts_segunda,
+            jogos_pts_terca,
+            jogos_pts_quarta,
+            jogos_pts_quinta,
+            jogos_pts_sexta,
+            jogos_pts_sabado,
+            jogos_pts_domingo,
+            ID_jogos_config
+        ]);
+
+        // Retornando sucesso ou erro
+        if (result.affectedRows > 0) {
+            return { status: true, message: "Jogo atualizado com sucesso!" };
+        } else {
+            return { status: false, message: "Nenhuma atualização realizada. Verifique os dados." };
+        }
+    } catch (error) {
+        console.error("Erro ao editar o jogo:", error.message);
+        if (error.errno == 1062) {
+            return { status: false, message: "Você não pode adicionar duas temporadas iguais!" };
+        } else {
+            return { status: false, message: "Erro Interno do servidor!" };
+        }
+    } finally {
+        // Liberando a conexão
+        db.liberarConexao(conexao);
+    }
+};
+
 
 
 // Preciso de um select para tela jogadores que busca então:
@@ -414,7 +528,7 @@ module.exports.CriarJogo = async (unidade, jo_tema, jo_nome, jo_datai_formatada,
 // * pet_principal ->  pet_evolucao & * pets
 
 
-// Busca todos os jogadores do jogo atual
+// Busca todos os jogadores do jogo atual usado na tela jogadores
 module.exports.BuscarJogadores = async () => {
     let conexao;
     try {
@@ -423,31 +537,41 @@ module.exports.BuscarJogadores = async () => {
         // Pega todos os jogadores que são jogadores e estão no jogo atual, só pra ter certeza da integridade
         const [TodosJogadores] = await conexao.execute(`
             SELECT 
-                u.user_nome,
-                u.user_img_caminho,
-                u.ID_usuarios,
-                m.turmas_ID_turmas,
-                m.pontos_usuario,
-                m.peso_acumulativo,
-                m.rank_usuario,
-                j.ID_jogos,
-                t.tur_nome,
-                j.jo_nome,
-                j.jo_tema,
-                p.nome_pet,
-                p.caminho_pet,
-                p.raridade_pet,
-                im.ID_inv_pets,
-                im.evolucao
-                FROM usuarios u
-                JOIN jogos_matricula m ON u.ID_usuarios = m.ID_usuarios 
-                JOIN jogos j ON j.ID_jogos = m.ID_jogos 
-                JOIN inventario_matricula im ON im.ID_usuarios = u.ID_usuarios  
-                JOIN pets p ON p.ID_pet = im.ID_pets 
-                JOIN turmas t ON t.ID_turmas = m.turmas_ID_turmas
-                WHERE u.user_tipo_acesso = 3  
-                AND j.jo_status = 1  
-                AND im.pet_principal = 1;  
+    u.user_nome,
+    u.user_img_caminho,
+    u.ID_usuarios,
+    m.turmas_ID_turmas,
+    m.pontos_usuario,
+    m.peso_acumulativo,
+    m.rank_usuario,
+    j.ID_jogos,
+    t.tur_nome,
+    j.jo_status,
+    j.jo_nome,
+    j.jo_tema,
+    p.nome_pet,
+    p.caminho_pet,
+    p.raridade_pet,
+    im.ID_inv_pets,
+    im.evolucao
+FROM 
+    usuarios u
+JOIN 
+    jogos_matricula m ON u.ID_usuarios = m.ID_usuarios 
+JOIN 
+    jogos j ON j.ID_jogos = m.ID_jogos 
+JOIN 
+    inventario_matricula im ON im.ID_usuarios = u.ID_usuarios  
+JOIN 
+    pets p ON p.ID_pet = im.ID_pets 
+JOIN 
+    turmas t ON t.ID_turmas = m.turmas_ID_turmas
+WHERE 
+    u.user_tipo_acesso = 3  
+    AND j.jo_status = 1  
+    AND im.ID_jogos = j.ID_jogos -- Adiciona a relação com o jogo atual
+ORDER BY m.rank_usuario ASC
+
  
         `);
 

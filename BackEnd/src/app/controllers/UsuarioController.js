@@ -67,6 +67,32 @@ const CriarusuarioSchema = yup.object().shape({
     // 
 });
 
+const ValidarEditarUsuario = yup.object().shape({
+    // Criar usuário
+    user_nome: yup
+        .string()
+        .required("- O nome não foi preenchido"),
+
+    user_email: yup
+        .string()
+        .required("- O email não foi preenchido")
+        .email("- O email não é valido"),
+
+    user_senha: yup
+        .string()
+        .required("- A senha não foi preenchida")
+        .min(8, "- A senha precisa ter no minimo 8 caractéres"),
+    user_periodo: yup
+        .string()
+        .required("- Não foi selecionado o periodo do usuário"),
+
+    user_img_caminho: yup
+        .string()
+        .required(),
+
+    // 
+});
+
 
 
 
@@ -212,6 +238,44 @@ rotas.delete('/:id_deletar', verificarToken, async (req, res) => {
         console.error("Erro ao apagar um usuário", error);
         res.status(500).json({ error: "Erro interno do servidor" });
     }
+});
+
+// ROTA DE EDITAR USUÁRIO SENDO USADA NA TELA DEV
+rotas.put('/:ID_usuarios', async (req, res) => {
+
+
+
+
+    console.log("CORPO DA REQ PUT:",req.body)
+    let {
+        user_nome,
+        user_email,
+        user_senha,
+        user_tipo_acesso,
+        user_periodo,
+        user_img_caminho,
+        user_qrcode,
+    } = req.body
+
+    const ID_usuarios = req.params.ID_usuarios
+
+
+    console.log(user_nome)
+    try {
+
+        await ValidarEditarUsuario.validate(req.body, { abortEarly: false });
+
+        res.json(await model.EditarUsuario(user_nome, user_email, user_senha, user_tipo_acesso, user_periodo, user_img_caminho, user_qrcode,ID_usuarios));
+    } catch (error) {
+        if (error instanceof yup.ValidationError) {
+            console.log("Erros de validação do Yup:", error.errors);
+            return res.json({ errors: error.errors, status: 301,  });
+        }
+        console.error("Erro inesperado:", error); // Log para erros não esperados
+        res.status(500).json({ error: "Erro interno do servidor" });
+    }
+
+
 });
 
 

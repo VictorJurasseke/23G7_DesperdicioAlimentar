@@ -44,6 +44,9 @@ app.use('/api/rank', ctrlRank);
 const ctrlPerfil = require("./app/controllers/PerfilController");
 app.use('/api/perfil', ctrlPerfil);
 
+const ctrlRelatorio = require("./app/controllers/RelatorioController");
+app.use('/api/relatorio', ctrlRelatorio);
+
 const crtlPets = require("./app/controllers/PetsController");
 const { storage } = require('./app/middleware/multer');
 app.use('/api/pets', crtlPets);

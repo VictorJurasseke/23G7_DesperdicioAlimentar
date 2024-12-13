@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { BiSolidTrophy } from "react-icons/bi";
 import { MostrarOvo, MudarCorLetraRaridade } from './FunctionPets';
 
-const CardInfoJogador = ({ token, navigate, nome, img, pontos_usuario, rank_usuario, turma, nome_pet, caminho_pet, QuantidadeMascote, evolucao, raridade_pet, desc_pet }) => {
+const CardInfoJogador = ({ token, navigate, nome, img, pontos_usuario, rank_usuario, turma, nome_pet, caminho_pet, QuantidadeMascote, evolucao, raridade_pet, desc_pet,peso_acumulativo }) => {
 
 
     // Se a evolução for 1, mudamos a imagem e o nome para "Ovo"
@@ -54,6 +54,7 @@ const CardInfoJogador = ({ token, navigate, nome, img, pontos_usuario, rank_usua
             <div style={{ color: "#243447" }} className='col-sm-12 lh-lg TextoSemQuebra text-sm-center  col-md-8 col-lg-2 text-md-center text-lg-start p-2  d-flex flex-column h-100'>
                 <h1 className='jaroFont m-0 fs-1'>{nome}</h1>
                 <h4 className='jaroFont m-0 '>Jogador do {turma}</h4>
+                <h4 className='jaroFont m-0 '>{peso_acumulativo.toFixed(2)}kg desperdiçados</h4>
             </div>
             {/* Mascote principal */}
             <div className='col-sm-12 col-md-12 col-lg-2 d-flex flex-column align-items-center justify-content-center h-100'>

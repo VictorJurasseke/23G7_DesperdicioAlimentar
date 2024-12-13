@@ -28,7 +28,7 @@ const CorpoLogin = () => {
   return (
     <div className='col-12 d-flex vh-100 bg-dark'>
       <img className='col-12 min-vh-100 position-absolute z-1' style={{ filter: 'blur(10px)' }} src='../../public/img/backg.jpg' alt="Background" />
-      <div className='col-4 bg-light m-auto p-2 rounded shadow-lg text-dark z-2'>
+      <div className='col-10 col-lg-4 col-md-8 bg-light m-auto p-2 rounded shadow-lg text-dark z-2'>
         <h1 className='text-center text-success'>Login</h1>
         <form onSubmit={LogarUser}>
           <CaixaInput
