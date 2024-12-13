@@ -127,7 +127,6 @@ const { isArgumentsObject } = require('util/types');
 
 module.exports.retornarLogin = async (email, senha) => {
 
-
     let conexao;
     let senhaHash = crypto.createHash('sha256').update(senha).digest('hex');
     let token; // Declare a variável token aqui
