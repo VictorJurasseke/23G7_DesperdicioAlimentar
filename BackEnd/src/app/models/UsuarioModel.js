@@ -1,6 +1,7 @@
 const db = require('../../db')
 const validator = require('validator');
 
+
 module.exports.retornarTodosUsuario = async () => {
     let conexao;
 
@@ -122,7 +123,7 @@ module.exports.ValidarConta = async (NovaSenha, QRcode, ConfirmarNovaSenha, ID_u
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { param } = require('../controllers/UsuarioController');
+// const { param } = require('../controllers/UsuarioController');
 const { isArgumentsObject } = require('util/types');
 
 module.exports.retornarLogin = async (email, senha) => {
