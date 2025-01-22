@@ -1,0 +1,47 @@
+Plataforma Educativa sobre Desperdício Alimentar
+
+Descrição:
+Este projeto é uma plataforma gamificada voltada para a conscientização e redução do desperdício alimentar nas escolas. Com uma abordagem educativa e interativa, o sistema permite que alunos participem de jogos e desafios que incentivam hábitos alimentares mais sustentáveis, integrando recursos como mascotes virtuais, QR codes, gráficos de desempenho e rankings sazonais.
+
+Funcionalidades Principais:
+
+Sistema de Acessos:
+
+Administrador: Configura a escola, cadastra turmas, alunos e jogos.
+Aluno: Realiza o cadastro inicial e verifica sua conta com um QR code único fornecido pela escola.
+Usuário: Escolhe foto de perfil, define horários e registra uma nova senha.
+Jogador: Participa dos jogos, seleciona a turma e recebe mascotes.
+Banca: Analisa e monitora dados de desempenho.
+Cadastro e Verificação:
+
+Criação inicial de conta por administradores.
+Verificação de alunos via QR code único.
+Jogos e Pontuação:
+
+Registro de desperdícios alimentares diários com o uso de uma balança.
+Pontuação baseada na meta de redução de desperdícios proposta pelo administrador.
+Sistema de temporadas (dividido nas 4 estações do ano).
+Mascotes Virtuais:
+
+Mais de 100 mascotes diferentes com nomes, artes, descrições e raridades únicas.
+Mascotes são ganhos de acordo com o desempenho no jogo.
+Gráficos e Rankings:
+
+Acompanhamento do desempenho individual e coletivo.
+Ranking por temporada destacando os melhores jogadores com mais pontos e mascotes.
+Responsividade e Animações:
+
+Interface adaptada para diferentes dispositivos.
+Animações visuais para tornar a experiência mais imersiva.
+Leitor de QR Code:
+
+Utilizado para verificar e registrar contas de alunos de forma segura.
+Objetivo:
+A plataforma tem como propósito educar alunos sobre o impacto do desperdício alimentar por meio da gamificação, incentivando práticas responsáveis e promovendo a competição saudável entre colegas.
+
+Tecnologias Utilizadas:
+
+Frontend: React (Vite), responsividade e animações.
+Backend: Node.js (MVC).
+Banco de Dados: Armazenamento de dados para escolas, turmas, jogos, alunos e desempenho.
+Integrações: Leitor de QR code e gráficos interativos.
