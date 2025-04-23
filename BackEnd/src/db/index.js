@@ -10,7 +10,7 @@ const pool = mysql.createPool({
     user: 'root',
     // password: '12345678',
     database: "Banco_Projeto_Senai_Hatch",
-    port:3306,
+    port:3307,
 })
 // em casa ele aponta que precisa de senha :12345678
 

@@ -60,4 +60,4 @@ async function iniciarApp() {
     });
 }
 
-iniciarApp()
+module.exports = { iniciarApp };
