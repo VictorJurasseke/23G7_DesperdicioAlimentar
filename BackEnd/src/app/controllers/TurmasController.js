@@ -10,7 +10,7 @@ rotas.get('/', verificarToken, async (req, res) => {
         const turmas = await model.retornarTodosTurmas();
         res.json(turmas);
     } catch (error) {
-        console.error("Erro ao listar os jogos", error);
+        console.error("Erro ao listar todas as turmas", error);
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });
@@ -35,7 +35,7 @@ rotas.delete('/:id', verificarToken, async (req, res) => {
         res.json(turmas);
         
     } catch (error) {
-        console.error("Erro ao apagar um jogo", error);
+        console.error("Erro ao apagar uma turma", error);
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });

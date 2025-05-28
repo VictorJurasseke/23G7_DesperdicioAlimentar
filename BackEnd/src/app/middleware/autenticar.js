@@ -21,7 +21,7 @@ const verificarToken = (req, res, next) => {
         }
         // Se o token for válido, decodifica os dados do usuário
         req.info = decoded; // armazenar os dados do usuário para uso posterior, sempre req.user pra chamar essas informações ai
-        next(); // Chama a próxima função, ("./rota", verificarToken, (req,res)=>{}) chama a arrowfunction ai
+        next(); // este next chama a próxima função, ("./rota", verificarToken, (req,res)=>{}) chama a arrowfunction ai
     });
 };
 
