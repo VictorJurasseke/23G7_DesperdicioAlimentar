@@ -148,7 +148,7 @@ const Menu_Aluno = ({ Dados_usuario, token, navigate }) => {
 
                     <QRcode
                         name="QRcode"
-                        value={FormValidar.QRcode}
+                        value={FormValidar.QRcode}   // FormValidar.QRcode
                         onChange={AtualizarFormValidar}
                         showScanner={showScanner}
                         setShowScanner={setShowScanner}
