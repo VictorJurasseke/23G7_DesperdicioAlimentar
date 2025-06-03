@@ -1,6 +1,6 @@
 ### Endpoint para Registro de Usuário
 
-@url = http://localhost:3025
+@url = http://localhost:3036
 
 
 ###

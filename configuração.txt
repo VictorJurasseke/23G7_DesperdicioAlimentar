@@ -1,0 +1,23 @@
+node.js
+xampp
+mysql workbench
+
+- Abrir o banco na pasta com o mysql workbench:
+BackEnd\src\db\BancoHatch_SENAI.mwb
+
+instalar o node_modules no backend e frontend
+
+abrir uma conexao interna no xamppp com a porta coerente ao arquivo index dentro da pasta db
+
+subir meu banco na porta coerente, se não houver nada na porta local 3306, pode ser ela mesma
+
+terminal \FrontEnd> npm run dev
+terminal \BackEnd> npm start
+
+se tudo der certo, o site vai funcionar localmente normal,
+só dar localhost:3306
+
+
+
+
+
